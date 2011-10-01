@@ -37,6 +37,14 @@ function Text() {
 }
 Schema.Text = Text;
 
+Schema.prototype.automigrate = function (cb) {
+    if (this.adapter.automigrate) {
+        this.adapter.automigrate(cb);
+    } else {
+        cb && cb();
+    }
+};
+
 /**
  * Define class
  * @param className
@@ -103,12 +111,14 @@ function AbstractClass(name, properties, settings, data) {
     var self = this;
     data = data || {};
 
-    Object.defineProperty(this, 'id', {
-        writable: false,
-        enumerable: true,
-        configurable: true,
-        value: data.id
-    });
+    if (data.id) {
+        Object.defineProperty(this, 'id', {
+            writable: false,
+            enumerable: true,
+            configurable: true,
+            value: data.id
+        });
+    }
 
     Object.keys(properties).forEach(function (attr) {
         var _attr    = '_' + attr,
@@ -158,6 +168,7 @@ AbstractClass.create = function (data) {
     if (arguments.length == 0 || data === callback) {
         data = {};
     }
+
     if (typeof callback !== 'function') {
         callback = function () {};
     }

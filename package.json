@@ -11,8 +11,10 @@
     "test": "nodeunit test/*_test.js"
   },
   "engines": {
-    "node": "~v0.4.9"
+    "node": ">= v0.4.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "redis": "=0.6.7"
+  },
   "devDependencies": {}
 }
