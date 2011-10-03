@@ -264,7 +264,9 @@ AbstractClass.prototype.save = function (callback) {
     var data = this.toObject();
     if (this.id) {
         this._adapter().save(modelName, data, function (err) {
-            if (!err) {
+            if (err) {
+                console.log(err);
+            } else {
                 this.constructor.call(this, data);
             }
             if (callback) {
@@ -296,7 +298,7 @@ AbstractClass.prototype.toObject = function () {
 AbstractClass.prototype.destroy = function (cb) {
     this._adapter().destroy(this.constructor.modelName, this.id, function (err) {
         delete this.constructor.cache[this.id];
-        cb(err);
+        cb && cb(err);
     }.bind(this));
 };
 
