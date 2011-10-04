@@ -16,6 +16,7 @@ function Schema(name, settings) {
 
     // create blank models pool
     this.models = {};
+    this.definitions = {};
 
     // and initialize schema using adapter
     // this is only one initialization entry point of adapter
@@ -66,7 +67,7 @@ Schema.prototype.define = function defineClass(className, properties, settings) 
 
     // every class can receive hash of data as optional param
     var newClass = function (data) {
-        AbstractClass.apply(this, args.concat([data]));
+        AbstractClass.call(this, data);
     };
 
     hiddenProperty(newClass, 'schema', schema);
@@ -79,6 +80,10 @@ Schema.prototype.define = function defineClass(className, properties, settings) 
 
     // store class in model pool
     this.models[className] = newClass;
+    this.definitions[className] = {
+        properties: properties,
+        settings: settings
+    };
 
     // pass controll to adapter
     this.adapter.define({
@@ -104,21 +109,40 @@ Schema.prototype.define = function defineClass(className, properties, settings) 
 
 };
 
+Schema.prototype.defineForeignKey = function defineForeignKey(className, key) {
+    // return if already defined
+    if (this.definitions[className].properties[key]) return;
+
+    if (this.adapter.defineForeignKey) {
+        this.adapter.defineForeignKey(className, key, function (err, keyType) {
+            if (err) throw err;
+            this.definitions[className].properties[key] = keyType;
+        }.bind(this));
+    } else {
+        this.definitions[className].properties[key] = Number;
+    }
+};
+
 /**
  * Abstract class constructor
  */
-function AbstractClass(name, properties, settings, data) {
+function AbstractClass(data) {
     var self = this;
+    var ds = this.constructor.schema.definitions[this.constructor.modelName];
+    var properties = ds.properties;
+    var settings = ds.setings;
     data = data || {};
 
     if (data.id) {
-        Object.defineProperty(this, 'id', {
-            writable: false,
-            enumerable: true,
-            configurable: true,
-            value: data.id
-        });
+        defineReadonlyProp(this, 'id', data.id);
     }
+
+    Object.defineProperty(this, 'cachedRelations', {
+        writable: true,
+        enumerable: false,
+        configurable: true,
+        value: {}
+    });
 
     Object.keys(properties).forEach(function (attr) {
         var _attr    = '_' + attr,
@@ -182,7 +206,7 @@ AbstractClass.create = function (data) {
     this.schema.adapter.create(modelName, data, function (err, id) {
         obj = obj || new this(data);
         if (id) {
-            obj.id = id;
+            defineReadonlyProp(obj, 'id', id);
             this.cache[id] = obj;
         }
         if (callback) {
@@ -340,6 +364,68 @@ AbstractClass.prototype.reload = function (cb) {
     this.constructor.find(this.id, cb);
 };
 
+// relations
+AbstractClass.hasMany = function (anotherClass, params) {
+    var methodName = params.as; // or pluralize(anotherClass.modelName)
+    var fk = params.foreignKey;
+    // console.log(this.modelName, 'has many', anotherClass.modelName, 'as', params.as, 'queried by', params.foreignKey);
+    // each instance of this class should have method named
+    // pluralize(anotherClass.modelName)
+    // which is actually just anotherClass.all({thisModelNameId: this.id}, cb);
+    this.prototype[methodName] = function (cond, cb) {
+        var actualCond;
+        if (arguments.length === 1) {
+            actualCond = {};
+            cb = cond;
+        } else if (arguments.length === 2) {
+            actualCond = cond;
+        } else {
+            throw new Error(anotherClass.modelName + ' only can be called with one or two arguments');
+        }
+        actualCond[fk] = this.id;
+        return anotherClass.all(actualCond, cb);
+    };
+
+    // obviously, anotherClass should have attribute called `fk`
+    anotherClass.schema.defineForeignKey(anotherClass.modelName, fk);
+
+    // and it should have create/build methods with binded thisModelNameId param
+    this.prototype['build' + anotherClass.modelName] = function (data) {
+        data = data || {};
+        data[fk] = this.id; // trick! this.fk defined at runtime (when got it)
+        // but we haven't instance here to schedule this action
+        return new anotherClass(data);
+    };
+
+    this.prototype['create' + anotherClass.modelName] = function (data, cb) {
+        if (typeof data === 'function') {
+            cb = data;
+            data = {};
+        }
+        this['build' + anotherClass.modelName](data).save(cb);
+    };
+
+};
+
+AbstractClass.belongsTo = function (anotherClass, params) {
+    var methodName = params.as;
+    var fk = params.foreignKey;
+    anotherClass.schema.defineForeignKey(anotherClass.modelName, fk);
+    this.prototype[methodName] = function (p, cb) {
+        if (p instanceof AbstractClass) { // acts as setter
+            this[fk] = p.id;
+            this.cachedRelations[methodName] = p;
+        } else if (typeof p === 'function') { // acts as async getter
+            this.find(this[fk], function (err, obj) {
+                if (err) return p(err);
+                this.cachedRelations[methodName] = obj;
+            }.bind(this));
+        } else if (!p) { // acts as sync getter
+            return this.cachedRelations[methodName] || this[fk];
+        }
+    }
+};
+
 // helper methods
 //
 function isdef(s) {
@@ -347,11 +433,27 @@ function isdef(s) {
     return s !== undef;
 }
 
+function merge(base, update) {
+    Object.keys(update).forEach(function (key) {
+        base[key] = update[key];
+    });
+    return base;
+}
+
 function hiddenProperty(where, property, value) {
     Object.defineProperty(where, property, {
         writable: false,
         enumerable: false,
         configurable: false,
+        value: value
+    });
+}
+
+function defineReadonlyProp(obj, key, value) {
+    Object.defineProperty(obj, key, {
+        writable: false,
+        enumerable: true,
+        configurable: true,
         value: value
     });
 }
