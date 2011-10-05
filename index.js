@@ -39,6 +39,9 @@ function Text() {
 Schema.Text = Text;
 
 Schema.prototype.automigrate = function (cb) {
+    if (this.adapter.freezeSchema) {
+        this.adapter.freezeSchema();
+    }
     if (this.adapter.automigrate) {
         this.adapter.automigrate(cb);
     } else {
@@ -410,7 +413,7 @@ AbstractClass.hasMany = function (anotherClass, params) {
 AbstractClass.belongsTo = function (anotherClass, params) {
     var methodName = params.as;
     var fk = params.foreignKey;
-    anotherClass.schema.defineForeignKey(anotherClass.modelName, fk);
+    // anotherClass.schema.defineForeignKey(anotherClass.modelName, fk);
     this.prototype[methodName] = function (p, cb) {
         if (p instanceof AbstractClass) { // acts as setter
             this[fk] = p.id;

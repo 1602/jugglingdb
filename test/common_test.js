@@ -6,11 +6,11 @@ require('./spec_helper').init(exports);
 var schemas = {
     /*
     riak: {},
+    */
     sequelize: {
         database: 'sequ-test',
         username: 'root'
-    }
-    */
+    },
     neo4j:     { url: 'http://localhost:7474/' },
     mongoose:  { url: 'mongodb://localhost/test' },
     redis:     {},
