@@ -1,6 +1,6 @@
 ## About
 
-JugglingDB - cross-db ORM, providing common ORM to access most popular database formats. Currently supported: mysql, mongodb, redis, neo4j and js-memory-storage (yep, self-written engine for test-usage only). You can add your favorite database adapter, checkout one of existing adapters to learn how, it's super-easy, I guarantee.
+JugglingDB -- cross-db ORM, providing **common interface** to access most popular database formats. Currently supported: mysql, mongodb, redis, neo4j and js-memory-storage (yep, self-written engine for test-usage only). You can add your favorite database adapter, checkout one of existing adapters to learn how, it's super-easy, I guarantee.
 
 ## Installation
 
@@ -9,7 +9,7 @@ JugglingDB - cross-db ORM, providing common ORM to access most popular database 
 ## Usage
 
 ```javascript
-var Schema = require('./juggling').Schema;
+var Schema = require('./jugglingdb').Schema;
 var s = new Schema('redis');
 // define models
 var Post = schema.define('Post', {
