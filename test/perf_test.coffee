@@ -14,8 +14,8 @@ schemas =
 testOrm = (schema) ->
 
     User = Post = 'unknown'
-    maxUsers = 50
-    maxPosts = 10000
+    maxUsers = 100
+    maxPosts = 50000
     users = []
 
     it 'should define simple', (test) ->
@@ -28,12 +28,11 @@ testOrm = (schema) ->
             age:          Number
         }
 
-        Post = schema.define('Post', {
-            title:     { type: String, length: 255 }
+        Post = schema.define 'Post',
+            title:     { type: String, length: 255, index: true }
             content:   { type: Text }
             date:      { type: Date,    detault: Date.now }
             published: { type: Boolean, default: false }
-        })
 
         User.hasMany(Post,   {as: 'posts',  foreignKey: 'userId'})
         Post.belongsTo(User, {as: 'author', foreignKey: 'userId'})
@@ -52,8 +51,8 @@ testOrm = (schema) ->
         done = -> test.done() if --wait == 0
         rnd  = (title) ->
             {
-                userId: users[Math.floor(Math.random() * maxUsers)].id,
-                title: title
+                userId: users[Math.floor(Math.random() * maxUsers)].id
+                title: 'Post number ' + (title % 5)
             }
         Post.create(rnd(num), done) for num in [1..maxPosts]
 
@@ -62,10 +61,12 @@ testOrm = (schema) ->
         done = -> test.done() if --wait == 0
         ts = Date.now()
         query = (num) ->
-            users[num].posts (err, collection) ->
+            users[num].posts { title: 'Post number 3' }, (err, collection) ->
                 console.log('User ' + num + ':', collection.length, 'posts in', Date.now() - ts,'ms')
                 done()
-        query num for num in [1..4]
+        query num for num in [0..4]
+
+    return
 
     it 'should destroy all data', (test) ->
         Post.destroyAll ->

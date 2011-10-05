@@ -27,12 +27,12 @@ Object.keys(schemas).forEach(function (schemaName) {
 
 function testOrm(schema) {
 
-    var Post;
+    var Post, User;
     var start = Date.now();
 
     it('should define class', function (test) {
 
-        var User = schema.define('User', {
+        User = schema.define('User', {
             name:         String,
             bio:          Text,
             approved:     Boolean,
@@ -46,6 +46,18 @@ function testOrm(schema) {
             date:      { type: Date,    detault: Date.now },
             published: { type: Boolean, default: false }
         });
+
+        User.hasMany(Post,   {as: 'posts',  foreignKey: 'userId'});
+        // creates instance methods:
+        // user.posts(conds)
+        // user.buildPost(data) // like new Post({userId: user.id});
+        // user.createPost(data) // build and save
+
+        Post.belongsTo(User, {as: 'author', foreignKey: 'userId'});
+        // creates instance methods:
+        // post.author(callback) -- getter when called with function
+        // post.author() -- sync getter when called without params
+        // post.author(user) -- setter when called with object
 
         var user = new User;
 
@@ -82,7 +94,7 @@ function testOrm(schema) {
 
     it('should be expoted to JSON', function (test) {
         test.equal(JSON.stringify(new Post({id: 1, title: 'hello, json'})),
-        '{"id":1,"title":"hello, json","content":null,"date":null,"published":null}');
+        '{"id":1,"title":"hello, json","content":null,"date":null,"published":null,"userId":null}');
         test.done();
     });
 
@@ -258,6 +270,23 @@ function testOrm(schema) {
             }
         }
 
+    });
+
+    it('should handle hasMany relationship', function (test) {
+        User.create(function (err, u) {
+            if (err) return console.log(err);
+            test.ok(u.posts, 'Method defined: posts');
+            test.ok(u.buildPost, 'Method defined: buildPost');
+            test.ok(u.createPost, 'Method defined: createPost');
+            u.createPost(function (err, post) {
+                if (err) return console.log(err);
+                test.ok(post.author(), u.id);
+                u.posts(function (err, posts) {
+                    test.strictEqual(posts.pop(), post);
+                    test.done();
+                });
+            });
+        });
     });
 
     it('should destroy all records', function (test) {
