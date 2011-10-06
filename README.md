@@ -18,9 +18,10 @@ var Post = schema.define('Post', {
     date:      { type: Date,    detault: Date.now },
     published: { type: Boolean, default: false }
 });
+// simplier way to describe model
 var User = schema.define('User', {
     name:         String,
-    bio:          Text,
+    bio:          Schema.Text,
     approved:     Boolean,
     joinedAt:     Date,
     age:          Number
@@ -118,6 +119,7 @@ If you have found a bug please write unit test, and make sure all other tests st
 
 ### Common:
 
++ transparent interface to APIs
 + validations
 + -before and -after hooks on save, update, destroy
 + default values
