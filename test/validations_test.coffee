@@ -151,7 +151,7 @@ it 'should validate inclusion', (test) ->
     user.gender = 'male'
     test.ok user.isValid()
 
-    user.gender = ''
+    user.gender = 'man'
     test.ok not user.isValid()
     test.equal user.errors.gender[0], 'is not included in the list'
 
@@ -166,6 +166,18 @@ it 'should validate exclusion', (test) ->
     test.equal user.errors.domain[0], 'is reserved'
 
     user.domain = 'my'
+    test.ok user.isValid()
+
+    test.done()
+
+it 'should validate format', (test) ->
+    User.validatesFormatOf 'email', with: /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
+    user = new User validAttributes
+
+    user.email = 'invalid email'
+    test.ok not user.isValid()
+
+    user.email = 'valid@email.tld'
     test.ok user.isValid()
 
     test.done()
