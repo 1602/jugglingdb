@@ -1,7 +1,7 @@
 {
   "author": "Anatoliy Chakkaev",
-  "name": "yadm",
-  "description": "Yet another data mapper",
+  "name": "jugglingdb",
+  "description": "ORM for every database: redis, mysql, neo4j, mongodb",
   "version": "0.0.1",
   "repository": {
     "url": ""
