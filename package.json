@@ -4,7 +4,7 @@
   "description": "ORM for every database: redis, mysql, neo4j, mongodb",
   "version": "0.0.1",
   "repository": {
-    "url": ""
+    "url": "https://github.com/1602/jugglingdb"
   },
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,9 @@
     "node": ">= v0.4.0"
   },
   "dependencies": {
-    "redis": "=0.6.7"
+    "redis": ">= 0.6.7",
+    "neo4j": ">= 0.2.1",
+    "mongoose": ">= 2.2.3"
   },
   "devDependencies": {}
 }
