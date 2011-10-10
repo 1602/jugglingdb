@@ -76,9 +76,20 @@ User.count(cb)
 user.destroy(cb);
 // destroy all instances
 User.destroyAll(cb);
+
+// Setup validations
+User.validatesPresenceOf('name', 'email')
+User.validatesLengthOf('password', {min: 5, message: {min: 'Password is too short'}});
+User.validatesInclusionOf('gender', {in: ['male', 'female']});
+User.validatesExclusionOf('domain', {in: ['www', 'billing', 'admin']});
+User.validatesNumericalityOf('age', {int: true});
+
+user.isValid() // false
+user.errors // hash of errors {attr: [errmessage, errmessage, ...], attr: ...}
 ```
 
 Read the tests for usage examples: ./test/common_test.js
+Validations: ./test/validations_test.js
 
 ## Your own database adapter
 
@@ -107,7 +118,7 @@ of course, if you have redis running, you can run
 
 ## Package structure
 
-Now all common logic described in ./index.js, and database-specific stuff in ./lib/*.js. It's super-tiny, right?
+Now all common logic described in `./lib/*.js`, and database-specific stuff in `./lib/adapters/*.js`. It's super-tiny, right?
 
 ## Project status
 
