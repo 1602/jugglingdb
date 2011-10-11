@@ -18,7 +18,7 @@ var s = new Schema('redis');
 var Post = schema.define('Post', {
     title:     { type: String, length: 255 },
     content:   { type: Schema.Text },
-    date:      { type: Date,    detault: Date.now },
+    date:      { type: Date,    default: Date.now },
     published: { type: Boolean, default: false }
 });
 // simplier way to describe model
