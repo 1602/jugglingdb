@@ -43,7 +43,7 @@ function testOrm(schema) {
         Post = schema.define('Post', {
             title:     { type: String, length: 255 },
             content:   { type: Text },
-            date:      { type: Date,    detault: Date.now },
+            date:      { type: Date,    default: Date.now },
             published: { type: Boolean, default: false }
         });
 
@@ -82,19 +82,24 @@ function testOrm(schema) {
     });
 
     it('should initialize object properly', function (test) {
-        var hw = 'Hello word', post = new Post({title: hw});
+        var hw = 'Hello word',
+            now = Date.now(),
+            post = new Post({title: hw});
+
         test.equal(post.title, hw);
         test.ok(!post.propertyChanged('title'));
         post.title = 'Goodbye, Lenin';
         test.equal(post.title_was, hw);
         test.ok(post.propertyChanged('title'));
-        // test.ok(post.isNewRecord());
+        test.strictEqual(post.published, false);
+        test.ok(post.date >= now);
+        test.ok(post.isNewRecord());
         test.done();
     });
 
     it('should be expoted to JSON', function (test) {
-        test.equal(JSON.stringify(new Post({id: 1, title: 'hello, json'})),
-        '{"id":1,"title":"hello, json","content":null,"date":null,"published":null,"userId":null}');
+        test.equal(JSON.stringify(new Post({id: 1, title: 'hello, json', date: 1})),
+        '{"id":1,"title":"hello, json","content":null,"date":1,"published":false,"userId":null}');
         test.done();
     });
 
@@ -103,7 +108,6 @@ function testOrm(schema) {
             if (err) throw err;
             test.ok(post.id);
             test.ok(!post.title, 'Title is blank');
-            test.ok(!post.date, 'Date is blank');
             Post.exists(post.id, function (err, exists) {
                 if (err) throw err;
                 test.ok(exists);
@@ -243,10 +247,10 @@ function testOrm(schema) {
         });
 
         // matching null
-        Post.all({date: null, title: null}, function (err, res) {
+        Post.all({title: null}, function (err, res) {
             var pass = true;
             res.forEach(function (r) {
-                if (r.date != null || r.title != null) pass = false;
+                if (r.title != null) pass = false;
             });
             test.ok(res.length > 0);
             test.ok(pass, 'Matching null');
