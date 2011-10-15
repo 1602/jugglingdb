@@ -34,8 +34,8 @@ var User = schema.define('User', {
 User.hasMany(Post,   {as: 'posts',  foreignKey: 'userId'});
 // creates instance methods:
 // user.posts(conds)
-// user.buildPost(data) // like new Post({userId: user.id});
-// user.createPost(data) // build and save
+// user.posts.build(data) // like new Post({userId: user.id});
+// user.posts.create(data) // build and save
 
 Post.belongsTo(User, {as: 'author', foreignKey: 'userId'});
 // creates instance methods:
@@ -48,7 +48,7 @@ s.automigrate(); // required only for mysql NOTE: it will drop User and Post tab
 // work with models:
 var user = new User;
 user.save(function (err) {
-    var post = user.buildPost({title: 'Hello world'});
+    var post = user.posts.build({title: 'Hello world'});
     post.save(console.log);
 });
 
@@ -65,9 +65,9 @@ Post.all({userId: user.id});
 // the same as prev
 user.posts(cb)
 // same as new Post({userId: user.id});
-user.buildPost
+user.posts.build
 // save as Post.create({userId: user.id}, cb);
-user.createPost(cb)
+user.posts.create(cb)
 // find instance by id
 User.find(1, cb)
 // count instances
@@ -139,8 +139,8 @@ If you have found a bug please write unit test, and make sure all other tests st
 ### Common:
 
 + transparent interface to APIs
-+ validations
 + -before and -after hooks on save, update, destroy
++ scopes
 + default values
 + more relationships stuff
 + docs

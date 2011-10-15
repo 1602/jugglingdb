@@ -50,8 +50,9 @@ function testOrm(schema) {
         User.hasMany(Post,   {as: 'posts',  foreignKey: 'userId'});
         // creates instance methods:
         // user.posts(conds)
-        // user.buildPost(data) // like new Post({userId: user.id});
-        // user.createPost(data) // build and save
+        // user.posts.build(data) // like new Post({userId: user.id});
+        // user.posts.create(data) // build and save
+        // user.posts.find
 
         Post.belongsTo(User, {as: 'author', foreignKey: 'userId'});
         // creates instance methods:
@@ -280,9 +281,9 @@ function testOrm(schema) {
         User.create(function (err, u) {
             if (err) return console.log(err);
             test.ok(u.posts, 'Method defined: posts');
-            test.ok(u.buildPost, 'Method defined: buildPost');
-            test.ok(u.createPost, 'Method defined: createPost');
-            u.createPost(function (err, post) {
+            test.ok(u.posts.build, 'Method defined: posts.build');
+            test.ok(u.posts.create, 'Method defined: posts.create');
+            u.posts.create(function (err, post) {
                 if (err) return console.log(err);
                 test.ok(post.author(), u.id);
                 u.posts(function (err, posts) {
@@ -291,6 +292,36 @@ function testOrm(schema) {
                 });
             });
         });
+    });
+
+    it('should support scopes', function (test) {
+        var wait = 2;
+
+        test.ok(Post.scope, 'Scope supported');
+        Post.scope('published', {published: true});
+        test.ok(typeof Post.published === 'function');
+        test.ok(Post.published._scope.published = true);
+        var post = Post.published.build();
+        test.ok(post.published, 'Can build');
+        test.ok(post.isNewRecord());
+        Post.published.create(function (err, psto) {
+            if (err) return console.log(err);
+            test.ok(psto.published);
+            test.ok(!psto.isNewRecord());
+            done();
+        });
+
+        User.create(function (err, u) {
+            if (err) return console.log(err);
+            test.ok(typeof u.posts.published == 'function');
+            test.ok(u.posts.published._scope.published);
+            test.equal(u.posts.published._scope.userId, u.id);
+            done();
+        });
+
+        function done() {
+            if (--wait === 0) test.done();
+        };
     });
 
     it('should destroy all records', function (test) {
