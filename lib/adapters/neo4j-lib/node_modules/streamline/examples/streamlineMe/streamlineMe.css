@@ -1,0 +1,80 @@
+h1#header {
+    background-color: #035;
+    margin: 0;
+    padding: 0.5em 0 0.5em 1em;
+    color: #fff;
+    font-family: Calibri, Helvetica, Arial;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    -moz-border-radius-topright: 15px;
+    -moz-border-radius-topleft: 15px;
+    -webkit-border-top-right-radius: 15px;
+    -webkit-border-top-left-radius: 15px;
+}
+
+h1#header a {
+	color: #fff;	
+}
+
+h2#result {
+    color: #fff;
+    font-family: Calibri, Helvetica, Arial;
+    margin: 0;
+    padding: 0.2em 0;
+}
+
+h2#result.success {
+    background-color: #090;
+}
+
+h2#result.error {
+    background-color: #900;
+}
+
+h2 {
+    padding: 0 0 0.3em 0;
+    margin: 0;
+}
+
+input[type="button"] {
+	margin: 0.1em 0.5em;
+}
+
+textarea {
+    font-family: Courier;
+	font-size: x-small;
+	margin: 0.5em 0 0 0;
+	padding: 0.1em 1.0em 0.1em -1.0em;
+    width: 100%;
+}
+
+tr {
+    margin: 0;
+    padding: 0;
+}
+
+td {
+    font-family: Calibri, Helvetica, Arial;
+    margin: 0;
+    padding: 0;
+    font-size: small;
+    color: #2b81af;
+}
+
+td.botLeft {
+    background-color: #D2E0E6;
+    padding: 1.0em 1.0em;
+    border: 0 15px border-bottom-left-radius: 15px;
+    -moz-border-radius-bottomleft:
+    15px;
+    -webkit-border-bottom-left-radius:
+    15px;
+}
+
+td.botRight {
+    background-color: #D2E0E6;
+    padding: 1.0em 1.0em;
+    border-bottom-right-radius: 15px;
+    -moz-border-radius-bottomright: 15px;
+    -webkit-border-bottom-right-radius: 15px;
+}
