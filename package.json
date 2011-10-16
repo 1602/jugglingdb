@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "redis": ">= 0.6.7",
-    "neo4j": ">= 0.2.1",
     "mongoose": ">= 2.2.3"
   },
   "devDependencies": {}

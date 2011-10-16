@@ -7,6 +7,27 @@
 status = require 'http-status'
 request = require 'request'
 
+applyPatch = (method, auth) ->
+    return if applyPatch.patched[method]
+    applyPatch.patched[method] = true
+    __m = request[method]
+    request[method] = ->
+        args = [].slice.call(arguments)
+        url = args[0]
+        # console.log(args)
+        if typeof url == 'string' && !url.match(/https?:\/\/[^\/]*@/)
+            args[0] = url.replace(/http:\/\//, 'http://' + auth + '@')
+        # normalize opts
+        if url && url.url
+            url.uri = url.url
+            delete url.url
+        # handle auth in uri
+        if url && url.uri && url.uri.match && !url.uri.match(/https?:\/\/[^\/]*@/)
+            args[0].uri = url.uri.replace(/http:\/\//, 'http://' + auth + '@')
+        __m.apply(request, args)
+
+applyPatch.patched = {}
+
 util = require './util_'
 adjustError = util.adjustError
 
@@ -15,7 +36,15 @@ Node = require './Node_'
 
 module.exports = class GraphDatabase
     constructor: (url) ->
+
         @url = url
+        @auth = require('url').parse(url).auth
+
+        applyPatch('get', @auth)
+        applyPatch('post', @auth)
+        applyPatch('put', @auth)
+        applyPatch('del', @auth)
+        applyPatch('head', @auth)
 
         # Cache
         @_root = null
