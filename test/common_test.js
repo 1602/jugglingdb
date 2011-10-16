@@ -17,11 +17,14 @@ var schemas = {
     memory:    {}
 };
 
+var specificTest = getSpecificTests();
+
 Object.keys(schemas).forEach(function (schemaName) {
     if (process.env.ONLY && process.env.ONLY !== schemaName) return;
     context(schemaName, function () {
         var schema = new Schema(schemaName, schemas[schemaName]);
         testOrm(schema);
+        if (specificTest[schemaName]) specificTest[schemaName](schema);
     });
 });
 
@@ -41,7 +44,7 @@ function testOrm(schema) {
         });
 
         Post = schema.define('Post', {
-            title:     { type: String, length: 255 },
+            title:     { type: String, length: 255, index: true },
             content:   { type: Text },
             date:      { type: Date,    default: Date.now },
             published: { type: Boolean, default: false }
@@ -341,4 +344,29 @@ function testOrm(schema) {
         console.log('Test done in %dms\n', Date.now() - start);
     }
 
+}
+
+function getSpecificTests() {
+    var sp  = {};
+
+    sp['neo4j'] = function (schema) {
+
+        it('should create methods for searching by index', function (test) {
+            var Post = schema.models['Post'];
+            test.ok(typeof Post.findByTitle === 'function');
+            Post.create({title: 'Catcher in the rye'}, function (err, post) {
+                if (err) return console.log(err);
+                test.ok(!post.isNewRecord());
+                Post.findByTitle('Catcher in the rye', function (err, foundPost) {
+                    if (err) return console.log(err);
+                    if (foundPost) {
+                        test.equal(post.id, foundPost.id);
+                        test.done();
+                    }
+                });
+            });
+        });
+    };
+
+    return sp;
 }
