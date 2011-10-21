@@ -341,6 +341,7 @@ function testOrm(schema) {
     });
 
     function allTestsDone() {
+        schema.disconnect();
         console.log('Test done in %dms\n', Date.now() - start);
     }
 
