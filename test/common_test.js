@@ -11,6 +11,10 @@ var schemas = {
         database: 'sequ-test',
         username: 'root'
     },
+    mysql: {
+        database: 'sequ-test',
+        username: 'root'
+    },
     neo4j:     { url: 'http://localhost:7474/' },
     mongoose:  { url: 'mongodb://localhost/test' },
     redis:     {},
@@ -128,7 +132,7 @@ function testOrm(schema) {
             title: title,
             date: date
         }, function (err, obj) {
-            test.ok(obj.id);
+            test.ok(obj.id, 'Object id should present');
             test.equals(obj.title, title);
             // test.equals(obj.date, date);
             obj.title = title2;
@@ -154,7 +158,8 @@ function testOrm(schema) {
             test.equals(obj.date, date);
             Post.find(obj.id, function () {
                 test.equal(obj.title, title);
-                test.equal(obj.date, date.toString());
+                console.log(obj.date.toString());
+                test.equal(obj.date.toString(), date.toString());
                 test.done();
             });
         });
@@ -189,6 +194,7 @@ function testOrm(schema) {
                 test.ok(exists, 'Object exists');
                 post.destroy(function () {
                     Post.exists(post.id, function (err, exists) {
+                        if (err) console.log(err);
                         test.ok(!exists, 'Hey! ORM told me that object exists, but it looks like it doesn\'t. Something went wrong...');
                         Post.find(post.id, function (err, obj) {
                             test.equal(obj, null, 'Param obj should be null');
