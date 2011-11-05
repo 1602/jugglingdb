@@ -16,7 +16,10 @@ var schemas = {
         username: 'root'
     },
     neo4j:     { url: 'http://localhost:7474/' },
-    mongoose:  { url: 'mongodb://localhost/test' },
+    // mongoose:  { url: 'mongodb://localhost/test' },
+    mongoose:  {
+        database: 'test'
+    },
     redis:     {},
     memory:    {}
 };
