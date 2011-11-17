@@ -215,3 +215,16 @@ it 'should validate format', (test) ->
 
     test.done()
 
+it 'should validate a field using a custom validator', (test)->
+    
+    User.validate 'email', (err)-> err("crash") if @email.length is 0
+
+    user = new User validAttributes
+    test.ok user.isValid()
+
+    user = new User validAttributes
+    user.email = ""
+    test.ok not user.isValid()
+
+    test.done()
+    
