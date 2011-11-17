@@ -77,7 +77,6 @@ it 'should allow to skip validations', (test) ->
 
     test.done()
 
-
 it 'should throw error on save if required', (test) ->
     user = new User
 
@@ -216,7 +215,7 @@ it 'should validate format', (test) ->
     test.done()
 
 it 'should validate a field using a custom validator', (test)->
-    
+
     User.validate 'email', (err)-> err("crash") if @email.length is 0
 
     user = new User validAttributes
@@ -227,4 +226,4 @@ it 'should validate a field using a custom validator', (test)->
     test.ok not user.isValid()
 
     test.done()
-    
+

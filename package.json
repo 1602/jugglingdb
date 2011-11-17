@@ -2,7 +2,7 @@
   "author": "Anatoliy Chakkaev",
   "name": "jugglingdb",
   "description": "ORM for every database: redis, mysql, neo4j, mongodb",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "repository": {
     "url": "https://github.com/1602/jugglingdb"
   },
