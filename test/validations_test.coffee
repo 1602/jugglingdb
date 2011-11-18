@@ -214,16 +214,20 @@ it 'should validate format', (test) ->
 
     test.done()
 
-it 'should validate a field using a custom validator', (test)->
+it 'should validate a field using a custom validator', (test) ->
 
-    User.validate 'email', (err)-> err("crash") if @email.length is 0
+    validator = (err) ->
+        err('crash') if @name == 'bad name'
+
+    User.validate 'name', validator, message: crash: 'custom message'
 
     user = new User validAttributes
     test.ok user.isValid()
 
     user = new User validAttributes
-    user.email = ""
-    test.ok not user.isValid()
+    user.name = 'bad name'
+    test.ok not user.isValid(), 'invalid due custom name validator'
+    test.equal user.errors.name[0], 'custom message'
 
     test.done()
 
