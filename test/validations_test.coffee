@@ -27,6 +27,16 @@ validAttributes =
     createdByAdmin: false
     createdByScript: true
 
+getValidAttributes = ->
+    name: 'Anatoliy'
+    email: 'email@example.com'
+    state: ''
+    age: 26
+    gender: 'male'
+    domain: '1602'
+    createdByAdmin: false
+    createdByScript: true
+
 it 'should validate presence', (test) ->
     User.validatesPresenceOf 'email', 'name'
 
@@ -250,4 +260,17 @@ it 'should validate asynchronously', (test) ->
         user.isValid (valid) ->
             test.ok not valid, 'not valid name'
             test.done()
+
+it 'should validate uniqueness', (test) ->
+    User.validatesUniquenessOf 'email'
+    User.create getValidAttributes(), ->
+        user = new User getValidAttributes()
+
+        # test.ok not user.isValid(), 'not valid because async validation'
+        user.isValid (valid) ->
+            test.ok not valid, 'email is not unique'
+            user.email = 'unique@email.tld'
+            user.isValid (valid) ->
+                test.ok valid, 'valid with unique email'
+                test.done()
 

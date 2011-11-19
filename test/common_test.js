@@ -57,6 +57,10 @@ function testOrm(schema) {
             published: { type: Boolean, default: false }
         });
 
+        Post.validateAsync('title', function (err, done) {
+            process.nextTick(done);
+        });
+
         User.hasMany(Post,   {as: 'posts',  foreignKey: 'userId'});
         // creates instance methods:
         // user.posts(conds)
