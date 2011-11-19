@@ -231,3 +231,23 @@ it 'should validate a field using a custom validator', (test) ->
 
     test.done()
 
+it 'should validate asynchronously', (test) ->
+
+    validator = (err, done) ->
+        setTimeout =>
+            err 'async' if @name == 'bad name'
+            done()
+        , 100
+
+    User.validateAsync 'name', validator, message: async: 'hello'
+
+    user = new User validAttributes
+    test.ok not user.isValid(), 'not valid because async validation'
+    user.isValid (valid) ->
+        test.ok valid, 'valid name'
+
+        user.name = 'bad name'
+        user.isValid (valid) ->
+            test.ok not valid, 'not valid name'
+            test.done()
+
