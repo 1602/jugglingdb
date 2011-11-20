@@ -263,7 +263,7 @@ it 'should validate asynchronously', (test) ->
 
 it 'should validate uniqueness', (test) ->
     User.validatesUniquenessOf 'email'
-    User.create getValidAttributes(), ->
+    User.create getValidAttributes(), (err, user) ->
         user = new User getValidAttributes()
 
         # test.ok not user.isValid(), 'not valid because async validation'
