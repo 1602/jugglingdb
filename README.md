@@ -61,7 +61,7 @@ Post.create(cb);
 // all posts
 Post.all(cb)
 // all posts by user
-Post.all({userId: user.id});
+Post.all({where: {userId: user.id}});
 // the same as prev
 user.posts(cb)
 // same as new Post({userId: user.id});
@@ -83,9 +83,64 @@ User.validatesLengthOf('password', {min: 5, message: {min: 'Password is too shor
 User.validatesInclusionOf('gender', {in: ['male', 'female']});
 User.validatesExclusionOf('domain', {in: ['www', 'billing', 'admin']});
 User.validatesNumericalityOf('age', {int: true});
+User.validatesUniquenessOf('email', {message: 'email is not unique'});
 
-user.isValid() // false
-user.errors // hash of errors {attr: [errmessage, errmessage, ...], attr: ...}
+user.isValid(function (valid) {
+    if (!valid) {
+        user.errors // hash of errors {attr: [errmessage, errmessage, ...], attr: ...}    
+    }
+})
+
+```
+
+## Callbacks
+
+The following callbacks supported:
+
+    - afterInitialize
+    - beforeCreate
+    - afterCreate
+    - beforeSave
+    - afterSave
+    - beforeUpdate
+    - afterUpdate
+    - beforeDestroy
+    - afterDestroy
+    - beforeValidation
+    - afterValidation
+
+Each callback is class method of the model, it should accept single argument: `next`, this is callback which
+should be called after end of the hook. Except `afterInitialize` because this method is syncronous (called after `new Model`).
+
+## Object lifecycle:
+
+```javascript
+var user = new User;
+// afterInitialize
+user.save(callback);
+// beforeValidation
+// afterValidation
+// beforeSave
+// beforeCreate
+// afterCreate
+// afterSave
+// callback
+user.updateAttribute('email', 'email@example.com', callback);
+// beforeValidation
+// afterValidation
+// beforeUpdate
+// afterUpdate
+// callback
+user.destroy(callback);
+// beforeDestroy
+// afterDestroy
+// callback
+User.create(data, callback);
+// beforeValidate
+// afterValidate
+// beforeCreate
+// afterCreate
+// callback
 ```
 
 Read the tests for usage examples: ./test/common_test.js
