@@ -272,5 +272,14 @@ it 'should validate uniqueness', (test) ->
             user.email = 'unique@email.tld'
             user.isValid (valid) ->
                 test.ok valid, 'valid with unique email'
-                test.done()
+                user.save ->
+                    test.done()
 
+it 'should save dirty state when validating uniqueness', (test) ->
+    User.all where: email: 'unique@email.tld' , (err, users) ->
+        u = users[0]
+        u.name = 'Hulk'
+        u.isValid (valid) ->
+            test.ok valid
+            test.equal u.name, 'Hulk'
+            test.done()
