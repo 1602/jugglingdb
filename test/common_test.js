@@ -218,13 +218,13 @@ function testOrm(schema) {
             post.updateAttribute('title', 'New title', function () {
                 test.equal(post.title, 'New title');
                 test.ok(!post.propertyChanged('title'));
-                test.equal(post.content, 'New content');
+                test.equal(post.content, 'New content', 'dirty state saved');
                 test.ok(post.propertyChanged('content'));
                 post.reload(function () {
                     test.equal(post.title, 'New title');
                     test.ok(!post.propertyChanged('title'));
-                    test.equal(post.content, 'content');
-                    test.ok(!post.propertyChanged('content'));
+                    test.equal(post.content, 'content', 'real value turned back');
+                    test.ok(!post.propertyChanged('content'), 'content unchanged');
                     test.done();
                 });
             });
