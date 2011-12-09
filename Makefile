@@ -1,5 +1,5 @@
 
 test:
-	@./support/nodeunit/bin/nodeunit test/common_test.js
+	@ONLY=memory ./support/nodeunit/bin/nodeunit test/*_test.*
 
 .PHONY: test

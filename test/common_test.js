@@ -68,6 +68,14 @@ function testOrm(schema) {
         // user.posts.create(data) // build and save
         // user.posts.find
 
+        // User.hasOne('latestPost', {model: Post, foreignKey: 'postId'});
+
+        // User.hasOne(Post,    {as: 'latestPost', foreignKey: 'latestPostId'});
+        // creates instance methods:
+        // user.latestPost()
+        // user.latestPost.build(data)
+        // user.latestPost.create(data)
+
         Post.belongsTo(User, {as: 'author', foreignKey: 'userId'});
         // creates instance methods:
         // post.author(callback) -- getter when called with function
@@ -308,6 +316,12 @@ function testOrm(schema) {
             });
         });
     });
+
+    // it('should handle hasOne relationship', function (test) {
+    //     User.create(function (err, u) {
+    //         if (err) return console.log(err);
+    //     });
+    // });
 
     it('should support scopes', function (test) {
         var wait = 2;
