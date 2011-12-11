@@ -114,13 +114,21 @@ it 'should autoupgrade', (test) ->
             User.defineProperty 'email', type: String
             User.defineProperty 'name', type: String, limit: 50
             User.defineProperty 'newProperty', type: Number
+            User.defineProperty 'pendingPeriod', false
             schema.autoupdate (err) ->
                 getFields 'User', (err, fields) ->
+                    # change nullable for email
                     test.equal fields.email.Null, 'YES'
+                    # change type of name
                     test.equal fields.name.Type, 'varchar(50)'
+                    # add new column
                     test.ok fields.newProperty
                     if fields.newProperty
                         test.equal fields.newProperty.Type, 'int(11)'
+                    # drop column
+                    test.ok not fields.pendingPeriod
+
+                    # user still exists
                     userExists (yep) ->
                         test.ok yep
                         test.done()
@@ -128,3 +136,4 @@ it 'should autoupgrade', (test) ->
 it 'should disconnect when done', (test) ->
     schema.disconnect()
     test.done()
+
