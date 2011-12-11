@@ -179,6 +179,20 @@ function testOrm(schema) {
         });
     });
 
+    it('should save only schema-defined field in database', function (test) {
+        Post.create({title: '1602', nonSchemaField: 'some value'}, function (err, post) {
+            test.ok(!post.nonSchemaField);
+            post.a = 1;
+            post.save(function () {
+                test.ok(post.a);
+                post.reload(function (err, psto) {
+                    test.ok(!post.a);
+                    test.done();
+                });
+            });
+        });
+    });
+
     it('should not create new instances for the same object', function (test) {
         var title = 'Initial title';
         Post.create({ title: title }, function (err, post) {
