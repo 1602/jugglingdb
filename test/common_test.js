@@ -48,7 +48,7 @@ function testOrm(schema) {
             approved:     Boolean,
             joinedAt:     Date,
             age:          Number,
-            password:     String
+            passwd:     String
         });
 
         Post = schema.define('Post', {
@@ -238,8 +238,8 @@ function testOrm(schema) {
     it('should handle virtual attributes', function (test) {
         var salt = 's0m3s3cr3t5a1t';
 
-        User.setter.password = function (password) {
-            this._password = calcHash(password, salt);
+        User.setter.passwd = function (password) {
+            this._passwd = calcHash(password, salt);
         };
 
         function calcHash(pass, salt) {
@@ -251,8 +251,8 @@ function testOrm(schema) {
         }
 
         var u = new User;
-        u.password = 's3cr3t';
-        test.equal(u.password, calcHash('s3cr3t', salt));
+        u.passwd = 's3cr3t';
+        test.equal(u.passwd, calcHash('s3cr3t', salt));
         test.done();
     });
 
