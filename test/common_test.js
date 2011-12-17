@@ -47,7 +47,8 @@ function testOrm(schema) {
             bio:          Text,
             approved:     Boolean,
             joinedAt:     Date,
-            age:          Number
+            age:          Number,
+            passwd:     String
         });
 
         Post = schema.define('Post', {
@@ -67,6 +68,14 @@ function testOrm(schema) {
         // user.posts.build(data) // like new Post({userId: user.id});
         // user.posts.create(data) // build and save
         // user.posts.find
+
+        // User.hasOne('latestPost', {model: Post, foreignKey: 'postId'});
+
+        // User.hasOne(Post,    {as: 'latestPost', foreignKey: 'latestPostId'});
+        // creates instance methods:
+        // user.latestPost()
+        // user.latestPost.build(data)
+        // user.latestPost.create(data)
 
         Post.belongsTo(User, {as: 'author', foreignKey: 'userId'});
         // creates instance methods:
@@ -171,6 +180,20 @@ function testOrm(schema) {
         });
     });
 
+    it('should save only schema-defined field in database', function (test) {
+        Post.create({title: '1602', nonSchemaField: 'some value'}, function (err, post) {
+            test.ok(!post.nonSchemaField);
+            post.a = 1;
+            post.save(function () {
+                test.ok(post.a);
+                post.reload(function (err, psto) {
+                    test.ok(!post.a);
+                    test.done();
+                });
+            });
+        });
+    });
+
     it('should not create new instances for the same object', function (test) {
         var title = 'Initial title';
         Post.create({ title: title }, function (err, post) {
@@ -212,19 +235,40 @@ function testOrm(schema) {
         });
     });
 
+    it('should handle virtual attributes', function (test) {
+        var salt = 's0m3s3cr3t5a1t';
+
+        User.setter.passwd = function (password) {
+            this._passwd = calcHash(password, salt);
+        };
+
+        function calcHash(pass, salt) {
+            var crypto = require('crypto');
+            var hash = crypto.createHash('sha256');
+            hash.update(pass);
+            hash.update(salt);
+            return hash.digest('base64');
+        }
+
+        var u = new User;
+        u.passwd = 's3cr3t';
+        test.equal(u.passwd, calcHash('s3cr3t', salt));
+        test.done();
+    });
+
     it('should update single attribute', function (test) {
         Post.create({title: 'title', content: 'content', published: true}, function (err, post) {
             post.content = 'New content';
             post.updateAttribute('title', 'New title', function () {
                 test.equal(post.title, 'New title');
                 test.ok(!post.propertyChanged('title'));
-                test.equal(post.content, 'New content');
+                test.equal(post.content, 'New content', 'dirty state saved');
                 test.ok(post.propertyChanged('content'));
                 post.reload(function () {
                     test.equal(post.title, 'New title');
                     test.ok(!post.propertyChanged('title'));
-                    test.equal(post.content, 'content');
-                    test.ok(!post.propertyChanged('content'));
+                    test.equal(post.content, 'content', 'real value turned back');
+                    test.ok(!post.propertyChanged('content'), 'content unchanged');
                     test.done();
                 });
             });
@@ -308,6 +352,12 @@ function testOrm(schema) {
             });
         });
     });
+
+    // it('should handle hasOne relationship', function (test) {
+    //     User.create(function (err, u) {
+    //         if (err) return console.log(err);
+    //     });
+    // });
 
     it('should support scopes', function (test) {
         var wait = 2;
