@@ -2,7 +2,7 @@
   "author": "Stefano Valicchia",
   "name": "jugglingdb-pg",
   "description": "ORM for every database: redis, mysql, neo4j, mongodb, postgres",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "repository": {
     "url": "https://github.com/giano/jugglingdb"
   },
