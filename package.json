@@ -1,10 +1,10 @@
 {
-  "author": "Anatoliy Chakkaev",
-  "name": "jugglingdb",
-  "description": "ORM for every database: redis, mysql, neo4j, mongodb",
+  "author": "Stefano Valicchia",
+  "name": "jugglingdb-pg",
+  "description": "ORM for every database: redis, mysql, neo4j, mongodb, postgres",
   "version": "0.0.7",
   "repository": {
-    "url": "https://github.com/1602/jugglingdb"
+    "url": "https://github.com/giano/jugglingdb"
   },
   "main": "index.js",
   "scripts": {
@@ -17,8 +17,8 @@
     "redis": ">= 0.6.7",
     "mongoose": ">= 2.2.3",
     "mysql": ">= 0.9.4",
-	"pg": ">= 0.5.4",
-	"hashish": "0.0.4"
+	  "pg": ">= 0.5.4",
+	  "hashish": "0.0.4"
   },
   "devDependencies": {}
 }
