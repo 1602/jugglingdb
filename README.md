@@ -52,6 +52,10 @@ user.save(function (err) {
     post.save(console.log);
 });
 
+// or just call it as function (with the same result):
+var user = User();
+user.save(...);
+
 // Common API methods
 
 // just instantiate model
