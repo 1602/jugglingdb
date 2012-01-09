@@ -108,7 +108,8 @@ function testOrm(schema) {
     it('should initialize object properly', function (test) {
         var hw = 'Hello word',
             now = Date.now(),
-            post = new Post({title: hw});
+            post = new Post({title: hw}),
+            anotherPost = Post({title: 'Resig style constructor'});
 
         test.equal(post.title, hw);
         test.ok(!post.propertyChanged('title'));
@@ -118,6 +119,8 @@ function testOrm(schema) {
         test.strictEqual(post.published, false);
         test.ok(post.date >= now);
         test.ok(post.isNewRecord());
+        test.ok(anotherPost instanceof Post);
+        test.ok(anotherPost.title, 'Resig style constructor');
         test.done();
     });
 
