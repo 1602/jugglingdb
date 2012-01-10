@@ -34,6 +34,7 @@ Object.keys(schemas).forEach(function (schemaName) {
     if (process.env.ONLY && process.env.ONLY !== schemaName) return;
     context(schemaName, function () {
         var schema = new Schema(schemaName, schemas[schemaName]);
+        // schema.log = console.log;
         testOrm(schema);
         if (specificTest[schemaName]) specificTest[schemaName](schema);
     });
@@ -137,7 +138,7 @@ function testOrm(schema) {
     it('should create object', function (test) {
         Post.create(function (err, post) {
             if (err) throw err;
-            test.ok(post.id);
+            test.ok(post.id, 'Id present');
             test.ok(!post.title, 'Title is blank');
             Post.exists(post.id, function (err, exists) {
                 if (err) throw err;
@@ -315,6 +316,7 @@ function testOrm(schema) {
 
         // matching null
         Post.all({where: {title: null}}, function (err, res) {
+
             var pass = true;
             res.forEach(function (r) {
                 if (r.title != null) pass = false;
