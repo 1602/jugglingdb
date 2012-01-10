@@ -9,6 +9,11 @@ existing adapters to learn how, it's super-easy, I guarantee.
 
     git clone git://github.com/1602/jugglingdb.git
 
+## Participation
+
+Check status of project on trello board: https://trello.com/board/jugglingdb/4f0a0b1e27d3103c64288388
+Feel free to vote and comment on cards (tickets/issues), if you want to join team -- send me a message with your email.
+
 ## Usage
 
 ```javascript
