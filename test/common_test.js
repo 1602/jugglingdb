@@ -15,6 +15,10 @@ var schemas = {
         database: 'sequ-test',
         username: 'root'
     },
+    postgres: {
+        database: 'pg-test',
+        username: 'anatoliy'
+    },
     neo4j:     { url: 'http://localhost:7474/' },
     // mongoose:  { url: 'mongodb://localhost/test' },
     mongoose:  {
