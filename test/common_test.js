@@ -309,7 +309,7 @@ function testOrm(schema) {
             res.forEach(function (r) {
                 if (r.title != 'New title') pass = false;
             });
-            test.ok(res.length > 0);
+            test.ok(res.length > 0, 'Exact match with string returns dataset');
             test.ok(pass, 'Exact match with string');
             done();
         });
@@ -321,7 +321,7 @@ function testOrm(schema) {
             res.forEach(function (r) {
                 if (r.title != null) pass = false;
             });
-            test.ok(res.length > 0);
+            test.ok(res.length > 0, 'Matching null returns dataset');
             test.ok(pass, 'Matching null');
             done();
         });
@@ -332,7 +332,7 @@ function testOrm(schema) {
             res.forEach(function (r) {
                 if (!r.title || !r.title.match(/hello/i)) pass = false;
             });
-            test.ok(res.length > 0);
+            test.ok(res.length > 0, 'Matching regexp returns dataset');
             test.ok(pass, 'Matching regexp');
             done();
         });

@@ -2,13 +2,14 @@ juggling = require('../index')
 Schema = juggling.Schema
 Text = Schema.Text
 
-DBNAME = 'migrationtest'
-DBUSER = 'root'
+DBNAME = process.env.DBNAME || 'migrationtest'
+DBUSER = process.env.DBUSER || 'root'
 DBPASS = ''
+DBENGINE = process.env.DBENGINE || 'mysql'
 
 require('./spec_helper').init module.exports
 
-schema = new Schema 'mysql', database: '', username: DBUSER, password: DBPASS
+schema = new Schema DBENGINE, database: '', username: DBUSER, password: DBPASS
 schema.log = (q) -> console.log q
 
 query = (sql, cb) ->
