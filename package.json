@@ -8,7 +8,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "./support/nodeunit/bin/nodeunit test/*_test.js"
+    "test": "ONLY=memory ./support/nodeunit/bin/nodeunit test/*_test.*"
   },
   "engines": [
     "node >= 0.4.0"
