@@ -16,7 +16,8 @@
   "dependencies": {
     "redis": ">= 0.6.7",
     "mongoose": ">= 2.2.3",
-    "mysql": ">= 0.9.4"
+    "mysql": ">= 0.9.4",
+    "nodeunit": ">= 0"
   },
   "devDependencies": {}
 }
