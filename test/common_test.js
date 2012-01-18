@@ -415,6 +415,15 @@ function testOrm(schema) {
         });
     });
 
+    it('should return type of property', function (test) {
+        test.equal(Post.whatTypeName('title'), 'String');
+        test.equal(Post.whatTypeName('content'), 'Text');
+        var p = new Post;
+        test.equal(p.whatTypeName('title'), 'String');
+        test.equal(p.whatTypeName('content'), 'Text');
+        test.done();
+    });
+
     function allTestsDone() {
         schema.disconnect();
         console.log('Test done in %dms\n', Date.now() - start);
