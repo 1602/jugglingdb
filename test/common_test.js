@@ -171,7 +171,7 @@ function testOrm(schema) {
 
     it('should create object with initial data', function (test) {
         var title = 'Initial title',
-        date = new Date;
+            date = new Date;
 
         Post.create({
             title: title,
@@ -409,7 +409,6 @@ function testOrm(schema) {
                 Post.count(function (err, count) {
                     test.equal(count, 0);
                     test.done();
-                    process.nextTick(allTestsDone);
                 });
             });
         });
@@ -422,6 +421,61 @@ function testOrm(schema) {
         test.equal(p.whatTypeName('title'), 'String');
         test.equal(p.whatTypeName('content'), 'Text');
         test.done();
+    });
+
+    it('should handle ORDER clause', function (test) {
+        var titles = [ 'Title A', 'Title Z', 'Title M', 'Title B' ];
+        var dates = [ 5, 9, 0, 17 ];
+        titles.forEach(function (t, i) {
+            Post.create({title: t, date: dates[i]}, done);
+        });
+
+        var i = 0;
+        function done(err, obj) {
+            if (++i === titles.length) {
+                doStringTest();
+                doNumberTest();
+            }
+        }
+
+        // Post.schema.log = console.log;
+
+        function doStringTest() {
+            Post.all({order: 'title'}, function (err, posts) {
+                titles.sort().forEach(function (t, i) {
+                    test.equal(posts[i].title, t);
+                });
+                finished();
+            });
+        }
+
+        function doNumberTest() {
+            Post.all({order: 'date'}, function (err, posts) {
+                dates.sort(numerically).forEach(function (d, i) {
+                    test.equal(posts[i].date, d);
+                });
+                finished();
+            });
+        }
+
+        var fin = 0;
+        function finished() {
+            if (++fin === 2) {
+                test.done();
+            }
+        }
+
+        // TODO: do mixed test, do real dates tests, ensure that dates stored in UNIX timestamp format
+
+        function numerically(a, b) {
+            return a - b;
+        }
+
+    });
+
+    it('all tests done', function (test) {
+        test.done();
+        process.nextTick(allTestsDone);
     });
 
     function allTestsDone() {
