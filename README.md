@@ -7,7 +7,7 @@ existing adapters to learn how, it's super-easy, I guarantee.
 
 ## Installation
 
-    git clone git://github.com/1602/jugglingdb.git
+    npm install jugglingdb
 
 ## Participation
 
