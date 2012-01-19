@@ -59,7 +59,7 @@ function testOrm(schema) {
         Post = schema.define('Post', {
             title:     { type: String, length: 255, index: true },
             content:   { type: Text },
-            date:      { type: Date,    default: Date.now },
+            date:      { type: Date,    default: Date.now, index: true },
             published: { type: Boolean, default: false }
         });
 
@@ -424,16 +424,17 @@ function testOrm(schema) {
     });
 
     it('should handle ORDER clause', function (test) {
-        var titles = [ 'Title A', 'Title Z', 'Title M', 'Title B' ];
-        var dates = [ 5, 9, 0, 17 ];
+        var titles = [ 'Title A', 'Title Z', 'Title M', 'Title B', 'Title C' ];
+        var dates = [ 5, 9, 0, 17, 9 ];
         titles.forEach(function (t, i) {
             Post.create({title: t, date: dates[i]}, done);
         });
 
-        var i = 0;
+        var i = 0, tests = 0;
         function done(err, obj) {
             if (++i === titles.length) {
                 doStringTest();
+                doFilterAndSortTest();
                 doNumberTest();
             }
         }
@@ -441,6 +442,7 @@ function testOrm(schema) {
         // Post.schema.log = console.log;
 
         function doStringTest() {
+            tests += 1;
             Post.all({order: 'title'}, function (err, posts) {
                 titles.sort().forEach(function (t, i) {
                     test.equal(posts[i].title, t);
@@ -450,6 +452,7 @@ function testOrm(schema) {
         }
 
         function doNumberTest() {
+            tests += 1;
             Post.all({order: 'date'}, function (err, posts) {
                 dates.sort(numerically).forEach(function (d, i) {
                     test.equal(posts[i].date, d);
@@ -458,9 +461,22 @@ function testOrm(schema) {
             });
         }
 
+        function doFilterAndSortTest() {
+            tests += 1;
+            Post.all({where: {date: 9}, order: 'title', limit: 3}, function (err, posts) {
+                test.equal(posts.length, 2, 'Exactly 2 posts returned by query');
+                [ 'Title C', 'Title Z' ].forEach(function (t, i) {
+                    if (posts[i]) {
+                        test.equal(posts[i].title, t);
+                    }
+                });
+                finished();
+            });
+        }
+
         var fin = 0;
         function finished() {
-            if (++fin === 2) {
+            if (++fin === tests) {
                 test.done();
             }
         }
