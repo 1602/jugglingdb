@@ -1,4 +1,4 @@
-## About <img src="https://secure.travis-ci.org/1602/jugglingdb.png" />
+## About [<img src="https://secure.travis-ci.org/1602/jugglingdb.png" />](http://travis-ci.org/#!/1602/jugglingdb)
 
 JugglingDB is cross-db ORM, providing **common interface** to access most popular database formats. 
 Currently supported are: mysql, mongodb, redis, neo4j and js-memory-storage (yep, 
