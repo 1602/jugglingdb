@@ -426,7 +426,7 @@ function testOrm(schema) {
 
     it('should handle ORDER clause', function (test) {
         var titles = [ 'Title A', 'Title Z', 'Title M', 'Title B', 'Title C' ];
-        var isRedis = Post.schema.name === 'redis';
+        var isRedis = Post.schema.name === 'redis' || Post.schema.name === 'memory';
         var dates = isRedis ? [ 5, 9, 0, 17, 9 ] : [
             new Date(1000 * 5 ),
             new Date(1000 * 9),
