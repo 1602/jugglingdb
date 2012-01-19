@@ -426,7 +426,8 @@ function testOrm(schema) {
 
     it('should handle ORDER clause', function (test) {
         var titles = [ 'Title A', 'Title Z', 'Title M', 'Title B', 'Title C' ];
-        var dates = Post.schema.name === 'redis' ? [ 5, 9, 0, 17, 9 ] : [
+        var isRedis = Post.schema.name === 'redis';
+        var dates = isRedis ? [ 5, 9, 0, 17, 9 ] : [
             new Date(1000 * 5 ),
             new Date(1000 * 9),
             new Date(1000 * 0),
@@ -440,9 +441,9 @@ function testOrm(schema) {
         var i = 0, tests = 0;
         function done(err, obj) {
             if (++i === titles.length) {
+                doFilterAndSortTest();
                 doStringTest();
                 doNumberTest();
-                doFilterAndSortTest();
             }
         }
 
@@ -474,7 +475,7 @@ function testOrm(schema) {
 
         function doFilterAndSortTest() {
             tests += 1;
-            Post.all({where: {title: new Date(1000 * 9)}, order: 'title', limit: 3}, function (err, posts) {
+            Post.all({where: {date: isRedis ? 9 : new Date(1000 * 9)}, order: 'title', limit: 3}, function (err, posts) {
                 if (err) console.log(err);
                 test.equal(posts.length, 2, 'Exactly 2 posts returned by query');
                 [ 'Title C', 'Title Z' ].forEach(function (t, i) {

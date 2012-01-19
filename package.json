@@ -8,7 +8,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "ONLY=memory ./support/nodeunit/bin/nodeunit test/*_test.* & ONLY=redis nodeunit test/common_test.js & ONLY=mysql nodeunit test/common_test.js"
+    "test": "ONLY=memory ./support/nodeunit/bin/nodeunit test/*_test.* && ONLY=redis nodeunit test/common_test.js && ONLY=mysql nodeunit test/common_test.js"
   },
   "engines": [
     "node >= 0.4.0"
