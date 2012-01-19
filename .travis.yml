@@ -2,7 +2,6 @@ language: node_js
 node_js:
   - 0.4
   - 0.6
-  - 0.7
 before_install: git submodule init && git submodule --quiet update
 before_script:
   - "mysql -e 'create database myapp_test;'"
