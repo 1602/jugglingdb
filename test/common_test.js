@@ -148,6 +148,20 @@ function testOrm(schema) {
         });
     });
 
+    it('should create object without callback', function (test) {
+        var uniqueTitle = 'Unique title ' + Date.now();
+        Post.create({title: uniqueTitle});
+
+        setTimeout(delayedCallback, 100);
+
+        function delayedCallback() {
+            Post.all({where: {title: uniqueTitle}}, function (err, posts) {
+                test.equal(posts.length, 1);
+                test.done();
+            });
+        }
+    });
+
     it('should save object', function (test) {
         var title = 'Initial title', title2 = 'Hello world',
             date = new Date;
