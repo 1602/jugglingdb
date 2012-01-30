@@ -297,12 +297,15 @@ function testOrm(schema) {
         });
     });
 
-    var countOfposts;
+    var countOfposts, countOfpostsFiltered;
     it('should fetch collection', function (test) {
         Post.all(function (err, posts) {
             countOfposts = posts.length;
             test.ok(countOfposts > 0);
             test.ok(posts[0] instanceof Post);
+            countOfpostsFiltered = posts.filter(function (p) {
+                return p.title === 'title';
+            }).length;
             test.done();
         });
     });
@@ -310,7 +313,10 @@ function testOrm(schema) {
     it('should fetch count of records in collection', function (test) {
         Post.count(function (err, count) {
             test.equal(countOfposts, count);
-            test.done();
+            Post.count({title: 'title'}, function (err, count) {
+                test.equal(countOfpostsFiltered, count);
+                test.done();
+            });
         });
     });
 
@@ -481,6 +487,7 @@ function testOrm(schema) {
                 if (err) console.log(err);
                 test.equal(posts.length, 5);
                 dates.sort(numerically).forEach(function (d, i) {
+                    // fix inappropriated tz convert
                     test.equal(posts[i].date.toString(), d.toString());
                 });
                 finished();
