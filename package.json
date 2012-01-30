@@ -18,7 +18,8 @@
     "mongoose": ">= 2.2.3",
     "mysql": ">= 0.9.4",
     "sequelize": "*",
-    "pg": "*"
+    "pg": "*",
+    "hashish": "*"
   },
   "devDependencies": {
     "nodeunit": ">= 0",
