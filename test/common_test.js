@@ -347,7 +347,7 @@ function testOrm(schema) {
         });
 
         // matching regexp
-        if (Post.schema.name === 'mysql') done(); else
+        if (Post.schema.name !== 'redis') done(); else
         Post.all({where: {title: /hello/i}}, function (err, res) {
             var pass = true;
             res.forEach(function (r) {
