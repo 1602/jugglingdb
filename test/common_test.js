@@ -23,10 +23,8 @@ var schemas = {
         database: ':memory:'
     },
     neo4j:     { url: 'http://localhost:7474/' },
-    // mongoose:  { url: 'mongodb://localhost/test' },
-    mongoose:  {
-        database: 'test'
-    },
+    mongoose:  { url: 'mongodb://travis:test@localhost:27017/myapp' },
+    // mongoose:  { database: 'test' },
     redis:     {},
     memory:    {}
 };
@@ -35,9 +33,10 @@ var specificTest = getSpecificTests();
 
 Object.keys(schemas).forEach(function (schemaName) {
     if (process.env.ONLY && process.env.ONLY !== schemaName) return;
+    if (process.env.EXCEPT && process.env.EXCEPT === schemaName) return;
     context(schemaName, function () {
         var schema = new Schema(schemaName, schemas[schemaName]);
-        schema.log = console.log;
+        // schema.log = console.log;
         testOrm(schema);
         if (specificTest[schemaName]) specificTest[schemaName](schema);
     });

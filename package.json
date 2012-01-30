@@ -1,28 +1,28 @@
 {
   "name": "jugglingdb",
   "author": "Anatoliy Chakkaev",
-  "description": "ORM for every database: redis, mysql, neo4j, mongodb, postgres",
+  "description": "ORM for every database: redis, mysql, neo4j, mongodb, postgres, sqlite",
   "version": "0.0.8",
   "repository": {
     "url": "https://github.com/1602/jugglingdb"
   },
   "main": "index.js",
   "scripts": {
-    "test": "ONLY=memory ./support/nodeunit/bin/nodeunit test/*_test.* && ONLY=redis nodeunit test/common_test.js && ONLY=mysql nodeunit test/common_test.js && ONLY=postgres nodeunit test/common_test.js && ONLY=sqlite3 nodeunit test/common_test.js"
+    "test": "EXCEPT=sequelize nodeunit test/*_test*"
   },
   "engines": [
     "node >= 0.4.0"
   ],
   "dependencies": {
+    "hashish": "*"
+  },
+  "devDependencies": {
     "redis": ">= 0.6.7",
     "mongoose": ">= 2.2.3",
     "mysql": ">= 0.9.4",
     "sequelize": "*",
     "pg": "*",
-    "hashish": "*",
-    "sqlite3": "*"
-  },
-  "devDependencies": {
+    "sqlite3": "*",
     "nodeunit": ">= 0",
     "coffee-script": ">= 0"
   }
