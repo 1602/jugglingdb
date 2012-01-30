@@ -16,8 +16,8 @@ var schemas = {
         username: 'root'
     },
     postgres: {
-        database: 'pg-test',
-        username: 'anatoliy'
+        database: 'myapp_test',
+        username: 'postgres'
     },
     neo4j:     { url: 'http://localhost:7474/' },
     // mongoose:  { url: 'mongodb://localhost/test' },
