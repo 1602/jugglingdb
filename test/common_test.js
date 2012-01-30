@@ -33,7 +33,7 @@ var specificTest = getSpecificTests();
 
 Object.keys(schemas).forEach(function (schemaName) {
     if (process.env.ONLY && process.env.ONLY !== schemaName) return;
-    if (process.env.EXCEPT && process.env.EXCEPT === schemaName) return;
+    if (process.env.EXCEPT && ~process.env.EXCEPT.indexOf(schemaName)) return;
     context(schemaName, function () {
         var schema = new Schema(schemaName, schemas[schemaName]);
         // schema.log = console.log;
