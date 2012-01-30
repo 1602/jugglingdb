@@ -15,9 +15,12 @@ var schemas = {
         database: 'myapp_test',
         username: 'root'
     },
-    postgres: {
+    postgres:  {
         database: 'myapp_test',
         username: 'postgres'
+    },
+    sqlite3:   {
+        database: ':memory:'
     },
     neo4j:     { url: 'http://localhost:7474/' },
     // mongoose:  { url: 'mongodb://localhost/test' },
