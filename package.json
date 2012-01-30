@@ -20,7 +20,7 @@
     "sequelize": "*",
     "pg": "*",
     "hashish": "*",
-    "sqlite3": ">= 2.1.1"
+    "sqlite3": "*"
   },
   "devDependencies": {
     "nodeunit": ">= 0",
