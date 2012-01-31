@@ -70,7 +70,7 @@ Post.create(cb);
 // all posts
 Post.all(cb)
 // all posts by user
-Post.all({where: {userId: user.id}});
+Post.all({where: {userId: user.id}, order: 'id', limit: 10, skip: 20});
 // the same as prev
 user.posts(cb)
 // same as new Post({userId: user.id});
@@ -80,7 +80,7 @@ user.posts.create(cb)
 // find instance by id
 User.find(1, cb)
 // count instances
-User.count(cb)
+User.count([conditions, ]cb)
 // destroy instance
 user.destroy(cb);
 // destroy all instances
