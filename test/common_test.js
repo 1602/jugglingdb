@@ -37,7 +37,7 @@ Object.keys(schemas).forEach(function (schemaName) {
     context(schemaName, function () {
         var schema = new Schema(schemaName, schemas[schemaName]);
         schema.log = function (a) {
-            console.log(a);
+            // console.log(a);
         };
         testOrm(schema);
         if (specificTest[schemaName]) specificTest[schemaName](schema);
@@ -527,6 +527,7 @@ function testOrm(schema) {
 
     });
 
+    if (schema.name !== 'redis' && schema.name !== 'memory')
     it('should allow advanced queying: lt, gt, lte, gte, between', function (test) {
         Post.destroyAll(function () {
             Post.create({date: new Date('Wed, 01 Feb 2012 13:56:12 GMT')}, done);
