@@ -36,7 +36,9 @@ Object.keys(schemas).forEach(function (schemaName) {
     if (process.env.EXCEPT && ~process.env.EXCEPT.indexOf(schemaName)) return;
     context(schemaName, function () {
         var schema = new Schema(schemaName, schemas[schemaName]);
-        // schema.log = console.log;
+        schema.log = function (a) {
+            console.log(a);
+        };
         testOrm(schema);
         if (specificTest[schemaName]) specificTest[schemaName](schema);
     });
@@ -523,6 +525,62 @@ function testOrm(schema) {
             return a - b;
         }
 
+    });
+
+    it('should allow advanced queying: lt, gt, lte, gte, between', function (test) {
+        Post.destroyAll(function () {
+            Post.create({date: new Date('Wed, 01 Feb 2012 13:56:12 GMT')}, done);
+            Post.create({date: new Date('Thu, 02 Feb 2012 13:56:12 GMT')}, done);
+            Post.create({date: new Date('Fri, 03 Feb 2012 13:56:12 GMT')}, done);
+            Post.create({date: new Date('Sat, 04 Feb 2012 13:56:12 GMT')}, done);
+            Post.create({date: new Date('Sun, 05 Feb 2012 13:56:12 GMT')}, done);
+            Post.create({date: new Date('Mon, 06 Feb 2012 13:56:12 GMT')}, done);
+            Post.create({date: new Date('Tue, 07 Feb 2012 13:56:12 GMT')}, done);
+            Post.create({date: new Date('Wed, 08 Feb 2012 13:56:12 GMT')}, done);
+            Post.create({date: new Date('Thu, 09 Feb 2012 13:56:12 GMT')}, done);
+        });
+
+        var posts = 9;
+        function done() {
+            if (--posts === 0) makeTest();
+        }
+
+        function makeTest() {
+            // gt
+            Post.all({where: {date: {gt: new Date('Tue, 07 Feb 2012 13:56:12 GMT')}}}, function (err, posts) {
+                test.equal(posts.length, 2);
+                ok();
+            });
+
+            // gte
+            Post.all({where: {date: {gte: new Date('Tue, 07 Feb 2012 13:56:12 GMT')}}}, function (err, posts) {
+                test.equal(posts.length, 3);
+                ok();
+            });
+
+            // lte
+            Post.all({where: {date: {lte: new Date('Tue, 07 Feb 2012 13:56:12 GMT')}}}, function (err, posts) {
+                test.equal(posts.length, 7);
+                ok();
+            });
+
+            // lt
+            Post.all({where: {date: {lt: new Date('Tue, 07 Feb 2012 13:56:12 GMT')}}}, function (err, posts) {
+                test.equal(posts.length, 6);
+                ok();
+            });
+
+            // between
+            Post.all({where: {date: {between: [new Date('Tue, 05 Feb 2012 13:56:12 GMT'), new Date('Tue, 09 Feb 2012 13:56:12 GMT')]}}}, function (err, posts) {
+                test.equal(posts.length, 5);
+                ok();
+            });
+        }
+
+        var tests = 5;
+        function ok() {
+            if (--tests === 0) test.done();
+        }
     });
 
     it('all tests done', function (test) {
