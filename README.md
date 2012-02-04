@@ -18,7 +18,7 @@ Feel free to vote and comment on cards (tickets/issues), if you want to join tea
 
 ```javascript
 var Schema = require('./jugglingdb').Schema;
-var s = new Schema('redis');
+var schema = new Schema('redis', {port: 6379}); //port number depends on your configuration
 // define models
 var Post = schema.define('Post', {
     title:     { type: String, length: 255 },
@@ -48,7 +48,7 @@ Post.belongsTo(User, {as: 'author', foreignKey: 'userId'});
 // post.author() -- sync getter when called without params
 // post.author(user) -- setter when called with object
 
-s.automigrate(); // required only for mysql NOTE: it will drop User and Post tables
+schema.automigrate(); // required only for mysql NOTE: it will drop User and Post tables
 
 // work with models:
 var user = new User;
