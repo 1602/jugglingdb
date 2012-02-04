@@ -46,25 +46,3 @@ function check_external_exports() {
         'require("spec_helper").init(exports); called');
 }
 
-// add assertions
-
-var assert = require(require('module')._resolveFilename('../support/nodeunit')[0].replace(/index\.js$/, 'lib/assert'));
-
-// Check response status code 200 OK
-assert.status200 = function (response, message) {
-    if (response.statusCode !== 200) {
-        assert.fail(response.statusCode, 200, message || 'Status code is not 200', '===', assert.status200);
-    }
-}
-
-// Check redirection
-assert.redirect = function (response, path, message) {
-    if (response.statusCode !== 302) {
-        assert.fail(response.statusCode, 302, 'Status code is not 302', '===', assert.redirect);
-    }
-    var realPath = require('url').parse(response.headers.location).pathname;
-    if (realPath !== path) {
-        assert.fail(realPath, path, message || 'Wrong location', '===', assert.redirect);
-    }
-}
-
