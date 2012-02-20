@@ -119,20 +119,29 @@ it 'should autoupgrade', (test) ->
             schema.autoupdate (err) ->
                 getFields 'User', (err, fields) ->
                     # change nullable for email
-                    test.equal fields.email.Null, 'YES'
+                    test.equal fields.email.Null, 'YES', 'Email is not null'
                     # change type of name
-                    test.equal fields.name.Type, 'varchar(50)'
+                    test.equal fields.name.Type, 'varchar(50)', 'Name is not varchar(50)'
                     # add new column
-                    test.ok fields.newProperty
+                    test.ok fields.newProperty, 'New column was not added'
                     if fields.newProperty
-                        test.equal fields.newProperty.Type, 'int(11)'
+                        test.equal fields.newProperty.Type, 'int(11)', 'New column type is not int(11)'
                     # drop column
-                    test.ok not fields.pendingPeriod
+                    test.ok not fields.pendingPeriod, 'drop column'
 
                     # user still exists
                     userExists (yep) ->
                         test.ok yep
                         test.done()
+
+it 'should check actuality of schema', (test) ->
+    # drop column
+    User.schema.isActual (err, ok) ->
+        test.ok ok
+        User.defineProperty 'email', false
+        User.schema.isActual (err, ok) ->
+            test.ok not ok
+            test.done()
 
 it 'should disconnect when done', (test) ->
     schema.disconnect()

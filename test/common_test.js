@@ -584,6 +584,20 @@ function testOrm(schema) {
         }
     });
 
+    it('should return id in find result even after updateAttributes', function (test) {
+        Post.create(function (err, post) {
+            var id = post.id;
+            test.ok(post.published === false);
+            post.updateAttributes({title: 'hey', published: true}, function () {
+                Post.find(id, function (err, post) {
+                    test.ok(post.published === true);
+                    test.ok(post.id);
+                    test.done();
+                });
+            });
+        });
+    });
+
     it('all tests done', function (test) {
         test.done();
         process.nextTick(allTestsDone);
