@@ -590,7 +590,7 @@ function testOrm(schema) {
             test.ok(post.published === false);
             post.updateAttributes({title: 'hey', published: true}, function () {
                 Post.find(id, function (err, post) {
-                    test.ok(post.published === true);
+                    test.ok(!!post.published, 'Update boolean field');
                     test.ok(post.id);
                     test.done();
                 });
