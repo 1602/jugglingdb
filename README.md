@@ -184,16 +184,6 @@ of course, if you have redis running, you can run
 
 Now all common logic described in `./lib/*.js`, and database-specific stuff in `./lib/adapters/*.js`. It's super-tiny, right?
 
-## Project status
-
-This project was written in one weekend (1,2 oct 2011), and of course does not claim to be production-ready,
-but I plan to use this project as default ORM for RailwayJS in nearest future.
-So, if you are familiar with some database engines - please help me to improve adapter for that database.
-
-For example, I know, mysql implementation sucks now, 'cause I'm not digging too deep into SequelizeJS code,
-and I think it would be better to replace sequelize with something low-level in nearest future, such
-as `mysql` package from npm.
-
 ## Contributing
 
 If you have found a bug please write unit test, and make sure all other tests still pass before pushing code to repo.
