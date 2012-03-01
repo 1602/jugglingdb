@@ -46,7 +46,7 @@ Object.keys(schemas).forEach(function (schemaName) {
 
 function testOrm(schema) {
 
-    var Post, User;
+    var Post, User, Passport;
     var start = Date.now();
 
     it('should define class', function (test) {
@@ -91,6 +91,12 @@ function testOrm(schema) {
         // post.author(callback) -- getter when called with function
         // post.author() -- sync getter when called without params
         // post.author(user) -- setter when called with object
+
+        Passport = schema.define('Passport', {
+            number: String
+        });
+
+        Passport.belongsTo(User, {as: 'owner', foreignKey: 'ownerId'});
 
         var user = new User;
 
@@ -596,6 +602,16 @@ function testOrm(schema) {
                 });
             });
         });
+    });
+
+    it('should handle belongsTo correctly', function (test) {
+        var passport = new Passport({ownerId: 16});
+        // sync getter
+        test.equal(passport.owner(), 16);
+        // sync setter
+        passport.owner(18);
+        test.equal(passport.owner(), 18);
+        test.done();
     });
 
     it('all tests done', function (test) {
