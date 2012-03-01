@@ -472,6 +472,7 @@ function testOrm(schema) {
         function done(err, obj) {
             if (++i === titles.length) {
                 doFilterAndSortTest();
+                doFilterAndSortReverseTest();
                 doStringTest();
                 doNumberTest();
             }
@@ -510,6 +511,20 @@ function testOrm(schema) {
                 if (err) console.log(err);
                 test.equal(posts.length, 2, 'Exactly 2 posts returned by query');
                 [ 'Title C', 'Title Z' ].forEach(function (t, i) {
+                    if (posts[i]) {
+                        test.equal(posts[i].title, t);
+                    }
+                });
+                finished();
+            });
+        }
+
+        function doFilterAndSortReverseTest() {
+            tests += 1;
+            Post.all({where: {date: isRedis ? 9 : new Date(1000 * 9)}, order: 'title DESC', limit: 3}, function (err, posts) {
+                if (err) console.log(err);
+                test.equal(posts.length, 2, 'Exactly 2 posts returned by query');
+                [ 'Title Z', 'Title C' ].forEach(function (t, i) {
                     if (posts[i]) {
                         test.equal(posts[i].title, t);
                     }
