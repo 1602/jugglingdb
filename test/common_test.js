@@ -188,7 +188,20 @@ function testOrm(schema) {
             obj.save(function (err, obj) {
                 test.equal(obj.title, title2);
                 test.ok(!obj.propertyChanged('title'));
-                test.done();
+
+                var p = new Post({title: 1});
+                p.title = 2;
+                p.save(function (err, obj) {
+                    test.ok(!p.propertyChanged('title'));
+                    p.title = 3;
+                    test.ok(p.propertyChanged('title'));
+                    test.equal(p.title_was, 2);
+                    p.save(function () {
+                        test.equal(p.title_was, 3);
+                        test.ok(!p.propertyChanged('title'));
+                        test.done();
+                    });
+                });
             });
         });
     });

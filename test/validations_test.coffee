@@ -16,6 +16,7 @@ User = schema.define 'User',
     domain: String
     pendingPeriod: Number
     createdByAdmin: Boolean
+    updatedAt: Date
 
 validAttributes =
     name: 'Anatoliy'
@@ -247,7 +248,7 @@ it 'should validate asynchronously', (test) ->
         setTimeout =>
             err 'async' if @name == 'bad name'
             done()
-        , 100
+        , 10
 
     User.validateAsync 'name', validator, message: async: 'hello'
 
@@ -272,14 +273,21 @@ it 'should validate uniqueness', (test) ->
             user.email = 'unique@email.tld'
             user.isValid (valid) ->
                 test.ok valid, 'valid with unique email'
-                user.save ->
-                    test.done()
+                user.save (err) ->
+                    test.ok not user.propertyChanged('email'), 'Email changed'
+                    user.updateAttributes { updatedAt: new Date, createdByAdmin: false }, (err) ->
+                        User.all where: email: 'unique@email.tld', (err, users) ->
+                            test.ok users[0]
+                            test.ok users[0].email == 'unique@email.tld'
+                            test.ok !err, 'Updated'
+                            test.done()
 
 it 'should save dirty state when validating uniqueness', (test) ->
-    User.all where: email: 'unique@email.tld' , (err, users) ->
+    User.all where: email: 'unique@email.tld', (err, users) ->
         u = users[0]
         u.name = 'Hulk'
         u.isValid (valid) ->
-            test.ok valid
+            test.ok valid, 'Invalid user'
             test.equal u.name, 'Hulk'
             test.done()
+
