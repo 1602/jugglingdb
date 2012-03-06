@@ -35,6 +35,17 @@ var User = schema.define('User', {
     age:          Number
 });
 
+// other way to define schema
+var User = schema.define('User', function() {
+    property('email', String, {
+      index: true
+    });
+    property('password', String);
+    return property('activated', Boolean, {
+      "default": false
+    });
+  });
+
 // setup relationships
 User.hasMany(Post,   {as: 'posts',  foreignKey: 'userId'});
 // creates instance methods:
@@ -61,7 +72,9 @@ user.save(function (err) {
 var user = User();
 user.save(...);
 
+
 // Common API methods
+// callback: cb = function(err, data){ console.log(data);  }
 
 // just instantiate model
 new Post
