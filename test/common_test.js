@@ -52,8 +52,8 @@ function testOrm(schema) {
     it('should define class', function (test) {
 
         User = schema.define('User', {
-            name:         String,
-            email:        String,
+            name:       { type: String, index: true },
+            email:       { type: String, index: true },
             bio:          Text,
             approved:     Boolean,
             joinedAt:     Date,
