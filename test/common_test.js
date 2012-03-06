@@ -53,6 +53,7 @@ function testOrm(schema) {
 
         User = schema.define('User', {
             name:         String,
+            email:        String,
             bio:          Text,
             approved:     Boolean,
             joinedAt:     Date,
@@ -618,6 +619,58 @@ function testOrm(schema) {
         }
     });
 
+    it('should handle order clause with direction', function (test) {
+        var wait = 0;
+        var emails = [
+            'john@hcompany.com',
+            'tom@hcompany.com',
+            'admin@hcompany.com',
+            'tin@hcompany.com',
+            'mike@hcompany.com',
+            'susan@hcompany.com',
+            'test@hcompany.com'
+        ];
+        User.destroyAll(function () {
+            emails.forEach(function (email) {
+                wait += 1;
+                User.create({email: email, name: 'Nick'}, done);
+            });
+        });
+        var tests = 2;
+        function done() {
+            process.nextTick(function () {
+                if (--wait === 0) {
+                    doSortTest();
+                    doReverseSortTest();
+                }
+            });
+        }
+
+        function doSortTest() {
+            User.all({order: 'email ASC', where: {name: 'Nick'}}, function (err, users) {
+                var _emails = emails.sort();
+                users.forEach(function (user, i) {
+                    test.equal(_emails[i], user.email, 'ASC sorting');
+                });
+                testDone();
+            });
+        }
+
+        function doReverseSortTest() {
+            User.all({order: 'email DESC', where: {name: 'Nick'}}, function (err, users) {
+                var _emails = emails.sort().reverse();
+                users.forEach(function (user, i) {
+                    test.equal(_emails[i], user.email, 'DESC sorting');
+                });
+                testDone();
+            });
+        }
+
+        function testDone() {
+            if (--tests === 0) test.done();
+        }
+    });
+
     it('should return id in find result even after updateAttributes', function (test) {
         Post.create(function (err, post) {
             var id = post.id;
@@ -640,6 +693,21 @@ function testOrm(schema) {
         passport.owner(18);
         test.equal(passport.owner(), 18);
         test.done();
+    });
+
+    it('should query one record', function (test) {
+        Post.findOne(function (err, post) {
+            test.ok(post.id);
+            Post.findOne({ where: { title: 'hey' } }, function (err, post) {
+                if (err) throw err;
+                test.equal(post.constructor.modelName, 'Post');
+                test.equal(post.title, 'hey');
+                Post.findOne({ where: { title: 'not exists' } }, function (err, post) {
+                    test.ok(typeof post === 'undefined');
+                    test.done();
+                });
+            });
+        });
     });
 
     it('all tests done', function (test) {
