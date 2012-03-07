@@ -66,7 +66,7 @@ function testOrm(schema) {
             content:   { type: Text },
             date:      { type: Date,    default: Date.now, index: true },
             published: { type: Boolean, default: false }
-        });
+        }, {table: 'posts'});
 
         Post.validateAsync('title', function (err, done) {
             process.nextTick(done);
