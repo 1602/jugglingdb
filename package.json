@@ -14,7 +14,6 @@
     "node >= 0.4.0"
   ],
   "dependencies": {
-    "hashish": "*"
   },
   "devDependencies": {
     "redis": ">= 0.6.7",
