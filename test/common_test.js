@@ -37,7 +37,7 @@ Object.keys(schemas).forEach(function (schemaName) {
     context(schemaName, function () {
         var schema = new Schema(schemaName, schemas[schemaName]);
         schema.log = function (a) {
-            // console.log(a);
+            console.log(a);
         };
         testOrm(schema);
         if (specificTest[schemaName]) specificTest[schemaName](schema);
@@ -562,7 +562,7 @@ function testOrm(schema) {
 
     });
 
-    if (schema.name !== 'redis' && schema.name !== 'memory')
+    if (schema.name !== 'redis' && schema.name !== 'memory' && schema.name !== 'neo4j')
     it('should allow advanced queying: lt, gt, lte, gte, between', function (test) {
         Post.destroyAll(function () {
             Post.create({date: new Date('Wed, 01 Feb 2012 13:56:12 GMT')}, done);
@@ -584,31 +584,31 @@ function testOrm(schema) {
         function makeTest() {
             // gt
             Post.all({where: {date: {gt: new Date('Tue, 07 Feb 2012 13:56:12 GMT')}}}, function (err, posts) {
-                test.equal(posts.length, 2);
+                test.equal(posts.length, 2, 'gt');
                 ok();
             });
 
             // gte
             Post.all({where: {date: {gte: new Date('Tue, 07 Feb 2012 13:56:12 GMT')}}}, function (err, posts) {
-                test.equal(posts.length, 3);
+                test.equal(posts.length, 3, 'gte');
                 ok();
             });
 
             // lte
             Post.all({where: {date: {lte: new Date('Tue, 07 Feb 2012 13:56:12 GMT')}}}, function (err, posts) {
-                test.equal(posts.length, 7);
+                test.equal(posts.length, 7, 'lte');
                 ok();
             });
 
             // lt
             Post.all({where: {date: {lt: new Date('Tue, 07 Feb 2012 13:56:12 GMT')}}}, function (err, posts) {
-                test.equal(posts.length, 6);
+                test.equal(posts.length, 6, 'lt');
                 ok();
             });
 
             // between
             Post.all({where: {date: {between: [new Date('Tue, 05 Feb 2012 13:56:12 GMT'), new Date('Tue, 09 Feb 2012 13:56:12 GMT')]}}}, function (err, posts) {
-                test.equal(posts.length, 5);
+                test.equal(posts.length, 5, 'between');
                 ok();
             });
         }

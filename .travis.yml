@@ -7,3 +7,4 @@ before_script:
   - "mysql -e 'create database myapp_test;'"
   - "psql -c 'create database myapp_test;' -U postgres"
   - mongo mydb_test --eval 'db.addUser("travis", "test");'
+  - which neo4j && neo4j start && sleep 5
