@@ -8,7 +8,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "EXCEPT=neo4j nodeunit test/*_test*"
+    "test": "nodeunit test/*_test*"
   },
   "engines": [
     "node >= 0.4.0"
