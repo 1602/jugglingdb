@@ -7,10 +7,6 @@ var schemas = {
     /*
     riak: {},
     */
-    sequelize: {
-        database: 'sequ-test',
-        username: 'root'
-    },
     mysql: {
         database: 'myapp_test',
         username: 'root'
@@ -24,7 +20,6 @@ var schemas = {
     },
     neo4j:     { url: 'http://localhost:7474/' },
     mongoose:  { url: 'mongodb://travis:test@localhost:27017/myapp' },
-    // mongoose:  { database: 'test' },
     redis:     {},
     memory:    {}
 };
