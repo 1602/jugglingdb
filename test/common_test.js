@@ -29,23 +29,15 @@ Object.keys(schemas).forEach(function (schemaName) {
     if (process.env.ONLY && process.env.ONLY !== schemaName) return;
     if (process.env.EXCEPT && ~process.env.EXCEPT.indexOf(schemaName)) return;
     context(schemaName, function () {
-        schemas[schemaName].autoconnect = false;
         var schema = new Schema(schemaName, schemas[schemaName]);
+
         it('should connect to database', function (test) {
-            console.log('Connecting:', schemaName);
-            if (schema.adapter && schema.adapter.connect) {
-                schema.adapter.connect(function () {
-                    test.done();
-                });
-            } else if (!schema.adapter) {
-                setTimeout(test.done, 1000);
-            } else {
-                test.done()
-            }
+            if (schema.connected) return test.done();
+            schema.on('connected', test.done);
         });
 
         schema.log = function (a) {
-            console.log(a);
+            // console.log(a);
         };
         testOrm(schema);
         if (specificTest[schemaName]) specificTest[schemaName](schema);
