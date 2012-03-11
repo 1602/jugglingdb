@@ -4,9 +4,7 @@ var Text = Schema.Text;
 require('./spec_helper').init(exports);
 
 var schemas = {
-    /*
-    riak: {},
-    */
+    // riak: {},
     mysql: {
         database: 'myapp_test',
         username: 'root'
@@ -20,6 +18,7 @@ var schemas = {
     },
     neo4j:     { url: 'http://localhost:7474/' },
     mongoose:  { url: 'mongodb://travis:test@localhost:27017/myapp' },
+    mongodb:  { url: 'mongodb://travis:test@localhost:27017/myapp' },
     redis:     {},
     memory:    {}
 };
@@ -30,7 +29,21 @@ Object.keys(schemas).forEach(function (schemaName) {
     if (process.env.ONLY && process.env.ONLY !== schemaName) return;
     if (process.env.EXCEPT && ~process.env.EXCEPT.indexOf(schemaName)) return;
     context(schemaName, function () {
+        schemas[schemaName].autoconnect = false;
         var schema = new Schema(schemaName, schemas[schemaName]);
+        it('should connect to database', function (test) {
+            console.log('Connecting:', schemaName);
+            if (schema.adapter && schema.adapter.connect) {
+                schema.adapter.connect(function () {
+                    test.done();
+                });
+            } else if (!schema.adapter) {
+                setTimeout(test.done, 1000);
+            } else {
+                test.done()
+            }
+        });
+
         schema.log = function (a) {
             console.log(a);
         };
@@ -333,7 +346,7 @@ function testOrm(schema) {
         Post.count(function (err, count) {
             test.equal(countOfposts, count);
             Post.count({title: 'title'}, function (err, count) {
-                test.equal(countOfpostsFiltered, count);
+                test.equal(countOfpostsFiltered, count, 'filtered count');
                 test.done();
             });
         });
@@ -442,6 +455,7 @@ function testOrm(schema) {
         Post.destroyAll(function (err) {
             if (err) {
                 console.log('Error in destroyAll');
+                console.log(err);
                 throw err;
             }
             Post.all(function (err, posts) {
@@ -495,7 +509,7 @@ function testOrm(schema) {
                 if (err) console.log(err);
                 test.equal(posts.length, 5);
                 titles.sort().forEach(function (t, i) {
-                    test.equal(posts[i].title, t);
+                    if (posts[i]) test.equal(posts[i].title, t);
                 });
                 finished();
             });
@@ -508,6 +522,7 @@ function testOrm(schema) {
                 test.equal(posts.length, 5);
                 dates.sort(numerically).forEach(function (d, i) {
                     // fix inappropriated tz convert
+                    if (posts[i])
                     test.equal(posts[i].date.toString(), d.toString());
                 });
                 finished();
@@ -691,10 +706,14 @@ function testOrm(schema) {
     });
 
     it('should query one record', function (test) {
+        test.expect(4);
         Post.findOne(function (err, post) {
-            test.ok(post.id);
+            test.ok(post && post.id);
             Post.findOne({ where: { title: 'hey' } }, function (err, post) {
-                if (err) throw err;
+                if (err) {
+                    console.log(err);
+                    return test.done();
+                }
                 test.equal(post.constructor.modelName, 'Post');
                 test.equal(post.title, 'hey');
                 Post.findOne({ where: { title: 'not exists' } }, function (err, post) {
