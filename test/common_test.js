@@ -18,7 +18,7 @@ var schemas = {
     },
     neo4j:     { url: 'http://localhost:7474/' },
     mongoose:  { url: 'mongodb://travis:test@localhost:27017/myapp' },
-    mongodb:  { url: 'mongodb://travis:test@localhost:27017/myapp' },
+    mongodb:   { url: 'mongodb://travis:test@localhost:27017/myapp' },
     redis:     {},
     memory:    {}
 };

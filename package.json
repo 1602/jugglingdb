@@ -1,9 +1,20 @@
 {
   "name": "jugglingdb",
-  "author": "Anatoliy Chakkaev",
   "description": "ORM for every database: redis, mysql, neo4j, mongodb, postgres, sqlite",
-  "version": "0.1.3",
+  "version": "0.1.4",
+  "author": "Anatoliy Chakkaev <rpm1602@gmail.com>",
+  "contributors": [
+    { "name": "Anatoliy Chakkaev",     "email": "rpm1602@gmail.com" },
+    { "name": "Julien Guimont",        "email": "julien.guimont@gmail.com" },
+    { "name": "Henri Bergius",         "email": "henri.bergius@iki.fi" },
+    { "name": "redvulps",              "email": "fabopereira@gmail.com" },
+    { "name": "Amir M. Mahmoudi",      "email": "a@geeknux.com" },
+    { "name": "Justinas Stankevičius", "email": "justinas@justinas.me" },
+    { "name": "Felipe Sateler",        "email": "fsateler@gmail.com" },
+    { "name": "Rick O'Toole",          "email": "patrick.n.otoole@gmail.com" }
+  ],
   "repository": {
+    "type": "git",
     "url": "https://github.com/1602/jugglingdb"
   },
   "main": "index.js",
@@ -11,22 +22,22 @@
     "test": "nodeunit test/*_test*"
   },
   "engines": [
-    "node >= 0.4.0"
+    "node >= 0.4.12"
   ],
   "dependencies": {
-    "node-uuid": "*"
+    "node-uuid":     ">= 1.3.3"
   },
   "devDependencies": {
-    "redis": ">= 0.6.7",
-    "mongoose": ">= 2.2.3",
-    "mysql": ">= 0.9.4",
-    "sequelize": "*",
-    "pg": "*",
-    "sqlite3": "*",
-    "nodeunit": ">= 0",
-    "coffee-script": ">= 0",
-    "riak-js": ">= 0",
-    "neo4j": ">= 0",
-    "mongodb": "*"
+    "coffee-script": ">= 1.2.0",
+    "nodeunit":      ">= 0.6.4",
+    "redis":         ">= 0.6.7",
+    "mongoose":      ">= 2.2.3",
+    "mysql":         ">= 0.9.4",
+    "pg":            ">= 0.6.9",
+    "sqlite3":       ">= 2.1.1",
+    "riak-js":       ">= 0.4.1",
+    "neo4j":         ">= 0.2.5",
+    "mongodb":       ">= 0.9.9",
+    "felix-couchdb": ">= 1.0.3"
   }
 }
