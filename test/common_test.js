@@ -37,8 +37,9 @@ Object.keys(schemas).forEach(function (schemaName) {
         });
 
         schema.log = function (a) {
-             // console.log(a);
+             console.log(a);
         };
+
         testOrm(schema);
         if (specificTest[schemaName]) specificTest[schemaName](schema);
     });
