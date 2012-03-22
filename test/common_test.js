@@ -37,7 +37,7 @@ Object.keys(schemas).forEach(function (schemaName) {
         });
 
         schema.log = function (a) {
-            // console.log(a);
+             // console.log(a);
         };
         testOrm(schema);
         if (specificTest[schemaName]) specificTest[schemaName](schema);
@@ -711,6 +711,40 @@ function testOrm(schema) {
                 Post.findOne({ where: { title: 'not exists' } }, function (err, post) {
                     test.ok(typeof post === 'undefined');
                     test.done();
+                });
+            });
+        });
+    });
+
+    if (schema.name !== 'mongoose' && schema.name !== 'neo4j')
+    it('should update or create record', function (test) {
+        var newData = {
+            id: 1,
+            title: 'New title (really new)',
+            content: 'Some example content (updated)'
+        };
+        Post.updateOrCreate(newData, function (err, updatedPost) {
+            if (err) throw err;
+            test.ok(updatedPost);
+            if (!updatedPost) throw Error('No post!');
+
+            test.equal(newData.id, updatedPost.toObject().id);
+            test.equal(newData.title, updatedPost.toObject().title);
+            test.equal(newData.content, updatedPost.toObject().content);
+
+            Post.find(updatedPost.id, function (err, post) {
+                if (err) throw err;
+                if (!post) throw Error('No post!');
+                test.equal(newData.id, post.toObject().id);
+                test.equal(newData.title, post.toObject().title);
+                test.equal(newData.content, post.toObject().content);
+                Post.updateOrCreate({id: 100001, title: 'hey'}, function (err, post) {
+                    if (schema.name !== 'mongodb') test.equal(post.id, 100001);
+                    test.equal(post.title, 'hey');
+                    Post.find(post.id, function (err, post) {
+                        if (!post) throw Error('No post!');
+                        test.done();
+                    });
                 });
             });
         });
