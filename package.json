@@ -1,16 +1,16 @@
 {
   "name": "jugglingdb",
   "description": "ORM for every database: redis, mysql, neo4j, mongodb, postgres, sqlite",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "Anatoliy Chakkaev <rpm1602@gmail.com>",
   "contributors": [
     { "name": "Anatoliy Chakkaev",     "email": "rpm1602@gmail.com" },
     { "name": "Julien Guimont",        "email": "julien.guimont@gmail.com" },
     { "name": "Henri Bergius",         "email": "henri.bergius@iki.fi" },
     { "name": "redvulps",              "email": "fabopereira@gmail.com" },
+    { "name": "Felipe Sateler",        "email": "fsateler@gmail.com" },
     { "name": "Amir M. Mahmoudi",      "email": "a@geeknux.com" },
     { "name": "Justinas Stankevičius", "email": "justinas@justinas.me" },
-    { "name": "Felipe Sateler",        "email": "fsateler@gmail.com" },
     { "name": "Rick O'Toole",          "email": "patrick.n.otoole@gmail.com" }
   ],
   "repository": {
