@@ -315,7 +315,7 @@ function testOrm(schema) {
                 test.ok(post.propertyChanged('content'));
                 post.reload(function (err, post) {
                     test.equal(post.title, 'New title');
-                    test.ok(!post.propertyChanged('title'));
+                    test.ok(!post.propertyChanged('title'), 'title not changed');
                     test.equal(post.content, 'content', 'real value turned back');
                     test.ok(!post.propertyChanged('content'), 'content unchanged');
                     test.done();
