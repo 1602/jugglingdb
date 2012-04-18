@@ -1,7 +1,7 @@
+require('./spec_helper').init(exports);
+
 var Schema = require('../index').Schema;
 var Text = Schema.Text;
-
-require('./spec_helper').init(exports);
 
 var schemas = {
     // riak: {},
