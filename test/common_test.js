@@ -763,7 +763,8 @@ function testOrm(schema) {
             User.find(user.id, function (err, user) {
                 test.ok(user !== u);
                 test.equal(user.passwd, 'qwertysalt');
-                User.all({where: {id: user.id}}, function (err, users) {
+                console.log(user.id);
+                User.all({where: {passwd: 'qwertysalt'}}, function (err, users) {
                     test.ok(users[0] !== user);
                     test.equal(users[0].passwd, 'qwertysalt');
                     User.create({passwd: 'asalat'}, function (err, usr) {
