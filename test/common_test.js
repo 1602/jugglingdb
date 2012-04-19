@@ -753,6 +753,28 @@ function testOrm(schema) {
         });
     });
 
+    it('should work with custom setters and getters', function (test) {
+        User.setter.passwd = function (pass) {
+            this._passwd = pass + 'salt';
+        };
+        var u = new User({passwd: 'qwerty'});
+        test.equal(u.passwd, 'qwertysalt');
+        u.save(function (err, user) {
+            User.find(user.id, function (err, user) {
+                test.ok(user !== u);
+                test.equal(user.passwd, 'qwertysalt');
+                User.all({where: {id: user.id}}, function (err, users) {
+                    test.ok(users[0] !== user);
+                    test.equal(users[0].passwd, 'qwertysalt');
+                    User.create({passwd: 'asalat'}, function (err, usr) {
+                        test.equal(usr.passwd, 'asalatsalt');
+                        test.done();
+                    });
+                });
+            });
+        });
+    });
+
     it('all tests done', function (test) {
         test.done();
         process.nextTick(allTestsDone);
