@@ -5,10 +5,10 @@ exports.Schema = require('./lib/schema').Schema;
 exports.AbstractClass = require('./lib/abstract-class').AbstractClass;
 exports.Validatable = require('./lib/validatable').Validatable;
 
-exports.init = function () {
+exports.init = function (root) {
     if (!global.railway) return;
     railway.orm = exports;
-    require('./lib/railway');
+    require('./lib/railway')(root);
 };
 
 try {
