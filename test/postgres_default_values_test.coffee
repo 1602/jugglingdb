@@ -2,7 +2,7 @@ juggling = require('../index')
 Schema = juggling.Schema
 Text = Schema.Text
 
-DBNAME = process.env.DBNAME || 'myapp_test'
+DBNAME = process.env.DBNAME || 'myapp_test' #this db must already exist and will be destroyed
 DBUSER = process.env.DBUSER || 'root'
 DBPASS = ''
 DBENGINE = process.env.DBENGINE || 'postgres'
