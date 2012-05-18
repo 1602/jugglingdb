@@ -786,11 +786,116 @@ function testOrm(schema) {
         });
     });
 
+    context(schema.name + ' - q',function(){
+        try{
+            var Q = require('q');
+        }catch(ex){}
+
+        if(!Q)return console.log('q is not installed, not testing promises');
+
+        it('should create object', function (test) {
+            Post.create().then(function (post) {
+                test.ok(post.id, 'Id present');
+                test.ok(!post.title, 'Title is blank');
+                return Post.exists(post.id).then(function (exists) {
+                    test.ok(exists);
+                    test.done();
+                });
+            }).end();
+        });
+
+        it('should save object', function (test) {
+            var title = 'Initial title', title2 = 'Hello world',
+                date = new Date;
+
+            Post.create({
+                title: title,
+                date: date
+            }).then(function (obj) {
+                test.ok(obj.id, 'Object id should present');
+                test.equals(obj.title, title);
+                // test.equals(obj.date, date);
+                obj.title = title2;
+                test.ok(obj.propertyChanged('title'), 'Title changed');
+                return obj.save();
+            }).then(function(obj){
+                test.equal(obj.title, title2);
+                test.ok(!obj.propertyChanged('title'));
+
+                var p = new Post({title: 1});
+                p.title = 2;
+                return p.save().then(function (obj) {
+                    test.ok(!p.propertyChanged('title'));
+                    p.title = 3;
+                    test.ok(p.propertyChanged('title'));
+                    test.equal(p.title_was, 2);
+                    return p.save().then(function () {
+                        test.equal(p.title_was, 3);
+                        test.ok(!p.propertyChanged('title'));
+                        test.done();
+                    });
+                });
+            }).end();
+        });
+
+        it('should create object with initial data', function (test) {
+            var title = 'Initial title',
+                date = new Date;
+
+            Post.create({
+                title: title,
+                date: date
+            }).then(function (obj) {
+                test.ok(obj.id);
+                test.equals(obj.title, title);
+                test.equals(obj.date, date);
+                return Post.find(obj.id)
+            }).then(function (obj) {
+                test.equal(obj.title, title);
+                test.equal(obj.date.toString(), date.toString());
+                test.done();
+            }).end();
+        });
+
+        it('should destroy object', function (test) {
+            var post;
+            Post.create().then(function (p) {
+                post = p;
+                return Post.exists(post.id);
+            }).then(function (exists) {
+                test.ok(exists, 'Object exists');
+                return post.destroy();
+            }).then(function () {
+                return Post.exists(post.id); 
+            }).then(function (exists) {
+                test.ok(!exists, 'Hey! ORM told me that object exists, but it looks like it doesn\'t. Something went wrong...');
+                return Post.find(post.id); 
+            }).then(function (obj) {
+                test.equal(obj, null, 'Param obj should be null');
+                test.done();
+            }).end();
+        });
+        it('should handle hasMany relationship', function (test) {
+            User.create()
+            .then(function (u) {
+                test.ok(u.posts, 'Method defined: posts');
+                test.ok(u.posts.build, 'Method defined: posts.build');
+                test.ok(u.posts.create, 'Method defined: posts.create');
+                return u.posts.create().then(function (post) {
+                    // test.ok(post.author(), u.id);
+                    return u.posts().then(function (posts) {
+                        test.equal(posts.pop().id, post.id);
+                        test.done();
+                    });
+                });
+            }).end();
+        });
+    });
+
     it('all tests done', function (test) {
         test.done();
         process.nextTick(allTestsDone);
     });
-
     function allTestsDone() {
         schema.disconnect();
         console.log('Test done in %dms\n', Date.now() - start);
