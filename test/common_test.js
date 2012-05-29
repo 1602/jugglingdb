@@ -53,13 +53,14 @@ function testOrm(schema) {
     it('should define class', function (test) {
 
         User = schema.define('User', {
-            name:       { type: String, index: true },
-            email:       { type: String, index: true },
+            name:      { type: String, index: true },
+            email:     { type: String, index: true },
             bio:          Text,
             approved:     Boolean,
             joinedAt:     Date,
             age:          Number,
-            passwd:     String
+            passwd:       String,
+            settings:  { type: { name: 'JSON' }}
         });
 
         Post = schema.define('Post', {
@@ -303,6 +304,17 @@ function testOrm(schema) {
         u.passwd = 's3cr3t';
         test.equal(u.passwd, calcHash('s3cr3t', salt));
         test.done();
+    });
+
+    it('should serialize JSON type', function (test) {
+        User.create({settings: {hello: 'world'}}, function (err, user) {
+            test.ok(user.id);
+            test.equal(user.settings.hello, 'world');
+            User.find(user.id, function (err, u) {
+                test.equal(u.settings.hello, 'world');
+                test.done();
+            });
+        });
     });
 
     it('should update single attribute', function (test) {
