@@ -91,3 +91,5 @@ it "should trigger after destroy", (test) ->
     User.create (err, user) ->
         user.destroy()
 
+it 'allows me to modify attributes before saving', (test) ->
+    test.done()
