@@ -17,25 +17,25 @@ User = schema.define 'User',
     pendingPeriod: Number
     createdByAdmin: Boolean
 
-it "should trigger after initialize", (test)->
-  User.afterInitialize = ()->
-    User.afterInitialize = null
-    test.done()
-  user = new User
+it "should trigger after initialize", (test) ->
+    User.afterInitialize = ->
+        User.afterInitialize = null
+        test.done()
+    user = new User
   
 
-it "should trigger before create", (test)->
-  User.beforeCreate = ()->
-    User.beforeCreate = null
-    test.done()
-  User.create {}, ()-> test.ok "saved"
+it "should trigger before create", (test) ->
+    User.beforeCreate = () ->
+        User.beforeCreate = null
+        test.done()
+    User.create -> test.ok "saved"
 
 it "should trigger after create", (test) ->
     User.afterCreate = (next) ->
         User.afterCreate = null
         next()
 
-    User.create {}, ->
+    User.create ->
         test.ok "saved"
         test.done()
 
@@ -53,8 +53,8 @@ it 'should trigger before save', (test) ->
         test.ok 'saved'
         test.done()
 
-it 'should trigger after save', (test)->
-    User.afterSave = (next)->
+it 'should trigger after save', (test) ->
+    User.afterSave = (next) ->
         User.afterSave = null
         next()
 
@@ -64,30 +64,30 @@ it 'should trigger after save', (test)->
         test.done()
 
 it "should trigger before update", (test) ->
-  User.beforeUpdate = ()->
-    User.beforeUpdate = null
-    test.done()
-  User.create {}, (err, user)->
-    user.updateAttributes {email:"1@1.com"}, () -> test.ok "updated"
+    User.beforeUpdate = () ->
+        User.beforeUpdate = null
+        test.done()
+    User.create {}, (err, user) ->
+        user.updateAttributes email:"1@1.com", -> test.ok "updated"
 
 it "should trigger after update", (test) ->
-    User.afterUpdate = ()->
+    User.afterUpdate = () ->
         User.afterUpdate = null
         test.done()
-    User.create {}, (err, user)->
-        user.updateAttributes {email:"1@1.com"}, ()-> test.ok "updated"
+    User.create (err, user) ->
+        user.updateAttributes email: "1@1.com", -> test.ok "updated"
 
 it "should trigger before destroy", (test)->
-  User.beforeDestroy = ()->
-    User.beforeDestroy = null
-    test.done()
-  User.create {}, (err, user)->
-    user.destroy()
+    User.beforeDestroy = () ->
+        User.beforeDestroy = null
+        test.done()
+    User.create {}, (err, user) ->
+        user.destroy()
 
-it "should trigger after destroy", (test)->
-  User.afterDestroy = ()->
-    User.afterDestroy = null
-    test.done()
-  User.create {}, (err, user)->
-    user.destroy()
+it "should trigger after destroy", (test) ->
+    User.afterDestroy = () ->
+        User.afterDestroy = null
+        test.done()
+    User.create (err, user) ->
+        user.destroy()
 
