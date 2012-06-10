@@ -10,6 +10,7 @@ schemas =
         url: 'mongodb://localhost/test'
     redis:     {}
     memory:    {}
+    cradle:    {}
 
 testOrm = (schema) ->
 

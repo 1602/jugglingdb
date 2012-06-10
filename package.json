@@ -40,6 +40,7 @@
     "riak-js":       ">= 0.4.1",
     "neo4j":         ">= 0.2.5",
     "mongodb":       ">= 0.9.9",
-    "felix-couchdb": ">= 1.0.3"
+    "felix-couchdb": ">= 1.0.3",
+    "cradle":        ">= 0.6.3"
   }
 }
