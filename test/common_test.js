@@ -20,7 +20,8 @@ var schemas = {
     mongoose:  { url: 'mongodb://travis:test@localhost:27017/myapp' },
     mongodb:   { url: 'mongodb://travis:test@localhost:27017/myapp' },
     redis:     {},
-    memory:    {}
+    memory:    {},
+    cradle:    {}
 };
 
 var specificTest = getSpecificTests();
@@ -579,7 +580,7 @@ function testOrm(schema) {
 
     });
 
-    if (schema.name !== 'redis' && schema.name !== 'memory' && schema.name !== 'neo4j')
+    if (schema.name !== 'redis' && schema.name !== 'memory' && schema.name !== 'neo4j' && schema.name !== 'cradle')
     it('should allow advanced queying: lt, gt, lte, gte, between', function (test) {
         Post.destroyAll(function () {
             Post.create({date: new Date('Wed, 01 Feb 2012 13:56:12 GMT')}, done);
