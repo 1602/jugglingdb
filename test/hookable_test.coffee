@@ -113,3 +113,20 @@ it 'allows me to modify attributes before saving', (test) ->
                 test.equals loadedUser.email, 'kennu@example.org'
                 test.ok 'reloaded'
                 test.done()
+
+it 'allows me to modify attributes before creating', (test) ->
+    test.expect 3
+    User.beforeCreate = (next) ->
+        @email = @name + '@example.org'
+        next()
+    User.create name: 'kenneth', (err, user) ->
+        # Check that the email was updated by beforeCreate
+        test.equals user.email, 'kenneth@example.org'
+        User.beforeCreate = null
+        # Clear cache and reload to check if changes were actually stored in db
+        User.constructor.cache = {}
+        User.constructor.mru = []
+        User.find user.id, (err, loadedUser) ->
+            test.equals loadedUser.email, 'kenneth@example.org'
+            test.ok 'reloaded'
+            test.done()
