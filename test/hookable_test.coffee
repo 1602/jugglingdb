@@ -92,4 +92,24 @@ it "should trigger after destroy", (test) ->
         user.destroy()
 
 it 'allows me to modify attributes before saving', (test) ->
-    test.done()
+    test.expect 4
+    User.beforeSave = (next) ->
+        @email = @name + '@example.org'
+        next()
+    # Create initial user
+    user = new User name: 'kenneth'
+    user.save ->
+        # Check that the email was updated by beforeSave
+        test.equals user.email, 'kenneth@example.org'
+        # Update name
+        user.updateAttributes name: 'kennu', ->
+            # Check that the email was again updated by beforeSave
+            test.equals user.email, 'kennu@example.org'
+            User.beforeSave = null
+            # Clear cache and reload to check if changes were actually stored in db
+            User.constructor.cache = {}
+            User.constructor.mru = []
+            User.find user.id, (err, loadedUser) ->
+                test.equals loadedUser.email, 'kennu@example.org'
+                test.ok 'reloaded'
+                test.done()
