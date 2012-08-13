@@ -24,14 +24,24 @@ var schemas = {
 };
 
 var specificTest = getSpecificTests();
+var testPerformed = false;
 
 Object.keys(schemas).forEach(function (schemaName) {
     if (process.env.ONLY && process.env.ONLY !== schemaName) return;
     if (process.env.EXCEPT && ~process.env.EXCEPT.indexOf(schemaName)) return;
+    performTestFor(schemaName);
+});
+
+if (process.env.ONLY && !testPerformed) {
+    performTestFor(process.env.ONLY);
+}
+
+function performTestFor(schemaName) {
     context(schemaName, function () {
-        var schema = new Schema(schemaName, schemas[schemaName]);
+        var schema = new Schema(schemaName, schemas[schemaName] || {});
 
         it('should connect to database', function (test) {
+            testPerformed = true;
             if (schema.connected) return test.done();
             schema.on('connected', test.done);
         });
@@ -43,7 +53,7 @@ Object.keys(schemas).forEach(function (schemaName) {
         testOrm(schema);
         if (specificTest[schemaName]) specificTest[schemaName](schema);
     });
-});
+}
 
 function testOrm(schema) {
 
@@ -59,8 +69,8 @@ function testOrm(schema) {
             approved:     Boolean,
             joinedAt:     Date,
             age:          Number,
-            passwd:       String,
-            settings:  { type: { name: 'JSON' }}
+            passwd:    { type: String, index: true },
+            settings:  { type: Schema.JSON }
         });
 
         Post = schema.define('Post', {
@@ -311,6 +321,7 @@ function testOrm(schema) {
             test.ok(user.id);
             test.equal(user.settings.hello, 'world');
             User.find(user.id, function (err, u) {
+                console.log(u.settings);
                 test.equal(u.settings.hello, 'world');
                 test.done();
             });
@@ -328,6 +339,7 @@ function testOrm(schema) {
                 post.reload(function (err, post) {
                     test.equal(post.title, 'New title');
                     test.ok(!post.propertyChanged('title'), 'title not changed');
+                    console.log(post.content);
                     test.equal(post.content, 'content', 'real value turned back');
                     test.ok(!post.propertyChanged('content'), 'content unchanged');
                     test.done();
@@ -486,7 +498,7 @@ function testOrm(schema) {
 
     it('should handle ORDER clause', function (test) {
         var titles = [ 'Title A', 'Title Z', 'Title M', 'Title B', 'Title C' ];
-        var isRedis = Post.schema.name === 'redis' || Post.schema.name === 'memory';
+        var isRedis = Post.schema.name.match(/redis/) || Post.schema.name === 'memory';
         var dates = isRedis ? [ 5, 9, 0, 17, 9 ] : [
             new Date(1000 * 5 ),
             new Date(1000 * 9),
@@ -579,7 +591,7 @@ function testOrm(schema) {
 
     });
 
-    if (schema.name !== 'redis' && schema.name !== 'memory' && schema.name !== 'neo4j')
+    if (!schema.name.match(/redis/) && schema.name !== 'memory' && schema.name !== 'neo4j')
     it('should allow advanced queying: lt, gt, lte, gte, between', function (test) {
         Post.destroyAll(function () {
             Post.create({date: new Date('Wed, 01 Feb 2012 13:56:12 GMT')}, done);
@@ -770,6 +782,7 @@ function testOrm(schema) {
     });
 
     it('should work with custom setters and getters', function (test) {
+        User.schema.defineForeignKey('User', 'passwd');
         User.setter.passwd = function (pass) {
             this._passwd = pass + 'salt';
         };
