@@ -35,7 +35,7 @@
     "redis":         ">= 0.6.7",
     "mongoose":      "latest",
     "mysql":         ">= 0.9.4",
-    "pg":            "latest",
+    "pg":            "= 0.7.2",
     "sqlite3":       ">= 2.0.18",
     "riak-js":       ">= 0.4.1",
     "neo4j":         ">= 0.2.5",
