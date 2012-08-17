@@ -39,6 +39,15 @@ getFields = (model, cb) ->
             res.forEach (field) -> fields[field.Field] = field
             cb err, fields
 
+getIndexes = (model, cb) ->
+    query 'SHOW INDEXES FROM ' + model, (err, res) ->
+        if err
+            cb err
+        else
+            indexes = {}
+            res.forEach (index) -> indexes[index.Key_name] = index
+            cb err, indexes
+
 it 'should run migration', (test) ->
     withBlankDatabase (err) ->
         schema.automigrate ->
@@ -141,6 +150,22 @@ it 'should check actuality of schema', (test) ->
         User.defineProperty 'email', false
         User.schema.isActual (err, ok) ->
             test.ok not ok
+            test.done()
+
+it 'should add single-column index', (test) ->
+    User.defineProperty 'email', type: String, index: true
+    User.schema.autoupdate (err) ->
+        return console.log(err) if err
+        getIndexes 'User', (err, ixs) ->
+            test.ok ixs.email && ixs.email.Column_name == 'email'
+            test.done()
+
+it 'should remove single-column index', (test) ->
+    User.defineProperty 'email', type: String, index: false
+    User.schema.autoupdate (err) ->
+        return console.log(err) if err
+        getIndexes 'User', (err, ixs) ->
+            test.ok !ixs.email
             test.done()
 
 it 'should disconnect when done', (test) ->
