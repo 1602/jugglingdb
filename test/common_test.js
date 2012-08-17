@@ -37,11 +37,11 @@ if (process.env.ONLY && !testPerformed) {
 }
 
 function performTestFor(schemaName) {
+    testPerformed = true;
     context(schemaName, function () {
         var schema = new Schema(schemaName, schemas[schemaName] || {});
 
         it('should connect to database', function (test) {
-            testPerformed = true;
             if (schema.connected) return test.done();
             schema.on('connected', test.done);
         });
