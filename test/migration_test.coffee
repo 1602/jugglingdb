@@ -168,7 +168,7 @@ it 'should add single-column index', (test) ->
 it 'should change type of single-column index', (test) ->
     User.defineProperty 'email', type: String, index: { type: 'BTREE' }
     User.schema.isActual (err, ok) ->
-        test.ok not ok, 'schema is not actual'
+        test.ok ok, 'schema is actual'
         User.schema.autoupdate (err) ->
         return console.log(err) if err
         getIndexes 'User', (err, ixs) ->
@@ -193,6 +193,14 @@ it 'should update multi-column index when order of columns changed', (test) ->
             return console.log(err) if err
             getIndexes 'User', (err, ixs) ->
                 test.equals ixs.index1.Column_name, 'createdByAdmin'
+                test.done()
+
+
+it 'test', (test) ->
+    User.defineProperty 'email', type: String, index: true
+    User.schema.autoupdate (err) ->
+        User.schema.autoupdate (err) ->
+            User.schema.autoupdate (err) ->
                 test.done()
 
 it 'should disconnect when done', (test) ->
