@@ -23,6 +23,9 @@ User = schema.define 'User',
     birthDate: Date
     pendingPeriod: Number
     createdByAdmin: Boolean
+,   indexes:
+      index1:
+        columns: 'email, createdByAdmin'
 
 withBlankDatabase = (cb) ->
     db = schema.settings.database = DBNAME
@@ -45,7 +48,7 @@ getIndexes = (model, cb) ->
             cb err
         else
             indexes = {}
-            res.forEach (index) -> indexes[index.Key_name] = index
+            res.forEach (index) -> indexes[index.Key_name] = index if index.Seq_in_index == 1
             cb err, indexes
 
 it 'should run migration', (test) ->
@@ -146,18 +149,32 @@ it 'should autoupgrade', (test) ->
 it 'should check actuality of schema', (test) ->
     # drop column
     User.schema.isActual (err, ok) ->
-        test.ok ok
+        test.ok ok, 'schema is actual'
         User.defineProperty 'email', false
         User.schema.isActual (err, ok) ->
-            test.ok not ok
+            test.ok not ok, 'schema is not actual'
             test.done()
 
 it 'should add single-column index', (test) ->
-    User.defineProperty 'email', type: String, index: true
+    User.defineProperty 'email', type: String, index: { kind: 'FULLTEXT', type: 'HASH'}
     User.schema.autoupdate (err) ->
         return console.log(err) if err
         getIndexes 'User', (err, ixs) ->
             test.ok ixs.email && ixs.email.Column_name == 'email'
+            console.log(ixs)
+            test.equal ixs.email.Index_type, 'BTREE' # default
+            test.done()
+
+it 'should change type of single-column index', (test) ->
+    User.defineProperty 'email', type: String, index: { type: 'BTREE' }
+    User.schema.isActual (err, ok) ->
+        test.ok not ok, 'schema is not actual'
+        User.schema.autoupdate (err) ->
+        return console.log(err) if err
+        getIndexes 'User', (err, ixs) ->
+            console.log ixs.email
+            test.ok ixs.email && ixs.email.Column_name == 'email'
+            test.equal ixs.email.Index_type, 'BTREE'
             test.done()
 
 it 'should remove single-column index', (test) ->
@@ -167,6 +184,16 @@ it 'should remove single-column index', (test) ->
         getIndexes 'User', (err, ixs) ->
             test.ok !ixs.email
             test.done()
+
+it 'should update multi-column index when order of columns changed', (test) ->
+    User.schema.adapter._models.User.settings.indexes.index1.columns = 'createdByAdmin, email'
+    User.schema.isActual (err, ok) ->
+        test.ok not ok, 'schema is not actual'
+        User.schema.autoupdate (err) ->
+            return console.log(err) if err
+            getIndexes 'User', (err, ixs) ->
+                test.equals ixs.index1.Column_name, 'createdByAdmin'
+                test.done()
 
 it 'should disconnect when done', (test) ->
     schema.disconnect()
