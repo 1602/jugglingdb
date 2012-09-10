@@ -77,8 +77,15 @@ function testOrm(schema) {
             title:     { type: String, length: 255, index: true },
             content:   { type: Text },
             date:      { type: Date,    default: function () { return new Date }, index: true },
-            published: { type: Boolean, default: false }
+            published: { type: Boolean, default: false },
+            likes:     [],
+            related:   [RelatedPost]
         }, {table: 'posts'});
+
+        function RelatedPost() { }
+        RelatedPost.prototype.someMethod = function () {
+            return this.parent;
+        };
 
         Post.validateAsync('title', function (err, done) {
             process.nextTick(done);
@@ -154,7 +161,7 @@ function testOrm(schema) {
 
     it('should be expoted to JSON', function (test) {
         test.equal(JSON.stringify(new Post({id: 1, title: 'hello, json', date: 1})),
-        '{"id":1,"title":"hello, json","content":null,"date":1,"published":false,"userId":null}');
+        '{"id":1,"title":"hello, json","content":null,"date":1,"published":false,"likes":[],"related":[],"userId":null}');
         test.done();
     });
 
@@ -798,6 +805,15 @@ function testOrm(schema) {
                 });
             });
         });
+    });
+
+    it('should work with typed and untyped nested collections', function (test) {
+        var post = new Post;
+        var like = post.likes.push({foo: 'bar'});
+        test.equal(like.constructor.name, 'ListItem');
+        var related = post.related.push({hello: 'world'});
+        test.ok(related.someMethod);
+        test.done();
     });
 
     it('all tests done', function (test) {
