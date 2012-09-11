@@ -813,7 +813,34 @@ function testOrm(schema) {
         test.equal(like.constructor.name, 'ListItem');
         var related = post.related.push({hello: 'world'});
         test.ok(related.someMethod);
-        test.done();
+        post.save(function (err, p) {
+            test.equal(p.likes.nextid, 2);
+            p.likes.push({second: 2});
+            p.likes.push({third: 3});
+            p.save(function (err) {
+                Post.find(p.id, function (err, pp) {
+                    test.equal(pp.likes.length, 3);
+                    test.ok(pp.likes[3].third);
+                    test.ok(pp.likes[2].second);
+                    test.ok(pp.likes[1].foo);
+                    pp.likes.remove(2);
+                    test.equal(pp.likes.length, 2);
+                    test.ok(!pp.likes[2]);
+                    pp.likes.remove(pp.likes[1]);
+                    test.equal(pp.likes.length, 1);
+                    test.ok(!pp.likes[1]);
+                    test.ok(pp.likes[3]);
+                    pp.save(function () {
+                        Post.find(p.id, function (err, pp) {
+                            test.equal(pp.likes.length, 1);
+                            test.ok(!pp.likes[1]);
+                            test.ok(pp.likes[3]);
+                            test.done();
+                        });
+                    });
+                });
+            });
+        });
     });
 
     it('all tests done', function (test) {
