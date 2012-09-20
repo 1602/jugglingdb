@@ -18,7 +18,7 @@ Feel free to vote and comment on cards (tickets/issues), if you want to join tea
 
 ```javascript
 var Schema = require('./jugglingdb').Schema;
-var schema = new Schema('redis', {port: 6379}); //port number depends on your configuration
+var schema = new Schema('redis2', {port: 6379}); //port number depends on your configuration
 // define models
 var Post = schema.define('Post', {
     title:     { type: String, length: 255 },
