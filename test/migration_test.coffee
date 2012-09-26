@@ -45,10 +45,12 @@ getFields = (model, cb) ->
 getIndexes = (model, cb) ->
     query 'SHOW INDEXES FROM ' + model, (err, res) ->
         if err
+            console.log err
             cb err
         else
             indexes = {}
-            res.forEach (index) -> indexes[index.Key_name] = index if index.Seq_in_index == 1
+            res.forEach (index) ->
+              indexes[index.Key_name] = index if index.Seq_in_index == '1'
             cb err, indexes
 
 it 'should run migration', (test) ->
@@ -162,7 +164,7 @@ it 'should add single-column index', (test) ->
         getIndexes 'User', (err, ixs) ->
             test.ok ixs.email && ixs.email.Column_name == 'email'
             console.log(ixs)
-            test.equal ixs.email.Index_type, 'BTREE' # default
+            test.equal ixs.email.Index_type, 'BTREE', 'default index type'
             test.done()
 
 it 'should change type of single-column index', (test) ->
@@ -172,7 +174,6 @@ it 'should change type of single-column index', (test) ->
         User.schema.autoupdate (err) ->
         return console.log(err) if err
         getIndexes 'User', (err, ixs) ->
-            console.log ixs.email
             test.ok ixs.email && ixs.email.Column_name == 'email'
             test.equal ixs.email.Index_type, 'BTREE'
             test.done()
