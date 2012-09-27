@@ -71,11 +71,13 @@ function testOrm(schema) {
             joinedAt:     Date,
             age:          Number,
             passwd:    { type: String, index: true },
-            settings:  { type: Schema.JSON }
+            settings:  { type: Schema.JSON },
+            extra:      Object
         });
 
         Post = schema.define('Post', {
             title:     { type: String, length: 255, index: true },
+            subject:   { type: String },
             content:   { type: Text },
             date:      { type: Date,    default: function () { return new Date }, index: true },
             published: { type: Boolean, default: false },
@@ -162,7 +164,7 @@ function testOrm(schema) {
 
     it('should be expoted to JSON', function (test) {
         test.equal(JSON.stringify(new Post({id: 1, title: 'hello, json', date: 1})),
-        '{"id":1,"title":"hello, json","content":null,"date":1,"published":false,"likes":[],"related":[],"userId":null}');
+        '{"id":1,"title":"hello, json","subject":null,"content":null,"date":1,"published":false,"likes":[],"related":[],"userId":null}');
         test.done();
     });
 
@@ -496,16 +498,23 @@ function testOrm(schema) {
     });
 
     it('should handle ORDER clause', function (test) {
-        var titles = [ 'Title A', 'Title Z', 'Title M', 'Title B', 'Title C' ];
-        var dates = [
+        var titles = [ { title: 'Title A', subject: "B" },
+                       { title: 'Title Z', subject: "A" },
+                       { title: 'Title M', subject: "C" },
+                       { title: 'Title A', subject: "A" },
+                       { title: 'Title B', subject: "A" },
+                       { title: 'Title C', subject: "D" }];
+        var isRedis = Post.schema.name === 'redis' || Post.schema.name === 'memory';
+        var dates = isRedis ? [ 5, 9, 0, 17, 10, 9 ] : [
             new Date(1000 * 5 ),
             new Date(1000 * 9),
             new Date(1000 * 0),
             new Date(1000 * 17),
+            new Date(1000 * 10),
             new Date(1000 * 9)
         ];
         titles.forEach(function (t, i) {
-            Post.create({title: t, date: dates[i]}, done);
+            Post.create({title: t.title, subject: t.subject, date: dates[i]}, done);
         });
 
         var i = 0, tests = 0;
@@ -515,7 +524,18 @@ function testOrm(schema) {
                 doFilterAndSortReverseTest();
                 doStringTest();
                 doNumberTest();
+
+                if (schema.name == 'mongoose') {
+                    doMultipleSortTest();
+                    doMultipleReverseSortTest();
+                }
             }
+        }
+
+        function compare(a, b) {
+            if (a.title < b.title) return -1;
+            if (a.title > b.title) return 1;
+            return 0;
         }
 
         // Post.schema.log = console.log;
@@ -524,9 +544,9 @@ function testOrm(schema) {
             tests += 1;
             Post.all({order: 'title'}, function (err, posts) {
                 if (err) console.log(err);
-                test.equal(posts.length, 5);
-                titles.sort().forEach(function (t, i) {
-                    if (posts[i]) test.equal(posts[i].title, t, 'doStringTest');
+                test.equal(posts.length, 6);
+                titles.sort(compare).forEach(function (t, i) {
+                    if (posts[i]) test.equal(posts[i].title, t.title);
                 });
                 finished();
             });
@@ -536,7 +556,7 @@ function testOrm(schema) {
             tests += 1;
             Post.all({order: 'date'}, function (err, posts) {
                 if (err) console.log(err);
-                test.equal(posts.length, 5);
+                test.equal(posts.length, 6);
                 dates.sort(numerically).forEach(function (d, i) {
                     if (posts[i])
                     test.equal(posts[i].date.toString(), d.toString(), 'doNumberTest');
@@ -569,6 +589,34 @@ function testOrm(schema) {
                         test.equal(posts[i].title, t, 'doFilterAndSortReverseTest');
                     }
                 });
+                finished();
+            });
+        }
+
+        function doMultipleSortTest() {
+            tests += 1;
+            Post.all({order: "title ASC, subject ASC"}, function(err, posts) {
+                if (err) console.log(err);
+                test.equal(posts.length, 6);
+                test.equal(posts[0].title, "Title A");
+                test.equal(posts[0].subject, "A");
+                test.equal(posts[1].title, "Title A");
+                test.equal(posts[1].subject, "B");
+                test.equal(posts[5].title, "Title Z");
+                finished();
+            });
+        }
+
+        function doMultipleReverseSortTest() {
+            tests += 1;
+            Post.all({order: "title ASC, subject DESC"}, function(err, posts) {
+                if (err) console.log(err);
+                test.equal(posts.length, 6);
+                test.equal(posts[0].title, "Title A");
+                test.equal(posts[0].subject, "B");
+                test.equal(posts[1].title,"Title A");
+                test.equal(posts[1].subject, "A");
+                test.equal(posts[5].title, "Title Z");
                 finished();
             });
         }
