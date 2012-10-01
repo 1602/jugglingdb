@@ -1,7 +1,7 @@
 {
   "name": "jugglingdb",
   "description": "ORM for every database: redis, mysql, neo4j, mongodb, postgres, sqlite",
-  "version": "0.1.12",
+  "version": "0.1.20",
   "author": "Anatoliy Chakkaev <rpm1602@gmail.com>",
   "contributors": [
     { "name": "Anatoliy Chakkaev",     "email": "rpm1602@gmail.com" },
@@ -20,7 +20,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "nodeunit test/*_test*"
+    "test": "EXCEPT=cradle nodeunit test/*_test*"
   },
   "engines": [
     "node >= 0.4.12"
@@ -32,14 +32,16 @@
     "semicov":       "*",
     "coffee-script": ">= 1.2.0",
     "nodeunit":      ">= 0.6.4",
-    "redis":         ">= 0.6.7",
-    "mongoose":      ">= 2.2.3",
-    "mysql":         ">= 0.9.4",
-    "pg":            ">= 0.6.9",
+    "redis":         "= 0.7.2",
+    "hiredis":       "latest",
+    "mongoose":      "latest",
+    "mysql":         ">= 2.0.0-alpha3",
+    "pg":            "= 0.7.2",
     "sqlite3":       ">= 2.0.18",
     "riak-js":       ">= 0.4.1",
     "neo4j":         ">= 0.2.5",
     "mongodb":       ">= 0.9.9",
-    "felix-couchdb": ">= 1.0.3"
+    "felix-couchdb": ">= 1.0.3",
+    "cradle":        ">= 0.6.3"
   }
 }
