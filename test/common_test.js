@@ -504,7 +504,7 @@ function testOrm(schema) {
                        { title: 'Title A', subject: "A" },
                        { title: 'Title B', subject: "A" },
                        { title: 'Title C', subject: "D" }];
-        var isRedis = Post.schema.name === 'redis' || Post.schema.name === 'memory';
+        var isRedis = Post.schema.name === 'redis';
         var dates = isRedis ? [ 5, 9, 0, 17, 10, 9 ] : [
             new Date(1000 * 5 ),
             new Date(1000 * 9),
@@ -569,6 +569,7 @@ function testOrm(schema) {
             tests += 1;
             Post.all({where: {date: new Date(1000 * 9)}, order: 'title', limit: 3}, function (err, posts) {
                 if (err) console.log(err);
+                console.log(posts.length);
                 test.equal(posts.length, 2, 'Exactly 2 posts returned by query');
                 [ 'Title C', 'Title Z' ].forEach(function (t, i) {
                     if (posts[i]) {
