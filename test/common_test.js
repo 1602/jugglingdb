@@ -150,7 +150,7 @@ function testOrm(schema) {
             anotherPost = Post({title: 'Resig style constructor'});
 
         test.equal(post.title, hw);
-        test.ok(!post.propertyChanged('title'));
+        test.ok(!post.propertyChanged('title'), 'property changed: title');
         post.title = 'Goodbye, Lenin';
         test.equal(post.title_was, hw);
         test.ok(post.propertyChanged('title'));
@@ -164,7 +164,7 @@ function testOrm(schema) {
 
     it('should be expoted to JSON', function (test) {
         test.equal(JSON.stringify(new Post({id: 1, title: 'hello, json', date: 1})),
-        '{"id":1,"title":"hello, json","subject":null,"content":null,"date":1,"published":false,"likes":[],"related":[],"userId":null}');
+        '{"title":"hello, json","subject":null,"content":null,"date":1,"published":false,"likes":[],"related":[],"id":1,"userId":null}');
         test.done();
     });
 
@@ -344,6 +344,7 @@ function testOrm(schema) {
             post.updateAttribute('title', 'New title', function () {
                 test.equal(post.title, 'New title');
                 test.ok(!post.propertyChanged('title'));
+                console.log('hahaha', post.content, post.__data.content);
                 test.equal(post.content, 'New content', 'dirty state saved');
                 test.ok(post.propertyChanged('content'));
                 post.reload(function (err, post) {
@@ -447,7 +448,7 @@ function testOrm(schema) {
         test.ok(Post.scope, 'Scope supported');
         Post.scope('published', {where: {published: true}});
         test.ok(typeof Post.published === 'function');
-        test.ok(Post.published._scope.published = true);
+        test.ok(Post.published._scope.where.published === true);
         var post = Post.published.build();
         test.ok(post.published, 'Can build');
         test.ok(post.isNewRecord());
@@ -462,6 +463,7 @@ function testOrm(schema) {
             if (err) return console.log(err);
             test.ok(typeof u.posts.published == 'function');
             test.ok(u.posts.published._scope.where.published);
+            console.log(u.posts.published._scope);
             test.equal(u.posts.published._scope.where.userId, u.id);
             done();
         });

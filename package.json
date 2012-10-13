@@ -20,7 +20,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "EXCEPT=cradle nodeunit test/*_test*"
+    "test": "EXCEPT=cradle,neo4j nodeunit test/*_test*"
   },
   "engines": [
     "node >= 0.4.12"
