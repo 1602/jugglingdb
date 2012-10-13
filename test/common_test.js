@@ -419,6 +419,16 @@ function testOrm(schema) {
 
     });
 
+
+    it('should find records filtered with multiple attributes', function (test) {
+        Post.create({title: 'title', content: 'content', published: true, date: 1}, function (err, post) {
+            Post.all({where: {title: 'title', date: 1}}, function (err, res) {
+                test.ok(res.length > 0, 'Exact match with string returns dataset');
+                test.done();
+            });
+        });
+    });
+
     it('should handle hasMany relationship', function (test) {
         User.create(function (err, u) {
             if (err) return console.log(err);
