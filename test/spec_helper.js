@@ -1,6 +1,8 @@
-var semicov = require('semicov');
-semicov.init('lib');
-process.on('exit', semicov.report);
+if (!process.env.TRAVIS) {
+    var semicov = require('semicov');
+    semicov.init('lib');
+    process.on('exit', semicov.report);
+}
 
 try {
     global.sinon = require('sinon');
