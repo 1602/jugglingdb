@@ -1,6 +1,6 @@
 ## About [<img src="https://secure.travis-ci.org/1602/jugglingdb.png" />](http://travis-ci.org/#!/1602/jugglingdb)
 
-JugglingDB is cross-db ORM, providing **common interface** to access most popular database formats. 
+JugglingDB is cross-db ORM for nodejs, providing **common interface** to access most popular database formats. 
 Currently supported are: mysql, mongodb, redis, neo4j and js-memory-storage (yep, 
 self-written engine for test-usage only). You can add your favorite database adapter, checkout one of the 
 existing adapters to learn how, it's super-easy, I guarantee.
@@ -11,13 +11,14 @@ existing adapters to learn how, it's super-easy, I guarantee.
 
 ## Participation
 
-Check status of project on trello board: https://trello.com/board/jugglingdb/4f0a0b1e27d3103c64288388
-Feel free to vote and comment on cards (tickets/issues), if you want to join team -- send me a message with your email.
+- Check status of project on trello board: https://trello.com/board/jugglingdb/4f0a0b1e27d3103c64288388
+- Make sure all tests pass (`npm test` command)
+- Feel free to vote and comment on cards (tickets/issues), if you want to join team -- send me a message with your email.
 
 ## Usage
 
 ```javascript
-var Schema = require('./jugglingdb').Schema;
+var Schema = require('jugglingdb').Schema;
 var schema = new Schema('redis2', {port: 6379}); //port number depends on your configuration
 // define models
 var Post = schema.define('Post', {
@@ -167,9 +168,9 @@ Make sure, your adapter can be required (just put it into ./node_modules):
 
 ## Running tests
 
-All tests are written using nodeunit:
+To run all tests (requires all databases):
 
-    nodeunit test/common_test.js
+    npm test
 
 If you run this line, of course it will fall, because it requres different databases to be up and running, 
 but you can use js-memory-engine out of box! Specify ONLY env var:
@@ -187,25 +188,6 @@ Now all common logic described in `./lib/*.js`, and database-specific stuff in `
 ## Contributing
 
 If you have found a bug please write unit test, and make sure all other tests still pass before pushing code to repo.
-
-## Roadmap
-
-### Common:
-
-+ transparent interface to APIs
-+ -before and -after hooks on save, update, destroy
-+ scopes
-+ default values
-+ more relationships stuff
-+ docs
-
-### Databases:
-
-+ riak
-+ couchdb
-+ low-level mysql
-+ postgres
-+ sqlite
 
 ## License
 
