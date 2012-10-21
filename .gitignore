@@ -2,3 +2,4 @@ node_modules
 doc
 coverage.html
 coverage
+v8.log
