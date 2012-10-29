@@ -711,6 +711,82 @@ function testOrm(schema) {
         }
     });
 
+
+    if (
+        schema.name === 'mysql' ||
+        schema.name === 'postgres'
+    )
+    it('should allow IN or NOT IN', function (test) {
+        User.destroyAll(function () {
+            User.create({name: 'User A', age: 21}, done);
+            User.create({name: 'User B', age: 22}, done);
+            User.create({name: 'User C', age: 23}, done);
+            User.create({name: 'User D', age: 24}, done);
+            User.create({name: 'User E', age: 25}, done);
+        });
+
+        var users = 5;
+        function done() {
+            if (--users === 0) makeTest();
+        }
+
+        function makeTest() {
+            // IN with empty array should return nothing
+            User.all({where: {name: {inq: []}}}, function (err, users) {
+                test.equal(users.length, 0, 'IN with empty array returns nothing');
+                ok();
+            });
+
+            // NOT IN with empty array should return everything
+            User.all({where: {name: {nin: []}}}, function (err, users) {
+                test.equal(users.length, 5, 'NOT IN with empty array returns everything');
+                ok();
+            });
+
+            // IN [User A] returns user with name = User A
+            User.all({where: {name: {inq: ['User A']}}}, function (err, users) {
+                test.equal(users.length, 1, 'IN searching one existing value returns 1 user');
+                test.equal(users[0].name, 'User A', 'IN [User A] returns user with name = User A');
+                ok();
+            });
+
+            // NOT IN [User A] returns users with name != User A
+            User.all({where: {name: {nin: ['User A']}}}, function (err, users) {
+                test.equal(users.length, 4, 'IN [User A] returns users with name != User A');
+                ok();
+            });
+
+            // IN [User A, User B] returns users with name = User A OR name = User B
+            User.all({where: {name: {inq: ['User A', 'User B']}}}, function (err, users) {
+                test.equal(users.length, 2, 'IN searching two existing values returns 2 users');
+                ok();
+            });
+
+            // NOT IN [User A, User B] returns users with name != User A AND name != User B
+            User.all({where: {name: {nin: ['User A', 'User B']}}}, function (err, users) {
+                test.equal(users.length, 3, 'NOT IN searching two existing values returns users with name != User A AND name != User B');
+                ok();
+            });
+
+            // IN works with numbers too
+            User.all({where: {age: {inq: [21, 22]}}}, function (err, users) {
+                test.equal(users.length, 2, 'IN works with numbers too');
+                ok();
+            });
+
+            // NOT IN works with numbers too
+            User.all({where: {age: {nin: [21, 22]}}}, function (err, users) {
+                test.equal(users.length, 3, 'NOT IN works with numbers too');
+                ok();
+            });
+        }
+
+        var tests = 8;
+        function ok() {
+            if (--tests === 0) test.done();
+        }
+    });
+
     it('should handle order clause with direction', function (test) {
         var wait = 0;
         var emails = [
