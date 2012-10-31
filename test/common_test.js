@@ -26,6 +26,7 @@ var schemas = {
 
 var specificTest = getSpecificTests();
 var testPerformed = false;
+var nbSchemaRequests = 0;
 
 Object.keys(schemas).forEach(function (schemaName) {
     if (process.env.ONLY && process.env.ONLY !== schemaName) return;
@@ -48,7 +49,8 @@ function performTestFor(schemaName) {
         });
 
         schema.log = function (a) {
-             console.log(a);
+            console.log(a);
+            nbSchemaRequests++;
         };
 
         testOrm(schema);
@@ -877,6 +879,43 @@ function testOrm(schema) {
                 Post.findOne({ where: { title: 'not exists' } }, function (err, post) {
                     test.ok(typeof post === 'undefined');
                     test.done();
+                });
+            });
+        });
+    });
+
+    it('belongsTo should be cached', function (test) {
+        var passport = new Passport({ownerId: 8});
+        var passport2 = new Passport({ownerId: null});
+
+        // There can't be any concurrency because we are counting requests
+        passport.owner(function(err, data) {
+            var nbInitialRequests = nbSchemaRequests;
+            passport.owner(function(err, data2) {
+                test.equal(data.id, data2.id, 'The value should remain the same');
+                test.equal(nbInitialRequests, nbSchemaRequests, 'There should not be any request because value is cached.');
+
+                passport2.owner(function(err, data) {
+                    var nbInitialRequests2 = nbSchemaRequests;
+                    passport2.owner(function(err, data2) {
+                        test.equal(data, null, 'The value should be null since there is no owner');
+                        test.equal(data, data2, 'The value should remain the same (null)');
+                        test.equal(nbInitialRequests2, nbSchemaRequests, 'There should not be any request because value is cached.');
+
+                        passport2.owner(8);
+                        passport2.owner(function(err, data3) {
+                            test.equal(data3.id, 8, 'There should be an object');
+                            test.equal(nbInitialRequests2 + 1, nbSchemaRequests, 'There should not be any request because value is cached.');
+
+                            passport2.owner(true, function(err, data4) {
+                                test.equal(data3.id, data3.id, 'The value should remain the same');
+                                test.equal(nbInitialRequests2 + 2, nbSchemaRequests, 'If we forced refreshing, there should be one more request.');
+                                test.done();
+                            });
+                        });
+
+
+                    });
                 });
             });
         });
