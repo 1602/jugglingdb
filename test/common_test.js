@@ -463,8 +463,7 @@ function testOrm(schema) {
                             test.equal(data.length, data2.length, 'Posts should be the same, since we are loading on the same object.');
                             test.equal(nbInitialRequests, nbSchemaRequests, 'There should not be any request because value is cached.');
 
-                            user.posts({where: {id: 12}}, function(err, data) {
-                                console.log('data', data);
+                            user.posts({where: {id: data[0].id}}, function(err, data) {
                                 test.equal(data.length, 1, 'There should be only one post.');
                                 test.equal(nbInitialRequests + 1, nbSchemaRequests, 'There should be one additional request since we added conditions.');
 
