@@ -452,8 +452,17 @@ function testOrm(schema) {
 
     if (schema.name !== 'mongodb')
     it('hasMany should support additional conditions', function (test) {
+
+        // We try to get the first post with a userId != NULL
+        var search = {};
+        if (schema.name === 'mongodb') { // On mongodb, complex conditions are not supported
+            search = {order: 'userId DESC'};
+        } else {
+            search = {where: {userId: {'gt': 0}}};
+        }
+
         // Finding one post with an existing author associated
-        Post.findOne({order: 'userId DESC'}, function (err, post) {
+        Post.findOne(search, function (err, post) {
             // We could get the user with belongs to relationship but it is better if there is no interactions.
             User.find(post.userId, function(err, user) {
                 user.posts({where: {id: post.id}}, function(err, posts) {
@@ -466,8 +475,16 @@ function testOrm(schema) {
 
 
     it('hasMany should be cached', function (test) {
+        // We try to get the first post with a userId != NULL
+        var search = {};
+        if (schema.name === 'mongodb') { // On mongodb, complex conditions are not supported
+            search = {order: 'userId DESC'};
+        } else {
+            search = {where: {userId: {'gt': 0}}};
+        }
+
         // Finding one post with an existing author associated
-        Post.findOne({order: 'userId DESC'}, function (err, post) {
+        Post.findOne(search, function (err, post) {
             // We could get the user with belongs to relationship but it is better if there is no interactions.
             User.find(post.userId, function(err, user) {
                 User.create(function(err, voidUser) {
@@ -486,7 +503,6 @@ function testOrm(schema) {
                                     test.done();
                                 } else {
                                     user.posts({where: {id: data[0].id}}, function(err, data) {
-                                        console.log('data2', data);
                                         test.equal(data.length, 1, 'There should be only one post.');
                                         requestsAreCounted && test.equal(nbInitialRequests + 1, nbSchemaRequests, 'There should be one additional request since we added conditions.');
 
