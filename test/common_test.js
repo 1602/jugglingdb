@@ -450,7 +450,13 @@ function testOrm(schema) {
     });
 
 
-    if (schema.name !== 'mongodb')
+    if (
+        !schema.name.match(/redis/) &&
+            schema.name !== 'memory' &&
+            schema.name !== 'neo4j' &&
+            schema.name !== 'cradle' &&
+            schema.name !== 'mongodb'
+        )
     it('hasMany should support additional conditions', function (test) {
 
         // Finding one post with an existing author associated
@@ -473,6 +479,12 @@ function testOrm(schema) {
     });
 
 
+    if (
+        !schema.name.match(/redis/) &&
+            schema.name !== 'memory' &&
+            schema.name !== 'neo4j' &&
+            schema.name !== 'cradle'
+        )
     it('hasMany should be cached', function (test) {
         // Finding one post with an existing author associated
         Post.all(function (err, posts) {
@@ -975,6 +987,12 @@ function testOrm(schema) {
         });
     });
 
+    if (
+        !schema.name.match(/redis/) &&
+            schema.name !== 'memory' &&
+            schema.name !== 'neo4j' &&
+            schema.name !== 'cradle'
+        )
     it('belongsTo should be cached', function (test) {
         User.findOne(function(err, user) {
 
