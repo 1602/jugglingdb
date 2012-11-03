@@ -6,7 +6,7 @@ exports.AbstractClass = require('./lib/abstract-class').AbstractClass;
 exports.Validatable = require('./lib/validatable').Validatable;
 
 exports.init = function (rw) {
-    if (global.railway) {
+    if (typeof rw === 'string') {
         railway.orm = exports;
     } else {
         rw.orm = {Schema: exports.Schema, AbstractClass: exports.AbstractClass};
