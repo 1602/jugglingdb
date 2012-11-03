@@ -26,6 +26,7 @@ var schemas = {
 
 var specificTest = getSpecificTests();
 var testPerformed = false;
+var nbSchemaRequests = 0;
 
 Object.keys(schemas).forEach(function (schemaName) {
     if (process.env.ONLY && process.env.ONLY !== schemaName) return;
@@ -48,7 +49,8 @@ function performTestFor(schemaName) {
         });
 
         schema.log = function (a) {
-             console.log(a);
+            console.log(a);
+            nbSchemaRequests++;
         };
 
         testOrm(schema);
@@ -444,6 +446,58 @@ function testOrm(schema) {
                 });
             });
         });
+    });
+
+
+    it('hasMany should be cached', function (test) {
+
+        User.find(1, function(err, user) {
+            User.create(function(err, voidUser) {
+                Post.create({userId: user.id}, function() {
+
+                    // There can't be any concurrency because we are counting requests
+                    // We are first testing cases when user has posts
+                    user.posts(function(err, data) {
+                        var nbInitialRequests = nbSchemaRequests;
+                        user.posts(function(err, data2) {
+                            test.equal(data.length, 2, 'There should be 2 posts.');
+                            test.equal(data.length, data2.length, 'Posts should be the same, since we are loading on the same object.');
+                            test.equal(nbInitialRequests, nbSchemaRequests, 'There should not be any request because value is cached.');
+
+                            user.posts({where: {id: 12}}, function(err, data) {
+                                test.equal(data.length, 1, 'There should be only one post.');
+                                test.equal(nbInitialRequests + 1, nbSchemaRequests, 'There should be one additional request since we added conditions.');
+
+                                user.posts(function(err, data) {
+                                    test.equal(data.length, 2, 'Previous get shouldn\'t have changed cached value though, since there was additional conditions.');
+                                    test.equal(nbInitialRequests + 1, nbSchemaRequests, 'There should not be any request because value is cached.');
+
+                                    // We are now testing cases when user doesn't have any post
+                                    voidUser.posts(function(err, data) {
+                                        var nbInitialRequests = nbSchemaRequests;
+                                        voidUser.posts(function(err, data2) {
+                                            test.equal(data.length, 0, 'There shouldn\'t be any posts (1/2).');
+                                            test.equal(data2.length, 0, 'There shouldn\'t be any posts (2/2).');
+                                            test.equal(nbInitialRequests, nbSchemaRequests, 'There should not be any request because value is cached.');
+
+                                            voidUser.posts(true, function(err, data3) {
+                                                test.equal(data3.length, 0, 'There shouldn\'t be any posts.');
+                                                test.equal(nbInitialRequests + 1, nbSchemaRequests, 'There should be one additional request since we forced refresh.');
+
+                                                test.done();
+                                            });
+                                        });
+                                    });
+
+                                });
+                            });
+                        });
+                    });
+
+                });
+            });
+        });
+
     });
 
     // it('should handle hasOne relationship', function (test) {
@@ -880,6 +934,48 @@ function testOrm(schema) {
                 });
             });
         });
+    });
+
+    it('belongsTo should be cached', function (test) {
+        User.findOne(function(err, user) {
+
+            var passport = new Passport({ownerId: user.id});
+            var passport2 = new Passport({ownerId: null});
+
+            // There can't be any concurrency because we are counting requests
+            // We are first testing cases when passport has an owner
+            passport.owner(function(err, data) {
+                var nbInitialRequests = nbSchemaRequests;
+                passport.owner(function(err, data2) {
+                    test.equal(data.id, data2.id, 'The value should remain the same');
+                    test.equal(nbInitialRequests, nbSchemaRequests, 'There should not be any request because value is cached.');
+
+                    // We are now testing cases when passport has not an owner
+                    passport2.owner(function(err, data) {
+                        var nbInitialRequests2 = nbSchemaRequests;
+                        passport2.owner(function(err, data2) {
+                            test.equal(data, null, 'The value should be null since there is no owner');
+                            test.equal(data, data2, 'The value should remain the same (null)');
+                            test.equal(nbInitialRequests2, nbSchemaRequests, 'There should not be any request because value is cached.');
+
+                            passport2.owner(user.id);
+                            passport2.owner(function(err, data3) {
+                                test.equal(data3.id, user.id, 'Owner should now be the user.');
+                                test.equal(nbInitialRequests2 + 1, nbSchemaRequests, 'If we changed owner id, there should be one more request.');
+
+                                passport2.owner(true, function(err, data4) {
+                                    test.equal(data3.id, data3.id, 'The value should remain the same');
+                                    test.equal(nbInitialRequests2 + 2, nbSchemaRequests, 'If we forced refreshing, there should be one more request.');
+                                    test.done();
+                                });
+                            });
+                        });
+                    });
+
+                });
+            });
+        });
+
     });
 
     if (schema.name !== 'mongoose' && schema.name !== 'neo4j')
