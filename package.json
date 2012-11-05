@@ -1,18 +1,45 @@
 {
   "name": "jugglingdb",
   "description": "ORM for every database: redis, mysql, neo4j, mongodb, postgres, sqlite",
-  "version": "0.1.27",
+  "version": "0.1.27-1",
   "author": "Anatoliy Chakkaev <rpm1602@gmail.com>",
   "contributors": [
-    { "name": "Anatoliy Chakkaev",     "email": "rpm1602@gmail.com" },
-    { "name": "Julien Guimont",        "email": "julien.guimont@gmail.com" },
-    { "name": "Joseph Junker",         "email": "joseph.jnk@gmail.com" },
-    { "name": "Henri Bergius",         "email": "henri.bergius@iki.fi" },
-    { "name": "redvulps",              "email": "fabopereira@gmail.com" },
-    { "name": "Felipe Sateler",        "email": "fsateler@gmail.com" },
-    { "name": "Amir M. Mahmoudi",      "email": "a@geeknux.com" },
-    { "name": "Justinas Stankevičius", "email": "justinas@justinas.me" },
-    { "name": "Rick O'Toole",          "email": "patrick.n.otoole@gmail.com" }
+    {
+      "name": "Anatoliy Chakkaev",
+      "email": "rpm1602@gmail.com"
+    },
+    {
+      "name": "Julien Guimont",
+      "email": "julien.guimont@gmail.com"
+    },
+    {
+      "name": "Joseph Junker",
+      "email": "joseph.jnk@gmail.com"
+    },
+    {
+      "name": "Henri Bergius",
+      "email": "henri.bergius@iki.fi"
+    },
+    {
+      "name": "redvulps",
+      "email": "fabopereira@gmail.com"
+    },
+    {
+      "name": "Felipe Sateler",
+      "email": "fsateler@gmail.com"
+    },
+    {
+      "name": "Amir M. Mahmoudi",
+      "email": "a@geeknux.com"
+    },
+    {
+      "name": "Justinas Stankevičius",
+      "email": "justinas@justinas.me"
+    },
+    {
+      "name": "Rick O'Toole",
+      "email": "patrick.n.otoole@gmail.com"
+    }
   ],
   "repository": {
     "type": "git",
@@ -26,22 +53,22 @@
     "node >= 0.4.12"
   ],
   "dependencies": {
-    "node-uuid":     ">= 1.3.3"
+    "node-uuid": ">= 1.3.3"
   },
   "devDependencies": {
-    "semicov":       "*",
+    "semicov": "*",
     "coffee-script": ">= 1.2.0",
-    "nodeunit":      ">= 0.6.4",
-    "redis":         "= 0.7.2",
-    "hiredis":       "latest",
-    "mongoose":      "latest",
-    "mysql":         ">= 2.0.0-alpha3",
-    "pg":            "= 0.7.2",
-    "sqlite3":       ">= 2.0.18",
-    "riak-js":       ">= 0.4.1",
-    "neo4j":         ">= 0.2.5",
-    "mongodb":       ">= 0.9.9",
+    "nodeunit": ">= 0.6.4",
+    "redis": "= 0.7.2",
+    "hiredis": "latest",
+    "mongoose": "latest",
+    "mysql": ">= 2.0.0-alpha3",
+    "pg": "= 0.7.2",
+    "sqlite3": ">= 2.0.18",
+    "riak-js": ">= 0.4.1",
+    "neo4j": ">= 0.2.5",
+    "mongodb": ">= 0.9.9",
     "felix-couchdb": ">= 1.0.3",
-    "cradle":        ">= 0.6.3"
+    "cradle": ">= 0.6.3"
   }
 }
