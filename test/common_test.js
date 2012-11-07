@@ -380,7 +380,7 @@ function testOrm(schema) {
         Post.count(function (err, count) {
             console.log(countOfposts, count);
             test.equal(countOfposts, count, 'unfiltered count');
-            Post.count({title: 'title'}, function (err, count) {
+            Post.count({where:{title: 'title'}}, function (err, count) {
                 console.log(countOfpostsFiltered, count, 'filtered count');
                 test.equal(countOfpostsFiltered, count, 'filtered count');
                 test.done();
