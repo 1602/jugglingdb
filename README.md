@@ -25,8 +25,9 @@ var Post = schema.define('Post', {
     title:     { type: String, length: 255 },
     content:   { type: Schema.Text },
     date:      { type: Date,    default: Date.now },
-    published: { type: Boolean, default: false }
+    published: { type: Boolean, default: false, index: true }
 });
+
 // simplier way to describe model
 var User = schema.define('User', {
     name:         String,
@@ -35,6 +36,15 @@ var User = schema.define('User', {
     joinedAt:     Date,
     age:          Number
 });
+
+// define any custom method
+User.prototype.getNameAndAge = function () {
+    return this.name + ', ' + this.age;
+};
+
+// models also accessible in schema:
+schema.models.User;
+schema.models.Post;
 
 // setup relationships
 User.hasMany(Post,   {as: 'posts',  foreignKey: 'userId'});
@@ -74,6 +84,8 @@ Post.all(cb)
 Post.all({where: {userId: user.id}, order: 'id', limit: 10, skip: 20});
 // the same as prev
 user.posts(cb)
+// get one latest post
+Post.findOne({where: {published: true}, order: 'date DESC'}, cb);
 // same as new Post({userId: user.id});
 user.posts.build
 // save as Post.create({userId: user.id}, cb);
