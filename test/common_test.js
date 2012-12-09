@@ -21,7 +21,8 @@ var schemas = {
     mongodb:   { url: 'mongodb://travis:test@localhost:27017/myapp' },
     redis2:     {},
     memory:    {},
-    cradle:    {}
+    cradle:    {},
+    nano: { url: 'http://localhost:5984/nano-test' }
 };
 
 var specificTest = getSpecificTests();
@@ -165,9 +166,12 @@ function testOrm(schema) {
         test.done();
     });
 
-    it('should be expoted to JSON', function (test) {
-        test.equal(JSON.stringify(new Post({id: 1, title: 'hello, json', date: 1})),
-        '{"title":"hello, json","subject":null,"content":null,"date":1,"published":false,"likes":[],"related":[],"id":1,"userId":null}');
+    it('should be exported to JSON', function (test) {
+        var outString = '{"title":"hello, json","subject":null,"content":null,"date":1,"published":false,"likes":[],"related":[],"id":1,"userId":null}'
+        if (schema.name === 'nano')
+            outString = '{"title":"hello, json","subject":null,"content":null,"date":1,"published":false,"likes":[],"related":[],"_rev":null,"id":1,"userId":null}'
+        
+        test.equal(JSON.stringify(new Post({id: 1, title: 'hello, json', date: 1})),outString);
         test.done();
     });
 
@@ -455,6 +459,7 @@ function testOrm(schema) {
             schema.name !== 'memory' &&
             schema.name !== 'neo4j' &&
             schema.name !== 'cradle' &&
+            schema.name !== 'nano' &&
             schema.name !== 'mongodb'
         )
     it('hasMany should support additional conditions', function (test) {
@@ -483,7 +488,8 @@ function testOrm(schema) {
         !schema.name.match(/redis/) &&
             schema.name !== 'memory' &&
             schema.name !== 'neo4j' &&
-            schema.name !== 'cradle'
+            schema.name !== 'cradle' &&
+            schema.name !== 'nano'
         )
     it('hasMany should be cached', function (test) {
         // Finding one post with an existing author associated
@@ -758,7 +764,8 @@ function testOrm(schema) {
         !schema.name.match(/redis/) &&
         schema.name !== 'memory' &&
         schema.name !== 'neo4j' &&
-        schema.name !== 'cradle'
+        schema.name !== 'cradle' &&
+        schema.name !== 'nano'
     )
     it('should allow advanced queying: lt, gt, lte, gte, between', function (test) {
         Post.destroyAll(function () {
@@ -991,7 +998,8 @@ function testOrm(schema) {
         !schema.name.match(/redis/) &&
             schema.name !== 'memory' &&
             schema.name !== 'neo4j' &&
-            schema.name !== 'cradle'
+            schema.name !== 'cradle' &&
+            schema.name !== 'nano'
         )
     it('belongsTo should be cached', function (test) {
         User.findOne(function(err, user) {
