@@ -1,6 +1,6 @@
 {
   "name": "jugglingdb",
-  "description": "ORM for every database: redis, mysql, neo4j, mongodb, postgres, sqlite",
+  "description": "ORM for every database: redis, mysql, neo4j, mongodb, couchdb, postgres, sqlite",
   "version": "0.1.27-3",
   "author": "Anatoliy Chakkaev <rpm1602@gmail.com>",
   "contributors": [
@@ -39,6 +39,10 @@
     {
       "name": "Rick O'Toole",
       "email": "patrick.n.otoole@gmail.com"
+    },
+    {
+      "name": "Nicholas Westlake",
+      "email": "nicholasredlin@gmail.com"
     }
   ],
   "repository": {
@@ -53,7 +57,8 @@
     "node >= 0.4.12"
   ],
   "dependencies": {
-    "node-uuid": ">= 1.3.3"
+    "node-uuid": ">= 1.3.3",
+    "lodash": "1.x.x"
   },
   "devDependencies": {
     "semicov": "*",
@@ -69,6 +74,7 @@
     "neo4j": ">= 0.2.5",
     "mongodb": ">= 0.9.9",
     "felix-couchdb": ">= 1.0.3",
-    "cradle": ">= 0.6.3"
+    "cradle": ">= 0.6.3",
+    "nano": "3.3.x"
   }
 }
