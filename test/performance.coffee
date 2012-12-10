@@ -11,6 +11,8 @@ schemas =
     redis:     {}
     memory:    {}
     cradle:    {}
+    nano:
+        url: 'http://localhost:5984/nano-test'
 
 testOrm = (schema) ->
 
