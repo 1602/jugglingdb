@@ -84,7 +84,7 @@ function testOrm(schema) {
             subject:   { type: String },
             content:   { type: Text },
             date:      { type: Date,    default: function () { return new Date }, index: true },
-            published: { type: Boolean, default: false },
+            published: { type: Boolean, default: false, index: true },
             likes:     [],
             related:   [RelatedPost]
         }, {table: 'posts'});
@@ -429,8 +429,8 @@ function testOrm(schema) {
 
     it('should find records filtered with multiple attributes', function (test) {
         Post.create({title: 'title', content: 'content', published: true, date: 1}, function (err, post) {
-            Post.all({where: {title: 'title', date: 1}}, function (err, res) {
-                test.ok(res.length > 0, 'Exact match with string returns dataset');
+            Post.all({where: {title: 'title', date: 1, published: true}}, function (err, res) {
+                test.ok(res.length == 1, 'Filtering Posts returns one post');
                 test.done();
             });
         });
