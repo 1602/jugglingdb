@@ -6,6 +6,7 @@ services:
   - mongodb
   - redis-server
   - neo4j
+  - couchdb
 before_install:
   - git submodule init && git submodule --quiet update
   - ./support/ci/neo4j.sh
@@ -13,3 +14,4 @@ before_script:
   - "mysql -e 'create database myapp_test;'"
   - "psql -c 'create database myapp_test;' -U postgres"
   - mongo mydb_test --eval 'db.addUser("travis", "test");'
+  - curl -X PUT localhost:5984/nano-test
