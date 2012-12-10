@@ -177,6 +177,11 @@ To use custom adapter, pass it's package name as first argument to `Schema` cons
 Make sure, your adapter can be required (just put it into ./node_modules):
 
     require('couch-db-adapter');
+    
+## Jugglingdb Adapters
+
+- Firebird: https://github.com/hgourvest/jugglingdb-firebird
+- Couchdb: TODO: add link for external couchdb adapter
 
 ## Running tests
 
