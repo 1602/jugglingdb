@@ -1,7 +1,7 @@
 {
   "name": "jugglingdb",
   "description": "ORM for every database: redis, mysql, neo4j, mongodb, couchdb, postgres, sqlite",
-  "version": "0.1.27-3",
+  "version": "0.2.0",
   "author": "Anatoliy Chakkaev <rpm1602@gmail.com>",
   "contributors": [
     {
@@ -51,7 +51,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "EXCEPT=cradle,neo4j nodeunit test/*_test*"
+    "test": "EXCEPT=cradle,neo4j,nano nodeunit test/*_test*"
   },
   "engines": [
     "node >= 0.4.12"

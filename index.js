@@ -22,3 +22,5 @@ try {
     }
 } catch (e) {}
 
+exports.test = require('./test/common_test');
+
