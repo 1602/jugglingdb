@@ -432,6 +432,29 @@ function testOrm(schema) {
         });
     });
 
+    if (
+        !schema.name.match(/redis/) &&
+            schema.name !== 'memory' &&
+            schema.name !== 'neo4j' &&
+            schema.name !== 'cradle'
+        )
+    it('relations key is working', function (test) {
+        test.ok(User.relations, 'Relations key should be defined');
+        test.ok(User.relations.posts, 'posts relation should exist on User');
+        test.equal(User.relations.posts.type, 'hasMany', 'Type of hasMany relation is hasMany');
+        test.equal(User.relations.posts.multiple, true, 'hasMany relations are multiple');
+        test.equal(User.relations.posts.keyFrom, 'id', 'keyFrom is primary key of model table');
+        test.equal(User.relations.posts.keyTo, 'userId', 'keyTo is foreign key of related model table');
+
+        test.ok(Post.relations, 'Relations key should be defined');
+        test.ok(Post.relations.author, 'author relation should exist on Post');
+        test.equal(Post.relations.author.type, 'belongsTo', 'Type of belongsTo relation is belongsTo');
+        test.equal(Post.relations.author.multiple, false, 'belongsTo relations are not multiple');
+        test.equal(Post.relations.author.keyFrom, 'userId', 'keyFrom is foreign key of model table');
+        test.equal(Post.relations.author.keyTo, 'id', 'keyTo is primary key of related model table');
+        test.done();
+    });
+
     it('should handle hasMany relationship', function (test) {
         User.create(function (err, u) {
             if (err) return console.log(err);
@@ -448,7 +471,6 @@ function testOrm(schema) {
             });
         });
     });
-
 
     if (
         !schema.name.match(/redis/) &&
