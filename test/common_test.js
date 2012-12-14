@@ -27,33 +27,60 @@ var Text = Schema.Text;
 var nbSchemaRequests = 0;
 
 var batch;
+var schemaName;
 
 function it(name, cases) {
-    batch[name] = cases;
+    batch[schemaName][name] = cases;
 }
 
 module.exports = function testSchema(exportCasesHere, schema) {
 
     batch = exportCasesHere;
+    schemaName = schema.name;
+    if (schema.name.match(/^\/.*\/test\/\.\.$/)) {
+        schemaName = schemaName.split('/').slice(-3).shift();
+    }
+    var start;
 
-    it('should connect to database', function (test) {
+    batch['should connect to database'] = function (test) {
+        start = Date.now();
         if (schema.connected) return test.done();
         schema.on('connected', test.done);
-    });
+    };
 
     schema.log = function (a) {
         console.log(a);
         nbSchemaRequests++;
     };
 
+    batch[schemaName] = {};
+
     testOrm(schema);
+
+    batch['all tests done'] = function (test) {
+        test.done();
+        process.nextTick(allTestsDone);
+    };
+
+    function allTestsDone() {
+        schema.disconnect();
+        console.log('Test done in %dms\n', Date.now() - start);
+    }
+
 };
+
+module.exports.it = it;
+Object.defineProperty(module.exports, 'it', {
+    writable: true,
+    enumerable: false,
+    configurable: true,
+    value: it
+});
 
 function testOrm(schema) {
     var requestsAreCounted = schema.name !== 'mongodb';
 
     var Post, User, Passport;
-    var start = Date.now();
 
     it('should define class', function (test) {
 
@@ -1135,15 +1162,5 @@ function testOrm(schema) {
             });
         });
     });
-
-    it('all tests done', function (test) {
-        test.done();
-        process.nextTick(allTestsDone);
-    });
-
-    function allTestsDone() {
-        schema.disconnect();
-        console.log('Test done in %dms\n', Date.now() - start);
-    }
 
 }
