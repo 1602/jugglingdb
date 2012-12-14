@@ -1,7 +1,8 @@
 ## About [<img src="https://secure.travis-ci.org/1602/jugglingdb.png" />](http://travis-ci.org/#!/1602/jugglingdb)
 
 JugglingDB is cross-db ORM for nodejs, providing **common interface** to access most popular database formats. 
-Currently supported are: mysql, mongodb, redis, neo4j and js-memory-storage (yep, 
+Currently supported are: mysql, sqlite3, postgres, couchdb, mongodb, redis, neo4j
+and js-memory-storage (yep, 
 self-written engine for test-usage only). You can add your favorite database adapter, checkout one of the 
 existing adapters to learn how, it's super-easy, I guarantee.
 
@@ -15,11 +16,17 @@ existing adapters to learn how, it's super-easy, I guarantee.
 - Make sure all tests pass (`npm test` command)
 - Feel free to vote and comment on cards (tickets/issues), if you want to join team -- send me a message with your email.
 
+If you want to create your own jugglingdb adapter, you should publish your
+adapter package with name `jugglingdb-ADAPTERNAME`. Creating adapter is simple,
+check [jugglingdb-redis](/1602/jugglingdb-redis) for example. JugglingDB core
+exports common tests each adapter should pass, you could create your adapter in
+TDD style, check that adapter pass all tests defined in `test/common_test.js`.
+
 ## Usage
 
 ```javascript
 var Schema = require('jugglingdb').Schema;
-var schema = new Schema('redis2', {port: 6379}); //port number depends on your configuration
+var schema = new Schema('redis', {port: 6379}); //port number depends on your configuration
 // define models
 var Post = schema.define('Post', {
     title:     { type: String, length: 255 },

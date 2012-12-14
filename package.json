@@ -51,7 +51,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "EXCEPT=cradle,neo4j,nano nodeunit test/*_test*"
+    "test": "nodeunit test/*_test*"
   },
   "engines": [
     "node >= 0.4.12"
@@ -63,17 +63,14 @@
     "semicov": "*",
     "coffee-script": ">= 1.2.0",
     "nodeunit": ">= 0.6.4",
-    "redis": "= 0.7.2",
-    "hiredis": "latest",
-    "mongoose": "latest",
-    "mysql": ">= 2.0.0-alpha3",
-    "pg": "= 0.7.2",
-    "sqlite3": ">= 2.0.18",
     "riak-js": ">= 0.4.1",
     "neo4j": ">= 0.2.5",
-    "mongodb": ">= 0.9.9",
     "felix-couchdb": ">= 1.0.3",
     "cradle": ">= 0.6.3",
-    "nano": "3.3.x"
+
+    "jugglingdb-redis": "latest",
+    "jugglingdb-mongodb": "latest",
+    "jugglingdb-mysql": "latest",
+    "jugglingdb-sqlite": "latest"
   }
 }
