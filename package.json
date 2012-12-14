@@ -63,14 +63,5 @@
     "semicov": "*",
     "coffee-script": ">= 1.2.0",
     "nodeunit": ">= 0.6.4",
-    "riak-js": ">= 0.4.1",
-    "neo4j": ">= 0.2.5",
-    "felix-couchdb": ">= 1.0.3",
-    "cradle": ">= 0.6.3",
-
-    "jugglingdb-redis": "latest",
-    "jugglingdb-mongodb": "latest",
-    "jugglingdb-mysql": "latest",
-    "jugglingdb-sqlite": "latest"
   }
 }
