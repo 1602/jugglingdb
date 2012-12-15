@@ -28,6 +28,7 @@
   ],
   "devDependencies": {
     "semicov": "*",
-    "nodeunit": ">= 0.6.4"
+    "nodeunit": ">= 0.6.4",
+    "coffee-script": "latest"
   }
 }
