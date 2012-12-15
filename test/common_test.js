@@ -471,108 +471,86 @@ function testOrm(schema) {
     });
 
 
-    // if (
-    //     !schema.name.match(/redis/) &&
-    //         schema.name !== 'memory' &&
-    //         schema.name !== 'neo4j' &&
-    //         schema.name !== 'cradle' &&
-    //         schema.name !== 'nano' &&
-    //         schema.name !== 'mongodb'
-    //     )
-    // it('hasMany should support additional conditions', function (test) {
+    it('hasMany should support additional conditions', function (test) {
 
-    //     // Finding one post with an existing author associated
-    //     Post.all(function (err, posts) {
-    //         // We try to get the first post with a userId != NULL
-    //         for (var i = 0; i < posts.length; i++) {
-    //             var post = posts[i];
-    //             if (post.userId !== null) {
-    //                 // We could get the user with belongs to relationship but it is better if there is no interactions.
-    //                 User.find(post.userId, function(err, user) {
-    //                     user.posts({where: {id: post.id}}, function(err, posts) {
-    //                         test.equal(posts.length, 1, 'There should be only 1 post.');
-    //                         test.done();
-    //                     });
-    //                 });
-    //                 break;
-    //             }
-    //         }
-    //     });
-    // });
+        User.create(function (e, u) {
+            u.posts.create({}, function (e, p) {
+                u.posts({where: {id: p.id}}, function (e, posts) {
+                    test.equal(posts.length, 1, 'There should be only 1 post.');
+                    test.done();
+                });
+            });
+        });
 
+    });
 
-    // if (
-    //     !schema.name.match(/redis/) &&
-    //         schema.name !== 'memory' &&
-    //         schema.name !== 'neo4j' &&
-    //         schema.name !== 'cradle' &&
-    //         schema.name !== 'nano'
-    //     )
-    // it('hasMany should be cached', function (test) {
-    //     // Finding one post with an existing author associated
-    //     Post.all(function (err, posts) {
-    //         // We try to get the first post with a userId != NULL
-    //         for (var i = 0; i < posts.length; i++) {
-    //             var post = posts[i];
-    //             if (post.userId !== null) {
-    //                 // We could get the user with belongs to relationship but it is better if there is no interactions.
-    //                 User.find(post.userId, function(err, user) {
-    //                     User.create(function(err, voidUser) {
-    //                         Post.create({userId: user.id}, function() {
+    it('hasMany should be cached', function (test) {
+        //User.create(function (e, u) {
+        //    u.posts.create({}, function (e, p) {
+        // Finding one post with an existing author associated
+        Post.all(function (err, posts) {
+            // We try to get the first post with a userId != NULL
+            for (var i = 0; i < posts.length; i++) {
+                var post = posts[i];
+                if (post.userId) {
+                    // We could get the user with belongs to relationship but it is better if there is no interactions.
+                    User.find(post.userId, function(err, user) {
+                        User.create(function(err, voidUser) {
+                            Post.create({userId: user.id}, function() {
 
-    //                             // There can't be any concurrency because we are counting requests
-    //                             // We are first testing cases when user has posts
-    //                             user.posts(function(err, data) {
-    //                                 var nbInitialRequests = nbSchemaRequests;
-    //                                 user.posts(function(err, data2) {
-    //                                     test.equal(data.length, 2, 'There should be 2 posts.');
-    //                                     test.equal(data.length, data2.length, 'Posts should be the same, since we are loading on the same object.');
-    //                                     requestsAreCounted && test.equal(nbInitialRequests, nbSchemaRequests, 'There should not be any request because value is cached.');
+                                // There can't be any concurrency because we are counting requests
+                                // We are first testing cases when user has posts
+                                user.posts(function(err, data) {
+                                    var nbInitialRequests = nbSchemaRequests;
+                                    user.posts(function(err, data2) {
+                                        test.equal(data.length, 2, 'There should be 2 posts.');
+                                        test.equal(data.length, data2.length, 'Posts should be the same, since we are loading on the same object.');
+                                        requestsAreCounted && test.equal(nbInitialRequests, nbSchemaRequests, 'There should not be any request because value is cached.');
 
-    //                                     if (schema.name === 'mongodb') { // for the moment mongodb doesn\'t support additional conditions on hasMany relations (see above)
-    //                                         test.done();
-    //                                     } else {
-    //                                         user.posts({where: {id: data[0].id}}, function(err, data) {
-    //                                             test.equal(data.length, 1, 'There should be only one post.');
-    //                                             requestsAreCounted && test.equal(nbInitialRequests + 1, nbSchemaRequests, 'There should be one additional request since we added conditions.');
+                                        if (schema.name === 'mongodb') { // for the moment mongodb doesn\'t support additional conditions on hasMany relations (see above)
+                                            test.done();
+                                        } else {
+                                            user.posts({where: {id: data[0].id}}, function(err, data) {
+                                                test.equal(data.length, 1, 'There should be only one post.');
+                                                requestsAreCounted && test.equal(nbInitialRequests + 1, nbSchemaRequests, 'There should be one additional request since we added conditions.');
 
-    //                                             user.posts(function(err, data) {
-    //                                                 test.equal(data.length, 2, 'Previous get shouldn\'t have changed cached value though, since there was additional conditions.');
-    //                                                 requestsAreCounted && test.equal(nbInitialRequests + 1, nbSchemaRequests, 'There should not be any request because value is cached.');
+                                                user.posts(function(err, data) {
+                                                    test.equal(data.length, 2, 'Previous get shouldn\'t have changed cached value though, since there was additional conditions.');
+                                                    requestsAreCounted && test.equal(nbInitialRequests + 1, nbSchemaRequests, 'There should not be any request because value is cached.');
 
-    //                                                 // We are now testing cases when user doesn't have any post
-    //                                                 voidUser.posts(function(err, data) {
-    //                                                     var nbInitialRequests = nbSchemaRequests;
-    //                                                     voidUser.posts(function(err, data2) {
-    //                                                         test.equal(data.length, 0, 'There shouldn\'t be any posts (1/2).');
-    //                                                         test.equal(data2.length, 0, 'There shouldn\'t be any posts (2/2).');
-    //                                                         requestsAreCounted && test.equal(nbInitialRequests, nbSchemaRequests, 'There should not be any request because value is cached.');
+                                                    // We are now testing cases when user doesn't have any post
+                                                    voidUser.posts(function(err, data) {
+                                                        var nbInitialRequests = nbSchemaRequests;
+                                                        voidUser.posts(function(err, data2) {
+                                                            test.equal(data.length, 0, 'There shouldn\'t be any posts (1/2).');
+                                                            test.equal(data2.length, 0, 'There shouldn\'t be any posts (2/2).');
+                                                            requestsAreCounted && test.equal(nbInitialRequests, nbSchemaRequests, 'There should not be any request because value is cached.');
 
-    //                                                         voidUser.posts(true, function(err, data3) {
-    //                                                             test.equal(data3.length, 0, 'There shouldn\'t be any posts.');
-    //                                                             requestsAreCounted && test.equal(nbInitialRequests + 1, nbSchemaRequests, 'There should be one additional request since we forced refresh.');
+                                                            voidUser.posts(true, function(err, data3) {
+                                                                test.equal(data3.length, 0, 'There shouldn\'t be any posts.');
+                                                                requestsAreCounted && test.equal(nbInitialRequests + 1, nbSchemaRequests, 'There should be one additional request since we forced refresh.');
 
-    //                                                             test.done();
-    //                                                         });
-    //                                                     });
-    //                                                 });
+                                                                test.done();
+                                                            });
+                                                        });
+                                                    });
 
-    //                                             });
-    //                                         });
-    //                                     }
+                                                });
+                                            });
+                                        }
 
-    //                                 });
-    //                             });
+                                    });
+                                });
 
-    //                         });
-    //                     });
-    //                 });
-    //                 break;
-    //             }
-    //         }
-    //     });
+                            });
+                        });
+                    });
+                    break;
+                }
+            }
+        });
 
-    // });
+    });
 
     // it('should handle hasOne relationship', function (test) {
     //     User.create(function (err, u) {
