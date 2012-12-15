@@ -28,30 +28,62 @@ check following list of available adapters
     </tr>
   </thead>
   <tbody>
+    <!-- Firebird -->
     <tr>
       <td><a href="http://firebirdsql.org"><img src="http://firebirdsql.org/favicon.ico" alt="Firebird"/></a> Firebird</td>
       <td><a href="http://github.com/hgourvest/jugglingdb-firebird">jugglingdb-firebird</a></td>
       <td><a href="http://github.com/hgourvest">Henri Gourvest</a></td>
-      <td></td>      
+      <td></td>
     </tr>
+
+    <!-- MongoDB -->
     <tr>
       <td><a href="http://www.mongodb.org"><img src="http://mongodb.ru/favicon.ico" alt="MongoDB" /></a> MongoDB</td>
       <td><a href="/1602/jugglingdb-mongodb">jugglingdb-mongodb</a></td>
       <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
       <td><a href="https://travis-ci.org/1602/jugglingdb-mongodb"><img src="https://travis-ci.org/1602/jugglingdb-mongodb.png?branch=master" alt="Build Status" /></a></td>
     </tr>
+
+    <!-- MySQL -->
     <tr>
       <td><a href="http://www.mysql.com/"><img src="/1602/jugglingdb/raw/master/media/mysql.ico" style="vertical-align:middle"" alt="MySQL" /></a> MySQL</td>
       <td><a href="/1602/jugglingdb-mysql">jugglingdb-mysql</a></td>
       <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
       <td><a href="https://travis-ci.org/1602/jugglingdb-mysql"><img src="https://travis-ci.org/1602/jugglingdb-mysql.png?branch=master" alt="Build Status" /></a></td>
     </tr>
+
+    <!-- CouchDB / nano -->
+    <tr>
+      <td><a href="http://couchdb.apache.org/"><img src="http://couchdb.apache.org/favicon.ico" style="vertical-align:middle"" alt="CouchDB" /></a> CouchDB / nano</td>
+      <td><a href="/1602/jugglingdb-nano">jugglingdb-nano</a></td>
+      <td><a href="/nrw">Nicholas Westlake</a></td>
+      <td><a href="https://travis-ci.org/1602/jugglingdb-nano"><img src="https://travis-ci.org/1602/jugglingdb-nano.png?branch=master" alt="Build Status" /></a></td>
+    </tr>
+
+    <!-- PostgreSQL -->
+    <tr>
+      <td><a href="http://www.postgresql.org/"><img src="http://www.postgresql.org/favicon.ico" style="vertical-align:middle"" alt="PostgreSQL" /></a> PostgreSQL</td>
+      <td><a href="/1602/jugglingdb-nano">jugglingdb-postgres</a></td>
+      <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
+      <td><a href="https://travis-ci.org/1602/jugglingdb-postgres"><img src="https://travis-ci.org/1602/jugglingdb-postgres.png?branch=master" alt="Build Status" /></a></td>
+    </tr>
+
+    <!-- Redis -->
     <tr>
       <td><a href="http://redis.io/"><img src="http://redis.io/images/favicon.png" alt="Redis" /></a> Redis</td>
       <td><a href="/1602/jugglingdb-redis">jugglingdb-redis</a></td>
       <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
       <td><a href="https://travis-ci.org/1602/jugglingdb-redis"><img src="https://travis-ci.org/1602/jugglingdb-redis.png?branch=master" alt="Build Status" /></a></td>
     </tr>
+
+    <!-- SQLite -->
+    <tr>
+      <td><a href="http://www.sqlite.org/"><img src="/1602/jugglingdb/raw/master/media/sqlite.png" style="vertical-align:middle"" alt="SQLite" /></a> SQLite</td>
+      <td><a href="/1602/jugglingdb-sqlite3">jugglingdb-sqlite3</a></td>
+      <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
+      <td><a href="https://travis-ci.org/1602/jugglingdb-sqlite3"><img src="https://travis-ci.org/1602/jugglingdb-sqlite3.png?branch=master" alt="Build Status" /></a></td>
+    </tr>
+
   </tbody>
 </table>
 
