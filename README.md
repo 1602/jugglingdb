@@ -10,6 +10,51 @@ existing adapters to learn how, it's super-easy, I guarantee.
 
     npm install jugglingdb
 
+plus you should install appropriated adapter, for example for redis:
+
+    npm install jugglingdb-redis
+
+check following list of available adapters
+
+## JugglingDB adapters
+
+<table>
+  <thead>
+    <tr>
+      <th>Database type</th>
+      <th>Package name</th>
+      <th>Maintainer</th>
+      <th>Build status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="http://firebirdsql.org"><img src="http://firebirdsql.org/favicon.ico" alt="Firebird"/></a> Firebird</td>
+      <td><a href="http://github.com/hgourvest/jugglingdb-firebird">jugglingdb-firebird</a></td>
+      <td><a href="http://github.com/hgourvest">Henri Gourvest</a></td>
+      <td></td>      
+    </tr>
+    <tr>
+      <td><a href="http://www.mongodb.org"><img src="http://mongodb.ru/favicon.ico" alt="MongoDB" /></a> MongoDB</td>
+      <td><a href="/1602/jugglingdb-mongodb">jugglingdb-mongodb</a></td>
+      <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
+      <td><a href="https://travis-ci.org/1602/jugglingdb-mongodb"><img src="https://travis-ci.org/1602/jugglingdb-mongodb.png?branch=master" alt="Build Status" /></a></td>
+    </tr>
+    <tr>
+      <td><a href="http://www.mysql.com/"><img src="/1602/jugglingdb/raw/master/media/mysql.ico" style="vertical-align:middle"" alt="MySQL" /></a> MySQL</td>
+      <td><a href="/1602/jugglingdb-mysql">jugglingdb-mysql</a></td>
+      <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
+      <td><a href="https://travis-ci.org/1602/jugglingdb-mysql"><img src="https://travis-ci.org/1602/jugglingdb-mysql.png?branch=master" alt="Build Status" /></a></td>
+    </tr>
+    <tr>
+      <td><a href="http://redis.io/"><img src="http://redis.io/images/favicon.png" alt="Redis" /></a> Redis</td>
+      <td><a href="/1602/jugglingdb-redis">jugglingdb-redis</a></td>
+      <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
+      <td><a href="https://travis-ci.org/1602/jugglingdb-redis"><img src="https://travis-ci.org/1602/jugglingdb-redis.png?branch=master" alt="Build Status" /></a></td>
+    </tr>
+  </tbody>
+</table>
+
 ## Participation
 
 - Check status of project on trello board: https://trello.com/board/jugglingdb/4f0a0b1e27d3103c64288388
