@@ -780,7 +780,6 @@ function testOrm(schema) {
                 if (typeof expectedUserNumber === 'undefined') {
                     expectedUserNumber = 5;
                 }
-                //console.log(users.length, expectedUserNumber);
                 test.equal(users.length, expectedUserNumber, 'Exactly ' + expectedUserNumber + ' users returned by query' + context);
                 testHasMany(users, 'posts', callback);
             }
