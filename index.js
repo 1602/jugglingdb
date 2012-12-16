@@ -7,7 +7,7 @@ exports.Validatable = require('./lib/validatable').Validatable;
 exports.BaseSQL = require('./lib/sql');
 
 exports.init = function (rw) {
-    if (typeof rw === 'string') {
+    if (global.railway) {
         railway.orm = exports;
     } else {
         rw.orm = {Schema: exports.Schema, AbstractClass: exports.AbstractClass};
