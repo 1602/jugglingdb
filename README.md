@@ -63,7 +63,7 @@ check following list of available adapters
     <!-- PostgreSQL -->
     <tr>
       <td><a href="http://www.postgresql.org/"><img src="http://www.postgresql.org/favicon.ico" style="vertical-align:middle"" alt="PostgreSQL" /></a> PostgreSQL</td>
-      <td><a href="/1602/jugglingdb-nano">jugglingdb-postgres</a></td>
+      <td><a href="/1602/jugglingdb-postgres">jugglingdb-postgres</a></td>
       <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
       <td><a href="https://travis-ci.org/1602/jugglingdb-postgres"><img src="https://travis-ci.org/1602/jugglingdb-postgres.png?branch=master" alt="Build Status" /></a></td>
     </tr>
