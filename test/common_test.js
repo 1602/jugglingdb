@@ -636,10 +636,9 @@ function testOrm(schema) {
     });
 
     if (
-        !schema.name.match(/redis/) &&
-            schema.name !== 'memory' &&
-            schema.name !== 'neo4j' &&
-            schema.name !== 'cradle'
+            schema.name === 'mysql' ||
+            schema.name === 'sqlite3' ||
+            schema.name === 'postgres'
         )
     it('should handle include function', function (test) {
         var createdUsers = [];
