@@ -91,5 +91,19 @@ it "should trigger after destroy", (test) ->
     User.create (err, user) ->
         user.destroy()
 
+it "should trigger before destroy on destoryAll", (test)->
+    User.beforeDestroy = () ->
+        User.beforeDestroy = null
+        test.done()
+    User.create {}, (err, user) ->
+        User.destroyAll ->
+
+it "should trigger after destroy on destoryAll", (test)->
+    User.afterDestroy = () ->
+        User.afterDestroy = null
+        test.done()
+    User.create {}, (err, user) ->
+        User.destroyAll ->
+
 it 'allows me to modify attributes before saving', (test) ->
     test.done()
