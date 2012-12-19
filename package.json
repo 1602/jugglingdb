@@ -1,19 +1,49 @@
 {
   "name": "jugglingdb",
   "description": "ORM for every database: redis, mysql, neo4j, mongodb, couchdb, postgres, sqlite",
-  "version": "0.2.0-2",
+  "version": "0.2.0-3",
   "author": "Anatoliy Chakkaev <rpm1602@gmail.com>",
   "contributors": [
-    { "name": "Anatoliy Chakkaev", "email": "rpm1602@gmail.com" },
-    { "name": "Julien Guimont", "email": "julien.guimont@gmail.com" },
-    { "name": "Joseph Junker", "email": "joseph.jnk@gmail.com" },
-    { "name": "Henri Bergius", "email": "henri.bergius@iki.fi" },
-    { "name": "redvulps", "email": "fabopereira@gmail.com" },
-    { "name": "Felipe Sateler", "email": "fsateler@gmail.com" },
-    { "name": "Amir M. Mahmoudi", "email": "a@geeknux.com" },
-    { "name": "Justinas Stankevičius", "email": "justinas@justinas.me" },
-    { "name": "Rick O'Toole", "email": "patrick.n.otoole@gmail.com" },
-    { "name": "Nicholas Westlake", "email": "nicholasredlin@gmail.com" }
+    {
+      "name": "Anatoliy Chakkaev",
+      "email": "rpm1602@gmail.com"
+    },
+    {
+      "name": "Julien Guimont",
+      "email": "julien.guimont@gmail.com"
+    },
+    {
+      "name": "Joseph Junker",
+      "email": "joseph.jnk@gmail.com"
+    },
+    {
+      "name": "Henri Bergius",
+      "email": "henri.bergius@iki.fi"
+    },
+    {
+      "name": "redvulps",
+      "email": "fabopereira@gmail.com"
+    },
+    {
+      "name": "Felipe Sateler",
+      "email": "fsateler@gmail.com"
+    },
+    {
+      "name": "Amir M. Mahmoudi",
+      "email": "a@geeknux.com"
+    },
+    {
+      "name": "Justinas Stankevičius",
+      "email": "justinas@justinas.me"
+    },
+    {
+      "name": "Rick O'Toole",
+      "email": "patrick.n.otoole@gmail.com"
+    },
+    {
+      "name": "Nicholas Westlake",
+      "email": "nicholasredlin@gmail.com"
+    }
   ],
   "repository": {
     "type": "git",
