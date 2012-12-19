@@ -33,6 +33,10 @@ function it(name, cases) {
     batch[schemaName][name] = cases;
 }
 
+function skip(name) {
+    delete batch[schemaName][name];
+}
+
 module.exports = function testSchema(exportCasesHere, schema) {
 
     batch = exportCasesHere;
@@ -69,12 +73,18 @@ module.exports = function testSchema(exportCasesHere, schema) {
 
 };
 
-module.exports.it = it;
 Object.defineProperty(module.exports, 'it', {
     writable: true,
     enumerable: false,
     configurable: true,
     value: it
+});
+
+Object.defineProperty(module.exports, 'skip', {
+    writable: true,
+    enumerable: false,
+    configurable: true,
+    value: skip
 });
 
 function testOrm(schema) {
@@ -101,7 +111,7 @@ function testOrm(schema) {
             subject:   { type: String },
             content:   { type: Text },
             date:      { type: Date,    default: function () { return new Date }, index: true },
-            published: { type: Boolean, default: false },
+            published: { type: Boolean, default: false, index: true },
             likes:     [],
             related:   [RelatedPost]
         }, {table: 'posts'});
@@ -445,9 +455,10 @@ function testOrm(schema) {
 
 
     it('should find records filtered with multiple attributes', function (test) {
-        Post.create({title: 'title', content: 'content', published: true, date: 1}, function (err, post) {
-            Post.all({where: {title: 'title', date: 1}}, function (err, res) {
-                test.ok(res.length > 0, 'Exact match with string returns dataset');
+        var d = new Date;
+        Post.create({title: 'title', content: 'content', published: true, date: d}, function (err, post) {
+            Post.all({where: {title: 'title', date: d, published: true}}, function (err, res) {
+                test.equals(res.length, 1, 'Filtering Posts returns one post');
                 test.done();
             });
         });
