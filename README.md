@@ -54,7 +54,7 @@ check following list of available adapters
 
     <!-- CouchDB / nano -->
     <tr>
-      <td><a href="http://couchdb.apache.org/"><img src="http://couchdb.apache.org/favicon.ico" style="vertical-align:middle"" alt="CouchDB" /></a> CouchDB / nano</td>
+      <td><a href="http://couchdb.apache.org/"><img width="16" src="http://couchdb.apache.org/favicon.ico" style="vertical-align:middle"" alt="CouchDB" /></a> CouchDB / nano</td>
       <td><a href="/1602/jugglingdb-nano">jugglingdb-nano</a></td>
       <td><a href="/nrw">Nicholas Westlake</a></td>
       <td><a href="https://travis-ci.org/1602/jugglingdb-nano"><img src="https://travis-ci.org/1602/jugglingdb-nano.png?branch=master" alt="Build Status" /></a></td>
@@ -63,7 +63,7 @@ check following list of available adapters
     <!-- PostgreSQL -->
     <tr>
       <td><a href="http://www.postgresql.org/"><img src="http://www.postgresql.org/favicon.ico" style="vertical-align:middle"" alt="PostgreSQL" /></a> PostgreSQL</td>
-      <td><a href="/1602/jugglingdb-nano">jugglingdb-postgres</a></td>
+      <td><a href="/1602/jugglingdb-postgres">jugglingdb-postgres</a></td>
       <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
       <td><a href="https://travis-ci.org/1602/jugglingdb-postgres"><img src="https://travis-ci.org/1602/jugglingdb-postgres.png?branch=master" alt="Build Status" /></a></td>
     </tr>
@@ -78,7 +78,7 @@ check following list of available adapters
 
     <!-- SQLite -->
     <tr>
-      <td><a href="http://www.sqlite.org/"><img src="/1602/jugglingdb/raw/master/media/sqlite.png" style="vertical-align:middle"" alt="SQLite" /></a> SQLite</td>
+      <td><a href="http://www.sqlite.org/"><img width="16" src="/1602/jugglingdb/raw/master/media/sqlite.png" style="vertical-align:middle"" alt="SQLite" /></a> SQLite</td>
       <td><a href="/1602/jugglingdb-sqlite3">jugglingdb-sqlite3</a></td>
       <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
       <td><a href="https://travis-ci.org/1602/jugglingdb-sqlite3"><img src="https://travis-ci.org/1602/jugglingdb-sqlite3.png?branch=master" alt="Build Status" /></a></td>

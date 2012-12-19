@@ -87,6 +87,26 @@ Object.defineProperty(module.exports, 'skip', {
     value: skip
 });
 
+function clearAndCreate(model, data, callback) {
+    var createdItems = [];
+    model.destroyAll(function () {
+        nextItem(null, null);
+    });
+
+    var itemIndex = 0;
+    function nextItem(err, lastItem) {
+        if (lastItem !== null) {
+            createdItems.push(lastItem);
+        }
+        if (itemIndex >= data.length) {
+            callback(createdItems);
+            return;
+        }
+        model.create(data[itemIndex], nextItem);
+        itemIndex++;
+    }
+}
+
 function testOrm(schema) {
     var requestsAreCounted = schema.name !== 'mongodb';
 
@@ -151,6 +171,7 @@ function testOrm(schema) {
         });
 
         Passport.belongsTo(User, {as: 'owner', foreignKey: 'ownerId'});
+        User.hasMany(Passport,   {as: 'passports', foreignKey: 'ownerId'});
 
         var user = new User;
 
@@ -464,6 +485,30 @@ function testOrm(schema) {
         });
     });
 
+    if (
+        !schema.name.match(/redis/) &&
+            schema.name !== 'memory' &&
+            schema.name !== 'neo4j' &&
+            schema.name !== 'cradle'
+        )
+    it('relations key is working', function (test) {
+        test.ok(User.relations, 'Relations key should be defined');
+        test.ok(User.relations.posts, 'posts relation should exist on User');
+        test.equal(User.relations.posts.type, 'hasMany', 'Type of hasMany relation is hasMany');
+        test.equal(User.relations.posts.multiple, true, 'hasMany relations are multiple');
+        test.equal(User.relations.posts.keyFrom, 'id', 'keyFrom is primary key of model table');
+        test.equal(User.relations.posts.keyTo, 'userId', 'keyTo is foreign key of related model table');
+
+        test.ok(Post.relations, 'Relations key should be defined');
+        test.ok(Post.relations.author, 'author relation should exist on Post');
+        test.equal(Post.relations.author.type, 'belongsTo', 'Type of belongsTo relation is belongsTo');
+        test.equal(Post.relations.author.multiple, false, 'belongsTo relations are not multiple');
+        test.equal(Post.relations.author.keyFrom, 'userId', 'keyFrom is foreign key of model table');
+        test.equal(Post.relations.author.keyTo, 'id', 'keyTo is primary key of related model table');
+        test.done();
+    });
+
+
     it('should handle hasMany relationship', function (test) {
         User.create(function (err, u) {
             if (err) return console.log(err);
@@ -480,7 +525,6 @@ function testOrm(schema) {
             });
         });
     });
-
 
     it('hasMany should support additional conditions', function (test) {
 
@@ -598,6 +642,235 @@ function testOrm(schema) {
         function done() {
             if (--wait === 0) test.done();
         };
+    });
+
+    if (
+            schema.name === 'mysql' ||
+            schema.name === 'sqlite3' ||
+            schema.name === 'postgres'
+        )
+    it('should handle include function', function (test) {
+        var createdUsers = [];
+        var createdPassports = [];
+        var createdPosts = [];
+        var context = null;
+
+        createUsers();
+        function createUsers() {
+            clearAndCreate(
+                User,
+                [
+                    {name: 'User A', age: 21},
+                    {name: 'User B', age: 22},
+                    {name: 'User C', age: 23},
+                    {name: 'User D', age: 24},
+                    {name: 'User E', age: 25}
+                ],
+                function(items) {
+                    createdUsers = items;
+                    createPassports();
+                }
+            );
+        }
+
+        function createPassports() {
+            clearAndCreate(
+                Passport,
+                [
+                    {number: '1', ownerId: createdUsers[0].id},
+                    {number: '2', ownerId: createdUsers[1].id},
+                    {number: '3'}
+                ],
+                function(items) {
+                    createdPassports = items;
+                    createPosts();
+                }
+            );
+        }
+
+        function createPosts() {
+            clearAndCreate(
+                Post,
+                [
+                    {title: 'Post A', userId: createdUsers[0].id},
+                    {title: 'Post B', userId: createdUsers[0].id},
+                    {title: 'Post C', userId: createdUsers[0].id},
+                    {title: 'Post D', userId: createdUsers[1].id},
+                    {title: 'Post E'}
+                ],
+                function(items) {
+                    createdPosts = items;
+                    makeTests();
+                }
+            );
+        }
+
+        function makeTests() {
+            var unitTests = [
+                function() {
+                    context = ' (belongsTo simple string from passports to users)';
+                    Passport.all({include: 'owner'}, testPassportsUser);
+                },
+                function() {
+                    context = ' (belongsTo simple string from posts to users)';
+                    Post.all({include: 'author'}, testPostsUser);
+                },
+                function() {
+                    context = ' (belongsTo simple array)';
+                    Passport.all({include: ['owner']}, testPassportsUser);
+                },
+                function() {
+                    context = ' (hasMany simple string from users to posts)';
+                    User.all({include: 'posts'}, testUsersPosts);
+                },
+                function() {
+                    context = ' (hasMany simple string from users to passports)';
+                    User.all({include: 'passports'}, testUsersPassports);
+                },
+                function() {
+                    context = ' (hasMany simple array)';
+                    User.all({include: ['posts']}, testUsersPosts);
+                },
+                function() {
+                    context = ' (Passports - User - Posts in object)';
+                    Passport.all({include: {'owner': 'posts'}}, testPassportsUserPosts);
+                },
+                function() {
+                    context = ' (Passports - User - Posts in array)';
+                    Passport.all({include: [{'owner': 'posts'}]}, testPassportsUserPosts);
+                },
+                function() {
+                    context = ' (Passports - User - Posts - User)';
+                    Passport.all({include: {'owner': {'posts': 'author'}}}, testPassportsUserPosts);
+                },
+                function() {
+                    context = ' (User - Posts AND Passports)';
+                    User.all({include: ['posts', 'passports']}, testUsersPostsAndPassports);
+                }
+            ];
+
+            function testPassportsUser(err, passports, callback) {
+                testBelongsTo(passports, 'owner', callback);
+            }
+
+            function testPostsUser(err, posts, callback) {
+                testBelongsTo(posts, 'author', callback);
+            }
+
+            function testBelongsTo(items, relationName, callback) {
+                if (typeof callback === 'undefined') {
+                    callback = nextUnitTest;
+                }
+                var nbInitialRequests = nbSchemaRequests;
+                var nbItemsRemaining = items.length;
+
+                for (var i = 0; i < items.length; i++) {
+                    testItem(items[i]);
+                }
+
+                function testItem(item) {
+                    var relation = item.constructor.relations[relationName];
+                    var modelNameFrom = item.constructor.modelName;
+                    var modelNameTo = relation.modelTo.modelName;
+                    item[relationName](function(err, relatedItem) {
+                        if (relatedItem !== null) {
+                            test.equal(relatedItem[relation.keyTo], item[relation.keyFrom], modelNameTo + '\'s instance match ' + modelNameFrom + '\'s instance' + context);
+                        } else {
+                            test.ok(item[relation.keyFrom] == null, 'User match passport even when user is null.' + context);
+                        }
+                        nbItemsRemaining--;
+                        if (nbItemsRemaining == 0) {
+                            requestsAreCounted && test.equal(nbSchemaRequests, nbInitialRequests, 'No more request have been executed for loading ' + relationName + ' relation' + context)
+                            callback();
+                        }
+                    });
+                }
+            }
+
+            function testUsersPosts(err, users, expectedUserNumber, callback) {
+                if (typeof expectedUserNumber === 'undefined') {
+                    expectedUserNumber = 5;
+                }
+                test.equal(users.length, expectedUserNumber, 'Exactly ' + expectedUserNumber + ' users returned by query' + context);
+                testHasMany(users, 'posts', callback);
+            }
+
+            function testUsersPassports(err, users, callback) {
+                testHasMany(users, 'passports', callback);
+            }
+
+            function testHasMany(items, relationName, callback) {
+                if (typeof callback === 'undefined') {
+                    callback = nextUnitTest;
+                }
+                var nbInitialRequests = nbSchemaRequests;
+                var nbItemRemaining = items.length;
+                for (var i = 0; i < items.length; i++) {
+                    testItem(items[i]);
+                }
+
+                function testItem(item) {
+                    var relation = item.constructor.relations[relationName];
+                    var modelNameFrom = item.constructor.modelName;
+                    var modelNameTo = relation.modelTo.modelName;
+                    item[relationName](function(err, relatedItems) {
+                        for (var j = 0; j < relatedItems.length; j++) {
+                            test.equal(relatedItems[j][relation.keyTo], item[relation.keyFrom], modelNameTo + '\'s instances match ' + modelNameFrom + '\'s instance' + context);
+                        }
+                        nbItemRemaining--;
+                        if (nbItemRemaining == 0) {
+                            requestsAreCounted && test.equal(nbSchemaRequests, nbInitialRequests, 'No more request have been executed for loading ' + relationName + ' relation' + context)
+                            callback();
+                        }
+                    });
+                }
+            }
+
+            function testPassportsUserPosts(err, passports) {
+                testPassportsUser(err, passports, function() {
+                    var nbPassportsRemaining = passports.length;
+                    for (var i = 0; i < passports.length; i++) {
+                        if (passports[i].ownerId !== null) {
+                            passports[i].owner(function(err, user) {
+                                testUsersPosts(null, [user], 1, function() {
+                                    nextPassport();
+                                });
+                            });
+                        } else {
+                            nextPassport();
+                        }
+                    }
+                    function nextPassport() {
+                        nbPassportsRemaining--
+                        if (nbPassportsRemaining == 0) {
+                            nextUnitTest();
+                        }
+                    }
+                });
+            }
+
+            function testUsersPostsAndPassports(err, users) {
+                testUsersPosts(err, users, 5, function() {
+                    testUsersPassports(err, users, function() {
+                        nextUnitTest();
+                    });
+                });
+            }
+
+            var testNum = 0;
+            function nextUnitTest() {
+                if (testNum >= unitTests.length) {
+                    test.done();
+                    return;
+                }
+                unitTests[testNum]();
+                testNum++;
+
+            }
+
+            nextUnitTest();
+        }
+
     });
 
     it('should destroy all records', function (test) {
