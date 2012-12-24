@@ -519,7 +519,7 @@ function testOrm(schema) {
                 if (err) return console.log(err);
                 // test.ok(post.author(), u.id);
                 u.posts(function (err, posts) {
-                    test.equal(posts.pop().id, post.id);
+                    test.equal(posts.pop().id.toString(), post.id.toString());
                     test.done();
                 });
             });
