@@ -256,35 +256,42 @@ Validations: ./test/validations_test.js
 
 To use custom adapter, pass it's package name as first argument to `Schema` constructor:
 
-    mySchema = new Schema('couch-db-adapter', {host:.., port:...});
+    var mySchema = new Schema('mycouch', {host:.., port:...});
 
-Make sure, your adapter can be required (just put it into ./node_modules):
+In that case your adapter should be named as 'jugglingdb-mycouch' npm package.
 
-    require('couch-db-adapter');
-    
-## Jugglingdb Adapters
+## Testing
 
-- Firebird: https://github.com/hgourvest/jugglingdb-firebird
-- Couchdb: TODO: add link for external couchdb adapter
+Core of jugglingdb tests only basic features (database-agnostic) like
+validations, hooks and runs db-specific tests using memory storage. It also
+exports complete bucket of tests for external running. Each adapter should run
+this bucket (example from `jugglingdb-redis`):
 
-## Running tests
+    var jdb = require('jugglingdb'),
+    Schema = jdb.Schema,
+    test = jdb.test;
 
-To run all tests (requires all databases):
+    var schema = new Schema(__dirname + '/..', {host: 'localhost', database: 1});
+
+    test(module.exports, schema);
+
+Each adapter could add specific tests to standart bucket:
+
+    test.it('should do something special', function (test) {
+        test.done();
+    });
+
+Or it could tell core to skip some test from bucket:
+
+    test.skip('name of test case');
+
+To run tests use this command:
 
     npm test
 
-If you run this line, of course it will fall, because it requres different databases to be up and running, 
-but you can use js-memory-engine out of box! Specify ONLY env var:
-
-    ONLY=memory nodeunit test/common_test.js
-
-of course, if you have redis running, you can run
-
-    ONLY=redis nodeunit test/common_test.js
-
-## Package structure
-
-Now all common logic described in `./lib/*.js`, and database-specific stuff in `./lib/adapters/*.js`. It's super-tiny, right?
+Before running make sure you've installed package (`npm install`) and if you
+running some specific adapter tests, ensure you've configured database
+correctly (host, port, username, password).
 
 ## Contributing
 
