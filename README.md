@@ -1,10 +1,14 @@
 ## About [<img src="https://secure.travis-ci.org/1602/jugglingdb.png" />](http://travis-ci.org/#!/1602/jugglingdb)
 
-JugglingDB is cross-db ORM for nodejs, providing **common interface** to access most popular database formats. 
-Currently supported are: mysql, sqlite3, postgres, couchdb, mongodb, redis, neo4j
-and js-memory-storage (yep, 
-self-written engine for test-usage only). You can add your favorite database adapter, checkout one of the 
-existing adapters to learn how, it's super-easy, I guarantee.
+JugglingDB is cross-db ORM for nodejs, providing **common interface** to access
+most popular database formats.  Currently supported are: mysql, sqlite3,
+postgres, couchdb, mongodb, redis, neo4j and js-memory-storage (yep,
+self-written engine for test-usage only). You can add your favorite database
+adapter, checkout one of the existing adapters to learn how, it's super-easy, I
+guarantee.
+
+Jugglingdb also works on client-side (using WebService and Memory adapters),
+which allows to write rich client-side apps talking to server using JSON API.
 
 ## Installation
 
@@ -83,6 +87,25 @@ check following list of available adapters
       <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
       <td><a href="https://travis-ci.org/1602/jugglingdb-sqlite3"><img src="https://travis-ci.org/1602/jugglingdb-sqlite3.png?branch=master" alt="Build Status" /></a></td>
     </tr>
+    <tr>
+      <td>WebService</td>
+      <td>built-in</td>
+      <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
+      <td>n/a</td>
+    </tr>
+    <tr>
+      <td>Memory (bogus)</td>
+      <td>built-in</td>
+      <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
+      <td>n/a</td>
+    </tr>
+    <tr>
+      <td>Neo4j</td>
+      <td>built-in</td>
+      <td><a href="/anatoliychakkaev"><strike>Anatoliy Chakkaev</strike></a> /!\ Looking for
+      maintainer</td>
+      <td>n/a</td>
+    </tr>
 
   </tbody>
 </table>
@@ -119,6 +142,8 @@ var User = schema.define('User', {
     approved:     Boolean,
     joinedAt:     Date,
     age:          Number
+}, {
+    restPath: '/users' // tell WebService adapter which path use as API endpoint
 });
 
 // define any custom method
