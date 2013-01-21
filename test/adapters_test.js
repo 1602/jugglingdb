@@ -1,4 +1,4 @@
-var jdb = require('jugglingdb'),
+var jdb = require('../'),
     Schema = jdb.Schema,
     test = jdb.test;
 

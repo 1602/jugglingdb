@@ -121,10 +121,16 @@ function testOrm(schema) {
             approved:     Boolean,
             joinedAt:     Date,
             age:          Number,
-            passwd:    { type: String, index: true },
+            passwd:    { type: String, index: true }
+        });
+
+        schema.extendModel('User', {
             settings:  { type: Schema.JSON },
             extra:      Object
         });
+
+        var newuser = new User({settings: {hey: 'you'}});
+        test.ok(newuser.settings);
 
         Post = schema.define('Post', {
             title:     { type: String, length: 255, index: true },
