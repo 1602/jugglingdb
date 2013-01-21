@@ -543,28 +543,6 @@ function testOrm(schema) {
         //User.create(function (e, u) {
         //    u.posts.create({}, function (e, p) {
         // find all posts for a user.
-  /*      User.all(function (err,users) {
-            for (var i=0;i<users.length;i++) {
-                u = users[i];
-                Posts.find(user.id, function(err, posts) {
-                    // now check to see that the user has these posts testing the all method of hasMany.
-                    u.posts.all(null,function(err, uposts) {
-                        test.equal(posts.length,uposts.length);
-                        if (post.length == uposts.length) {
-                            for (var j=0;j<uposts.length;j++) {
-                                for (var k= 0,found=false;k<posts.length;k++) {
-                                    if (uposts[j] == uposts[k].id) { found = true; break; }
-                                }
-                                if (!found) test.equal(1,0); // not familliar with test framework here... test.fail()?
-                            }
-                        }
-                    })
-                })
-                // find the posts with this user id.
-                // find the posts of the user.
-
-            }
-        })*/
         // Finding one post with an existing author associated
         Post.all(function (err, posts) {
             // We try to get the first post with a userId != NULL
@@ -1444,6 +1422,19 @@ function testOrm(schema) {
                         });
                     });
                 });
+            });
+        });
+    });
+
+    it('should find or create', function (test) {
+        var email = 'some email ' + Math.random();
+        User.findOrCreate({where: {email: email, age: 23}}, function (err, u) {
+            test.ok(u);
+            test.equals(u.age, 23);
+            User.findOrCreate({where: {email: email}}, {age: 21}, function (err, u2) {
+                test.equals(u.id.toString(), u2.id.toString(), 'Same user ids');
+                test.equals(u2.age, 23);
+                test.done();
             });
         });
     });
