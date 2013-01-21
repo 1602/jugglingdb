@@ -96,7 +96,7 @@ it 'should validate uniqueness', (test) ->
   bkk = new Airport code: 'BKK', city: 'Bangkok'
   bkk.isValid (valid) ->
     test.ok valid
-    bkk.save ->
+    bkk.updateAttribute 'code', 'BKK', ->
       dmk = new Airport code: 'DMK', city: 'Bangkok'
       dmk.isValid (valid) ->
         test.ok valid
