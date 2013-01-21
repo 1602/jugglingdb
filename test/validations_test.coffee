@@ -88,3 +88,27 @@ it 'should allow to skip validations', (test) ->
 
     test.done()
 
+it 'should validate uniqueness', (test) ->
+
+  Airport = schema.define 'Airport', code: String, city: String
+  Airport.validatesUniquenessOf 'code'
+
+  bkk = new Airport code: 'BKK', city: 'Bangkok'
+  bkk.isValid (valid) ->
+    test.ok valid
+    bkk.save ->
+      dmk = new Airport code: 'DMK', city: 'Bangkok'
+      dmk.isValid (valid) ->
+        test.ok valid
+        dmk.save ->
+        dmk.city = 'Bangkok, Don Muang'
+        dmk.isValid (valid) ->
+          test.ok valid
+          dmk.save ->
+            dmk.code = 'BKK'
+            dmk.isValid (valid) ->
+              test.ok !valid
+              dmk.code = 'DMK'
+              dmk.isValid (valid) ->
+                test.ok valid
+                test.done()
