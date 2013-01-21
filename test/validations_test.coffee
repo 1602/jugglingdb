@@ -101,14 +101,13 @@ it 'should validate uniqueness', (test) ->
       dmk.isValid (valid) ->
         test.ok valid
         dmk.save ->
-        dmk.city = 'Bangkok, Don Muang'
-        dmk.isValid (valid) ->
-          test.ok valid
-          dmk.save ->
-            dmk.code = 'BKK'
-            dmk.isValid (valid) ->
-              test.ok !valid
-              dmk.code = 'DMK'
+          dmk.updateAttributes city: 'Bangkok, Don Muang', (err) ->
+            test.ok !err
+            dmk.save ->
+              dmk.code = 'BKK'
               dmk.isValid (valid) ->
-                test.ok valid
-                test.done()
+                test.ok !valid
+                dmk.code = 'DMK'
+                dmk.isValid (valid) ->
+                  test.ok valid
+                  test.done()
