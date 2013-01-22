@@ -1273,7 +1273,7 @@ function testOrm(schema) {
                 test.equal(post && post.constructor.modelName, 'Post');
                 test.equal(post && post.title, 'hey');
                 Post.findOne({ where: { title: 'not exists' } }, function (err, post) {
-                    test.ok(typeof post === 'undefined');
+                    test.ok(post === null);
                     test.done();
                 });
             });
