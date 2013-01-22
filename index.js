@@ -4,7 +4,12 @@ var path = require('path');
 exports.Schema = require('./lib/schema').Schema;
 exports.AbstractClass = require('./lib/abstract-class').AbstractClass;
 exports.Validatable = require('./lib/validatable').Validatable;
-exports.BaseSQL = require('./lib/sql');
+
+var baseSQL = './lib/sql';
+
+exports.__defineGetter__('BaseSQL', function () {
+    return require(baseSQL);
+});
 
 exports.init = function (rw) {
     if (global.railway) {
@@ -12,7 +17,8 @@ exports.init = function (rw) {
     } else {
         rw.orm = {Schema: exports.Schema, AbstractClass: exports.AbstractClass};
     }
-    require('./lib/railway')(rw);
+    var railway = './lib/railway';
+    require(railway)(rw);
 };
 
 try {
@@ -23,5 +29,7 @@ try {
     }
 } catch (e) {}
 
-exports.test = require('./test/common_test');
-
+var commonTest = './test/common_test';
+exports.__defineGetter__('test', function () {
+    return require(commonTest);
+});
