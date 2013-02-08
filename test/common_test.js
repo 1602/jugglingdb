@@ -532,6 +532,49 @@ function testOrm(schema) {
         });
     });
 
+    it('should navigate variations of belongsTo regardless of column name', function(test){
+        test.expect(7);
+        
+        var Schema = require('jugglingdb').Schema;
+        var schema = new Schema('memory', {});
+                
+        var Dog = schema.define('Dog', {
+            owner_id    : { type: Number, allowNull: true },
+            name        : { type: String, limit: 64, allowNull: false }
+        });
+        
+        var Log = schema.define('Log', {
+            owner_id     : { type: Number, allowNull: true },
+            name         : { type: String, limit: 64, allowNull: false }
+        });
+        
+        Log.belongsTo(Dog,  {as: 'owner',  foreignKey: 'owner_id'});
+        
+        schema.automigrate(function(){ 
+            Dog.create({name: 'theDog'}, function(err, obj){
+                test.ok(obj instanceof Dog);
+                Log.create({name: 'theLog', owner_id: 1}, function(err, obj){
+                    test.ok(obj instanceof Log);
+                    obj.owner(function(err, obj){
+                        test.ok(!err, 'Should not have an error.'); // Before cba174b this would be 'Error: Permission denied'
+                        if(err){
+                            console.log('Found: ' + err);
+                        }
+                        test.ok(obj, 'Should not find null or undefined.'); // Before cba174b this could be null or undefined.
+                        test.ok(obj instanceof Dog, 'Should find a Dog.');
+                        if(obj){ // Since test won't stop on fail, have to check before accessing obj.name.
+                            test.ok(obj.name, 'Should have a name.');
+                        }
+                        if(obj && obj.name){
+                            test.equal(obj.name, 'theDog', 'The owner of theLog is theDog.');
+                        }
+                        test.done();
+                    });
+                });
+            });
+        });
+    });
+
     it('hasMany should support additional conditions', function (test) {
 
         User.create(function (e, u) {
