@@ -110,7 +110,7 @@ function clearAndCreate(model, data, callback) {
 function testOrm(schema) {
     var requestsAreCounted = schema.name !== 'mongodb';
 
-    var Post, User, Passport;
+    var Post, User, Passport, Log, Dog;
 
     it('should define class', function (test) {
 
@@ -123,6 +123,17 @@ function testOrm(schema) {
             age:          Number,
             passwd:    { type: String, index: true }
         });
+
+        Dog = schema.define('Dog', {
+            name        : { type: String, limit: 64, allowNull: false }
+        });
+
+        Log = schema.define('Log', {
+            ownerId     : { type: Number, allowNull: true },
+            name         : { type: String, limit: 64, allowNull: false }
+        });
+
+        Log.belongsTo(Dog,  {as: 'owner',  foreignKey: 'ownerId'});
 
         schema.extendModel('User', {
             settings:  { type: Schema.JSON },
@@ -534,24 +545,11 @@ function testOrm(schema) {
 
     it('should navigate variations of belongsTo regardless of column name', function(test){
 
-        var Dog = schema.define('Dog', {
-            owner_id    : { type: Number, allowNull: true },
-            name        : { type: String, limit: 64, allowNull: false }
-        });
-
-        var Log = schema.define('Log', {
-            owner_id     : { type: Number, allowNull: true },
-            name         : { type: String, limit: 64, allowNull: false }
-        });
-
-        Log.belongsTo(Dog,  {as: 'owner',  foreignKey: 'owner_id'});
-
         Dog.create({name: 'theDog'}, function(err, obj){
             test.ok(obj instanceof Dog);
-            Log.create({name: 'theLog', owner_id: obj.id}, function(err, obj){
+            Log.create({name: 'theLog', ownerId: obj.id}, function(err, obj){
                 test.ok(obj instanceof Log);
                 obj.owner(function(err, obj){
-                    console.log(err, obj);
                     test.ok(!err, 'Should not have an error.'); // Before cba174b this would be 'Error: Permission denied'
                     if(err){
                         console.log('Found: ' + err);
