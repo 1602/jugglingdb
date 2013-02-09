@@ -13,7 +13,7 @@ exports.__defineGetter__('BaseSQL', function () {
 
 exports.init = function (rw) {
     if (global.railway) {
-        railway.orm = exports;
+        global.railway.orm = exports;
     } else {
         rw.orm = {Schema: exports.Schema, AbstractClass: exports.AbstractClass};
     }
