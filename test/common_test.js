@@ -416,13 +416,11 @@ function testOrm(schema) {
             post.updateAttribute('title', 'New title', function () {
                 test.equal(post.title, 'New title');
                 test.ok(!post.propertyChanged('title'));
-                console.log('hahaha', post.content, post.__data.content);
                 test.equal(post.content, 'New content', 'dirty state saved');
                 test.ok(post.propertyChanged('content'));
                 post.reload(function (err, post) {
                     test.equal(post.title, 'New title');
                     test.ok(!post.propertyChanged('title'), 'title not changed');
-                    console.log(post.content);
                     test.equal(post.content, 'content', 'real value turned back');
                     test.ok(!post.propertyChanged('content'), 'content unchanged');
                     test.done();
@@ -438,7 +436,6 @@ function testOrm(schema) {
             test.ok(countOfposts > 0);
             test.ok(posts[0] instanceof Post);
             countOfpostsFiltered = posts.filter(function (p) {
-                console.log(p.title);
                 return p.title === 'title';
             }).length;
             test.done();
