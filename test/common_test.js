@@ -531,7 +531,6 @@ function testOrm(schema) {
             test.ok(u.posts.create, 'Method defined: posts.create');
             u.posts.create(function (err, post) {
                 if (err) return console.log(err);
-                // test.ok(post.author(), u.id);
                 u.posts(function (err, posts) {
                     test.equal(posts.pop().id.toString(), post.id.toString());
                     test.done();
