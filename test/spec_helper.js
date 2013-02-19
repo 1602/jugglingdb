@@ -11,7 +11,7 @@ try {
 }
 
 var group_name = false, EXT_EXP;
-function it (should, test_case) {
+function it(should, test_case) {
     check_external_exports();
     if (group_name) {
         EXT_EXP[group_name][should] = test_case;
@@ -39,7 +39,7 @@ function context(name, tests) {
 
 global.context = context;
 
-exports.init = function (external_exports) {
+exports.init = function init(external_exports) {
     EXT_EXP = external_exports;
     if (external_exports.done) {
         external_exports.done();
