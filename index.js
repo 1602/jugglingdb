@@ -21,13 +21,9 @@ exports.init = function (rw) {
     require(railway)(rw);
 };
 
-try {
-    if (process.versions.node < '0.6') {
-        exports.version = JSON.parse(fs.readFileSync(__dirname + '/package.json')).version;
-    } else {
-        exports.version = require('./package').version;
-    }
-} catch (e) {}
+exports.__defineGetter__('version', function () {
+    return JSON.parse(fs.readFileSync(__dirname + '/package.json')).version;
+});
 
 var commonTest = './test/common_test';
 exports.__defineGetter__('test', function () {
