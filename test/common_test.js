@@ -1,5 +1,5 @@
 
-var Schema = require('../index').Schema;
+var Schema = require('../lib/schema').Schema;
 var Text = Schema.Text;
 
 // var schemas = {
