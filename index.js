@@ -18,7 +18,10 @@ exports.init = function (rw) {
         rw.orm = {Schema: exports.Schema, AbstractClass: exports.AbstractClass};
     }
     var railway = './lib/railway';
-    require(railway)(rw);
+    try {
+        var init = require(railway);
+    } catch (e) {}
+    if (init) init(rw);
 };
 
 exports.__defineGetter__('version', function () {
