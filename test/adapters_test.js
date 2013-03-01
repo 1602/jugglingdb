@@ -1,6 +1,6 @@
 var jdb = require('../'),
     Schema = jdb.Schema,
-    test = jdb.test;
+    test = require('./common_test');
 
 var schema = new Schema('memory');
 

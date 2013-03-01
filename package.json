@@ -56,6 +56,9 @@
   "engines": [
     "node >= 0.6"
   ],
+  "dependencies": {
+    "amdefine": "*"
+  },
   "devDependencies": {
     "semicov": "*",
     "nodeunit": ">= 0.6.4",

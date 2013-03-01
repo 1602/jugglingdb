@@ -1,14 +1,19 @@
-var fs = require('fs');
-var path = require('path');
+if (typeof define !== 'function') {
+    var define = require('amdefine')(module);
+}
 
-exports.Schema = require('./lib/schema').Schema;
-exports.AbstractClass = require('./lib/abstract-class').AbstractClass;
-exports.Validatable = require('./lib/validatable').Validatable;
+define(['fs', 'path', './lib/schema', './lib/abstract-class',
+  './lib/validatable', './lib/sql']
+  , function(fs, path, schema, abstractClass
+    , validatable, baseSQL) {
 
-var baseSQL = './lib/sql';
+var exports = {};
+exports.Schema = schema.Schema;
+exports.AbstractClass = abstractClass.AbstractClass;
+exports.Validatable = validatable.Validatable;
 
 exports.__defineGetter__('BaseSQL', function () {
-    return require(baseSQL);
+    return baseSQL;
 });
 
 exports.init = function (rw) {
@@ -28,7 +33,6 @@ exports.__defineGetter__('version', function () {
     return JSON.parse(fs.readFileSync(__dirname + '/package.json')).version;
 });
 
-var commonTest = './test/common_test';
-exports.__defineGetter__('test', function () {
-    return require(commonTest);
+return exports;
+
 });

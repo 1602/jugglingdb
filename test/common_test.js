@@ -1,5 +1,5 @@
 
-var Schema = require('../index').Schema;
+var Schema = require('../lib/schema').Schema;
 var Text = Schema.Text;
 
 // var schemas = {
@@ -235,7 +235,7 @@ function testOrm(schema) {
         var outString = '{"title":"hello, json","subject":null,"content":null,"date":1,"published":false,"likes":[],"related":[],"id":1,"userId":null}'
         if (schema.name === 'nano')
             outString = '{"title":"hello, json","subject":null,"content":null,"date":1,"published":false,"likes":[],"related":[],"_rev":null,"id":1,"userId":null}'
-        
+
         test.equal(JSON.stringify(new Post({id: 1, title: 'hello, json', date: 1})),outString);
         test.done();
     });
