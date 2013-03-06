@@ -51,9 +51,9 @@ check following list of available adapters
     <!-- MySQL -->
     <tr>
       <td><a href="http://www.mysql.com/"><img src="https://github.com/1602/jugglingdb/raw/master/media/mysql.ico" style="vertical-align:middle"" alt="MySQL" /></a> MySQL</td>
-      <td><a href="https://github.com/1602/jugglingdb-mysql">jugglingdb-mysql</a></td>
-      <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://travis-ci.org/1602/jugglingdb-mysql"><img src="https://travis-ci.org/1602/jugglingdb-mysql.png?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://github.com/jugglingdb/mysql-adapter">jugglingdb/mysql</a></td>
+      <td><a href="https://github.com/dgsan">dgsan</a></td>
+      <td><a href="https://travis-ci.org/jugglingdb/mysql-adapter"><img src="https://travis-ci.org/jugglingdb/mysql-adapter.png?branch=master" alt="Build Status" /></a></td>
     </tr>
 
     <!-- CouchDB / nano -->
