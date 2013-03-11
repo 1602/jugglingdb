@@ -18,10 +18,19 @@ exports.init = function (rw) {
         rw.orm = {Schema: exports.Schema, AbstractClass: exports.AbstractClass};
     }
     var railway = './lib/railway';
-    try {
-        var init = require(railway);
-    } catch (e) {}
-    if (init) init(rw);
+
+    if (rw.version > '1.1.5-15') {
+        rw.on('after routes', initialize);
+    } else {
+        initialize();
+    }
+
+    function initialize() {
+        try {
+            var init = require(railway);
+        } catch (e) {}
+        if (init) init(rw);
+    }
 };
 
 exports.__defineGetter__('version', function () {
