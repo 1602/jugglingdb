@@ -43,9 +43,9 @@ check following list of available adapters
     <!-- MongoDB -->
     <tr>
       <td><a href="http://www.mongodb.org"><img src="http://mongodb.ru/favicon.ico" alt="MongoDB" /></a> MongoDB</td>
-      <td><a href="https://github.com/1602/jugglingdb-mongodb">jugglingdb-mongodb</a></td>
-      <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://travis-ci.org/1602/jugglingdb-mongodb"><img src="https://travis-ci.org/1602/jugglingdb-mongodb.png?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://github.com/jugglingdb/mongodb-adapter">jugglingdb/mongodb-adapter</a></td>
+      <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
+      <td><a href="https://travis-ci.org/jugglingdb/mongodb-adapter"><img src="https://travis-ci.org/jugglingdb/mongodb-adapter.png?branch=master" alt="Build Status" /></a></td>
     </tr>
 
     <!-- MySQL -->
@@ -59,50 +59,50 @@ check following list of available adapters
     <!-- CouchDB / nano -->
     <tr>
       <td><a href="http://couchdb.apache.org/"><img width="16" src="http://couchdb.apache.org/favicon.ico" style="vertical-align:middle"" alt="CouchDB" /></a> CouchDB / nano</td>
-      <td><a href="https://github.com/1602/jugglingdb-nano">jugglingdb-nano</a></td>
-      <td><a href="/nrw">Nicholas Westlake</a></td>
-      <td><a href="https://travis-ci.org/1602/jugglingdb-nano"><img src="https://travis-ci.org/1602/jugglingdb-nano.png?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://github.com/jugglingdb/nano-adapter">jugglingdb/nano-adapter</a></td>
+      <td><a href="https://github.com/nrw">Nicholas Westlake</a></td>
+      <td><a href="https://travis-ci.org/jugglingdb/nano-adapter"><img src="https://travis-ci.org/jugglingdb/nano-adapter.png?branch=master" alt="Build Status" /></a></td>
     </tr>
 
     <!-- PostgreSQL -->
     <tr>
       <td><a href="http://www.postgresql.org/"><img src="http://www.postgresql.org/favicon.ico" style="vertical-align:middle"" alt="PostgreSQL" /></a> PostgreSQL</td>
-      <td><a href="https://github.com/1602/jugglingdb-postgres">jugglingdb-postgres</a></td>
-      <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://travis-ci.org/1602/jugglingdb-postgres"><img src="https://travis-ci.org/1602/jugglingdb-postgres.png?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://github.com/jugglingdb/postgres-adapter">jugglingdb/postgres-adapter</a></td>
+      <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
+      <td><a href="https://travis-ci.org/jugglingdb/postgres-adapter"><img src="https://travis-ci.org/jugglingdb/postgres-adapter.png?branch=master" alt="Build Status" /></a></td>
     </tr>
 
     <!-- Redis -->
     <tr>
       <td><a href="http://redis.io/"><img src="http://redis.io/images/favicon.png" alt="Redis" /></a> Redis</td>
-      <td><a href="https://github.com/1602/jugglingdb-redis">jugglingdb-redis</a></td>
-      <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://travis-ci.org/1602/jugglingdb-redis"><img src="https://travis-ci.org/1602/jugglingdb-redis.png?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://github.com/jugglingdb/redis-adapter">jugglingdb-redis</a></td>
+      <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
+      <td><a href="https://travis-ci.org/jugglingdb/redis-adapter"><img src="https://travis-ci.org/jugglingdb/redis-adapter.png?branch=master" alt="Build Status" /></a></td>
     </tr>
 
     <!-- SQLite -->
     <tr>
       <td><a href="http://www.sqlite.org/"><img width="16" src="https://github.com/1602/jugglingdb/raw/master/media/sqlite.png" style="vertical-align:middle"" alt="SQLite" /></a> SQLite</td>
-      <td><a href="https://github.com/1602/jugglingdb-sqlite3">jugglingdb-sqlite3</a></td>
-      <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://travis-ci.org/1602/jugglingdb-sqlite3"><img src="https://travis-ci.org/1602/jugglingdb-sqlite3.png?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://github.com/jugglingdb/sqlite3-adapter">jugglingdb/sqlite3-adapter</a></td>
+      <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
+      <td><a href="https://travis-ci.org/jugglingdb/sqlite3-adapter"><img src="https://travis-ci.org/jugglingdb/sqlite3-adapter.png?branch=master" alt="Build Status" /></a></td>
     </tr>
     <tr>
       <td>WebService</td>
       <td>built-in</td>
-      <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
+      <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
       <td>n/a</td>
     </tr>
     <tr>
       <td>Memory (bogus)</td>
       <td>built-in</td>
-      <td><a href="/anatoliychakkaev">Anatoliy Chakkaev</a></td>
+      <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
       <td>n/a</td>
     </tr>
     <tr>
       <td>Neo4j</td>
-      <td>built-in</td>
-      <td><a href="/anatoliychakkaev"><strike>Anatoliy Chakkaev</strike></a> /!\ Looking for
+      <td>built-in <i>TODO: move</i></td>
+      <td><a href="https://github.com/anatoliychakkaev"><strike>Anatoliy Chakkaev</strike></a> <u>/!\</u> Looking for
       maintainer</td>
       <td>n/a</td>
     </tr>
@@ -118,7 +118,7 @@ check following list of available adapters
 
 If you want to create your own jugglingdb adapter, you should publish your
 adapter package with name `jugglingdb-ADAPTERNAME`. Creating adapter is simple,
-check [jugglingdb-redis](https://github.com/1602/jugglingdb-redis) for example. JugglingDB core
+check [jugglingdb/redis-adapter](https://github.com/jugglingdb/redis-adapter) for example. JugglingDB core
 exports common tests each adapter should pass, you could create your adapter in
 TDD style, check that adapter pass all tests defined in `test/common_test.js`.
 
