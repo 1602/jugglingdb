@@ -60,5 +60,9 @@
     "semicov": "*",
     "nodeunit": ">= 0.6.4",
     "coffee-script": "latest"
+  },
+  "dependencies": {
+    "should": "~1.2.2",
+    "mocha": "~1.8.2"
   }
 }
