@@ -19,10 +19,11 @@ case $dest in
     ;;
 
   *.html)
-    ronn -5 $1 --pipe\
+    (ronn -5 $1 --pipe\
       --style='print toc'\
       --organization=1602\ Software\
-      --manual=JugglingDB > $2
+      --manual=JugglingDB &&\
+    cat docs/ga.html) > $2
     exit $?
     ;;
 esac
