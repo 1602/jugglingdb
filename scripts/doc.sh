@@ -20,7 +20,7 @@ case $dest in
 
   *.html)
     ronn -5 $1 --pipe\
-      --style=toc\
+      --style='print toc'\
       --organization=1602\ Software\
       --manual=JugglingDB > $2
     exit $?
