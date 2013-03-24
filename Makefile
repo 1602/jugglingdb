@@ -1,11 +1,17 @@
-# doc:
-#	 makedoc lib/abstract-class.js lib/schema.js lib/validatable.js -t "JugglingDB API docs"
+## TESTS
+
+TESTER = ./node_modules/.bin/mocha
+OPTS = --require ./test/init.js
+TESTS = test/*.test.js
 
 test:
-	@./node_modules/.bin/mocha --require should test/*.test.js
-
+	$(TESTER) $(OPTS) $(TESTS)
 test-verbose:
-	@./node_modules/.bin/mocha --require should --reporter spec test/*.test.js
+	$(TESTER) $(OPTS) --reporter spec $(TESTS)
+testing:
+	$(TESTER) $(OPTS) --watch $(TESTS)
+
+## DOCS
 
 MAN_DOCS = $(shell find docs -name '*.md' \
                |sed 's|.md|.3|g' \
