@@ -4,7 +4,7 @@ var should = require('should');
 describe('JSON property', function() {
     var schema, Model;
 
-    it('could be defined', function() {
+    it('should be defined', function() {
         schema = new Schema('memory');
         Model = schema.define('Model', {propertyName: Schema.JSON});
         var m = new Model;

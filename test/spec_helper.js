@@ -1,6 +1,6 @@
 if (!process.env.TRAVIS) {
     var semicov = require('semicov');
-    semicov.init('lib');
+    semicov.init('lib', 'JugglingDB');
     process.on('exit', semicov.report);
 }
 

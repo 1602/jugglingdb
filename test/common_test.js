@@ -232,7 +232,7 @@ function testOrm(schema) {
     });
 
     it('should be exported to JSON', function (test) {
-        var outString = '{"title":"hello, json","subject":null,"content":null,"date":1,"published":false,"likes":[],"related":[],"id":1,"userId":null}'
+        var outString = '{"title":"hello, json","date":1,"published":false,"likes":[],"related":[],"id":1}'
         if (schema.name === 'nano')
             outString = '{"title":"hello, json","subject":null,"content":null,"date":1,"published":false,"likes":[],"related":[],"_rev":null,"id":1,"userId":null}'
         
