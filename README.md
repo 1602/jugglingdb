@@ -1,11 +1,11 @@
 ## About [<img src="https://secure.travis-ci.org/1602/jugglingdb.png" />](http://travis-ci.org/#!/1602/jugglingdb)
 
-JugglingDB is cross-db ORM for nodejs, providing **common interface** to access
-most popular database formats.  Currently supported are: mysql, sqlite3,
-postgres, couchdb, mongodb, redis, neo4j and js-memory-storage (yep,
-self-written engine for test-usage only). You can add your favorite database
-adapter, checkout one of the existing adapters to learn how, it's super-easy, I
-guarantee.
+[JugglingDB(3)](http://jugglingdb.co) is cross-db ORM for nodejs, providing
+**common interface** to access most popular database formats.  Currently
+supported are: mysql, sqlite3, postgres, couchdb, mongodb, redis, neo4j and
+js-memory-storage (yep, self-written engine for test-usage only). You can add
+your favorite database adapter, checkout one of the existing adapters to learn
+how, it's super-easy, I guarantee.
 
 Jugglingdb also works on client-side (using WebService and Memory adapters),
 which allows to write rich client-side apps talking to server using JSON API.
@@ -257,9 +257,9 @@ user.save(callback);
 // afterSave
 // callback
 user.updateAttribute('email', 'email@example.com', callback);
+// beforeUpdate
 // beforeValidation
 // afterValidation
-// beforeUpdate
 // afterUpdate
 // callback
 user.destroy(callback);
@@ -275,7 +275,7 @@ User.create(data, callback);
 ```
 
 Read the tests for usage examples: ./test/common_test.js
-Validations: ./test/validations_test.js
+Validations: ./test/validations.test.js
 
 ## Your own database adapter
 

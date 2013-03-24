@@ -3,9 +3,15 @@ jugglingdb-changelog(3) - The History of JugglingDB
 
 ## HISTORY
 
-### upcoming release
+### upcoming release 0.3.0
 
-* Documentation in [web][http://jugglingdb.co] and man
+* Documentation:
+  Available in [web](http://jugglingdb.co) and man [jugglingdb(3)]
+
+* **Hooks**:
+  Changed format of update and save hooks. Hook accept data as second argument.
+  This data could be modified and it will be saved to database after hook done.
+  **NOTE**: this change could break some code.
 
 ### 0.2.1
 
@@ -70,3 +76,7 @@ jugglingdb-changelog(3) - The History of JugglingDB
 ### 0.0.1
 
 Package extracted from [RailwayJS MVC](http://railwayjs.com)
+
+## SEE ALSO
+
+jugglingdb-roadmap(3)
