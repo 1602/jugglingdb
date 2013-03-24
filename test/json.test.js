@@ -8,7 +8,7 @@ describe('JSON property', function() {
         schema = new Schema('memory');
         Model = schema.define('Model', {propertyName: Schema.JSON});
         var m = new Model;
-        m.should.have.property('propertyName');
+        (new Boolean('propertyName' in m)).should.eql(true);
         should.not.exist(m.propertyName);
     });
 

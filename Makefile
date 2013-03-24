@@ -4,6 +4,9 @@
 test:
 	@./node_modules/.bin/mocha --require should test/*.test.js
 
+test-verbose:
+	@./node_modules/.bin/mocha --require should --reporter spec test/*.test.js
+
 MAN_DOCS = $(shell find docs -name '*.md' \
                |sed 's|.md|.3|g' \
                |sed 's|docs/|docs/man/|g' )
