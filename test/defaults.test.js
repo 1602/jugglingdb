@@ -19,7 +19,6 @@ describe('defaults', function() {
     it('should apply defaults on create', function(done) {
         Server.create(function(err, s) {
             s.port.should.equal(80);
-            console.log(s.__data);
             done();
         });
     });

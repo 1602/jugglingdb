@@ -5,7 +5,7 @@ jugglingdb-changelog(3) - The History of JugglingDB
 
 ### upcoming release
 
-* Documentation in web and man
+* Documentation in [web][http://jugglingdb.co] and man
 
 ### 0.2.1
 
