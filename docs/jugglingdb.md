@@ -25,7 +25,7 @@ Then install adapter for specific database, for example `jugglingdb-redis`:
 
     npm install jugglingdb-redis
 
-See jugglingdb-adapters(3) for list of available adapters. 
+See [ADAPTERS][] for list of available adapters. 
 
 ## DOCUMENTATION
 
@@ -53,13 +53,13 @@ Human-written manual sections are:
 All adapters available as separate packages at
 [github.com/jugglingdb] and published in npm.
 
-* [jugglingdb-mysql]
-* [jugglingdb-sqlite3]
-* [jugglingdb-postgres]
-* [jugglingdb-redis]
-* [jugglingdb-mongodb]
-* [jugglingdb-nano]
-* [jugglingdb-firebird]
+* MySQL:    [github][jugglingdb-mysql]     [npm][mysql-adapter-npm]
+* SQLite3:  [github][jugglingdb-sqlite3]   [npm][sqlite3-adapter-npm]
+* Postgres: [github][jugglingdb-postgres]  [npm][postgres-adapter-npm]
+* Redis:    [github][jugglingdb-redis]     [npm][redis-adapter-npm]
+* MongoDB:  [github][jugglingdb-mongodb]   [npm][mongodb-adapter-npm]
+* CouchDB/nano: [github][jugglingdb-nano]  [npm][nano-adapter-npm]
+* Firebird: [github][jugglingdb-firebird]  [npm][firebird-adapter-npm]
 
 ## CONTRIBUTION
 
@@ -116,6 +116,8 @@ JugglingDB is Copyright (C) 2011 Anatoliy Chakkaev http://anatoliy.in
 * [jugglingdb-firebird] - [Henri Gourvest](https://github.com/hgourvest)
 
 *NOTE:* Other adapters waits for their maintainers, drop a line to
-mail@anatoliy.in if you want to maintain some adapter on regular basis.
+<mail@anatoliy.in> if you want to maintain some adapter on regular basis.
 
 ## SEE ALSO
+
+jugglingdb-schema(3)
