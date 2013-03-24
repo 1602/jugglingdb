@@ -1,4 +1,4 @@
-var Schema = require('jugglingdb').Schema;
+var Schema = require('../').Schema;
 var should = require('should');
 
 describe('JSON property', function() {
