@@ -51,7 +51,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "nodeunit test/*_test*"
+    "test": "make test"
   },
   "engines": [
     "node >= 0.6"
