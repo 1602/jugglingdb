@@ -23,7 +23,8 @@ case $dest in
       --style='print toc'\
       --organization=1602\ Software\
       --manual=JugglingDB &&\
-    cat docs/ga.html) > $2
+      cat docs/ga.html &&\
+      cat docs/footer.html) > $2
     exit $?
     ;;
 esac

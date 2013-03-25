@@ -1,0 +1,14 @@
+<script>
+    var filename = location.href.match(/([^\/]+)?\.3.html$/)[1];
+    var div = document.createElement('div');
+    div.innerHTML = 'Found a typo? ' +
+        linkTo('View', 'blob') + ' and ' + 
+        linkTo('edit', 'edit') + ' this file online at GitHub.';
+
+    document.getElementById('man').appendChild(div);
+
+    function linkTo(text, dir) {
+        return '<a href="https://github.com/1602/jugglingdb/' +
+            dir + '/master/docs/' + filename + '.md">' + text + '</a>';
+    }
+</script>
