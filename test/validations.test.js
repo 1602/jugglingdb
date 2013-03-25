@@ -88,8 +88,11 @@ describe('validations', function() {
             Boolean(u.isValid(function(valid) {
                 valid.should.be.true;
                 u.save(function() {
-                    u.name = 'hey';
-                    u.save(done);
+                    u.name = 'Goghi';
+                    u.isValid(function(valid) {
+                        valid.should.be.true;
+                        u.save(done);
+                    });
                 });
             })).should.be.false;
         });
