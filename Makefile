@@ -34,7 +34,7 @@ docs/html/index.html: docs/jugglingdb.md scripts/doc.sh
 man: $(MAN_DOCS)
 html: $(HTML_DOCS)
 
-release: man
+build: man
 
 web: html
 	rsync ./docs/html/* jugglingdb.co:/var/www/apps/jugglingdb.co/public

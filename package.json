@@ -51,17 +51,24 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "prepublish": "make build"
   },
+  "man": [
+    "./docs/man/jugglingdb.3",
+    "./docs/man/schema.3",
+    "./docs/man/model.3",
+    "./docs/man/hooks.3",
+    "./docs/man/validations.3",
+    "./docs/man/jugglingdb.3",
+    "./docs/man/roadmap.3",
+    "./docs/man/changelog.3"
+  ],
   "engines": [
     "node >= 0.6"
   ],
   "devDependencies": {
     "semicov": "*",
-    "nodeunit": ">= 0.6.4",
-    "coffee-script": "latest"
-  },
-  "dependencies": {
     "should": "~1.2.2",
     "mocha": "~1.8.2"
   }
