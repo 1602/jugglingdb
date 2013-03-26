@@ -1,12 +1,22 @@
-var db, Book, Chapter, Author, Reader;
+var db, Book, Chapter, Author, Reader, should = require('should');
 
 describe('relations', function() {
-    before(function() {
+    before(function(done) {
         db = getSchema();
         Book = db.define('Book', {name: String});
-        Chapter = db.define('Chapter', {name: String});
+        Chapter = db.define('Chapter', {name: {type: String, index: true}});
         Author = db.define('Author', {name: String});
         Reader = db.define('Reader', {name: String});
+
+        db.automigrate(function() {
+            Book.destroyAll(function() {
+                Chapter.destroyAll(function() {
+                    Author.destroyAll(function() {
+                        Reader.destroyAll(done);
+                    });
+                });
+            });
+        });
     });
 
     after(function() {
@@ -14,7 +24,7 @@ describe('relations', function() {
     });
 
     describe('hasMany', function() {
-        it('can be declared in different ways', function() {
+        it('can be declared in different ways', function(done) {
             Book.hasMany(Chapter);
             Book.hasMany(Reader, {as: 'users'});
             Book.hasMany(Author, {foreignKey: 'projectId'});
@@ -24,17 +34,87 @@ describe('relations', function() {
             b.authors.should.be.an.instanceOf(Function);
             Object.keys((new Chapter).toObject()).should.include('bookId');
             Object.keys((new Author).toObject()).should.include('projectId');
+
+            db.automigrate(done);
         });
 
-        it('can be declared in short form', function() {
+        it('can be declared in short form', function(done) {
             Author.hasMany('readers');
             (new Author).readers.should.be.an.instanceOf(Function);
             Object.keys((new Reader).toObject()).should.include('authorId');
+
+            db.automigrate(done);
+        });
+
+        it('should build record on scope', function(done) {
+            Book.create(function(err, book) {
+                var c = book.chapters.build();
+                c.bookId.should.equal(book.id);
+                c.save(done);
+            });
+        });
+
+        it('should create record on scope', function(done) {
+            Book.create(function(err, book) {
+                book.chapters.create(function(err, c) {
+                    should.not.exist(err);
+                    should.exist(c);
+                    c.bookId.should.equal(book.id);
+                    done();
+                });
+            });
+        });
+
+        it('should fetch all scoped instances', function(done) {
+            Book.create(function(err, book) {
+                book.chapters.create({name: 'a'}, function() {
+                    book.chapters.create({name: 'z'}, function() {
+                        book.chapters.create({name: 'c'}, function() {
+                            fetch(book);
+                        });
+                    });
+                });
+            });
+
+            function fetch(book) {
+                book.chapters(function(err, ch) {
+                    should.not.exist(err);
+                    should.exist(ch);
+                    ch.should.have.lengthOf(3);
+
+                    book.chapters({order: 'name DESC'}, function(e, c) {
+                        should.not.exist(e);
+                        should.exist(c);
+                        c.shift().name.should.equal('z');
+                        c.pop().name.should.equal('a');
+                        done();
+                    });
+                });
+            }
         });
     });
 
     describe('belongsTo', function() {
-        it('can be declared in different ways');
+        var List, Item, Fear, Mind;
+
+        it('can be declared in different ways', function() {
+            List = db.define('List', {name: String});
+            Item = db.define('Item', {name: String});
+            Fear = db.define('Fear');
+            Mind = db.define('Mind');
+
+            // syntax 1 (old)
+            Item.belongsTo(List);
+            Object.keys((new Item).toObject()).should.include('listId');
+            (new Item).list.should.be.an.instanceOf(Function);
+
+            // syntax 2 (new)
+            Fear.belongsTo('mind');
+            Object.keys((new Fear).toObject()).should.include('mindId');
+            (new Fear).mind.should.be.an.instanceOf(Function);
+            // (new Fear).mind.build().should.be.an.instanceOf(Mind);
+        });
+
         it('can be declared in short form');
     });
 
