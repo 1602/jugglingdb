@@ -25,7 +25,7 @@ Then install adapter for specific database, for example `jugglingdb-redis`:
 
     npm install jugglingdb-redis
 
-See [ADAPTERS][] for list of available adapters. 
+See [ADAPTERS][] for list of available adapters.
 
 ## DOCUMENTATION
 

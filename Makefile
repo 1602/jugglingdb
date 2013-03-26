@@ -25,7 +25,7 @@ HTML_DOCS = $(shell find docs -name '*.md' \
 docs/man/%.3: docs/%.md scripts/doc.sh
 	scripts/doc.sh $< $@
 
-docs/html/%.3.html: docs/%.md scripts/doc.sh
+docs/html/%.3.html: docs/%.md scripts/doc.sh docs/footer.html
 	scripts/doc.sh $< $@
 
 docs/html/index.html: docs/jugglingdb.md scripts/doc.sh
