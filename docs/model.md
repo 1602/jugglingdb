@@ -109,9 +109,70 @@ count filtered set of records. Callback called with error and count arguments.
         console.log(count); // count of approved users stored in database
     });
 
-## ESSENTIALS
+## RELATIONS
 
-### Default values
+### hasMany
+
+Define all necessary stuff for "one to many" relation:
+
+* foreign key in "many" model
+* named scope in "one" model
+
+Example:
+
+    var Book = db.define('Book');
+    var Chapter = db.define('Chapters');
+
+    // syntax 1 (old):
+    Book.hasMany(Chapter);
+    // syntax 2 (new):
+    Book.hasMany('chapters');
+
+Syntax 1 and 2 does same things in different ways: adds `chapters` method to
+`Book.prototype` and add `bookId` property to `Chapter` model. Foreign key name
+(`bookId`) could be specified manually using second param:
+
+    Book.hasMany('chapters', {foreignKey: `chapter_id`});
+
+When using syntax 2 jugglingdb looking for model with singularized name:
+
+    'chapters' => 'chapter' => 'Chapter'
+
+But it's possible to specify model manually using second param:
+
+    Book.hasMany('stories', {model: Chapter});
+
+Syntax 1 allows to override scope name using `as` property of second param:
+
+    Book.hasMany(Chapter, {as: 'stories'});
+
+**Scope methods** created on BaseClass by hasMany allows to build, create and
+query instances of other class. For example:
+
+    Book.create(function(err, book) {
+        // using 'chapters' scope for build:
+        var c = book.chapters.build({name: 'Chapter 1'});
+        // same as:
+        c = new Chapter({name: 'Chapter 1', bookId: book.id});
+        // using 'chapters' scope for create:
+        book.chapters.create();
+        // same as:
+        Chapter.create({bookId: book.id});
+
+        // using scope for querying:
+        book.chapters(function() {/* all chapters with bookId = book.id */ });
+        book.chapters({where: {name: 'test'}, function(err, chapters) {
+            // all chapters with bookId = book.id and name = 'test'
+        });
+    });
+
+### belongsTo
+
+TODO: document
+
+### hasAndBelongsToMany
+
+TODO: implement and document
 
 ## SEE ALSO
 
