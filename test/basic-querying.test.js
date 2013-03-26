@@ -134,16 +134,68 @@ describe('basic-querying', function() {
         });
     });
 
+    describe('findOne', function() {
+
+        before(seed);
+
+        it('should find first record (default sort by id)', function(done) {
+            User.all({sort: 'id'}, function(err, users) {
+                User.findOne(function(e, u) {
+                    should.not.exist(e);
+                    should.exist(u);
+                    u.id.should.equal(users[0].id);
+                    done();
+                });
+            });
+        });
+
+        it('should find first record', function(done) {
+            User.findOne({order: 'order'}, function(e, u) {
+                should.not.exist(e);
+                should.exist(u);
+                u.order.should.equal(1);
+                u.name.should.equal('Paul McCartney');
+                done();
+            });
+        });
+
+        it('should find last record', function(done) {
+            User.findOne({order: 'order DESC'}, function(e, u) {
+                should.not.exist(e);
+                should.exist(u);
+                u.order.should.equal(6);
+                u.name.should.equal('Ringo Starr');
+                done();
+            });
+        });
+
+        it('should find last record in filtered set', function(done) {
+            User.findOne({
+                where: {role: 'lead'},
+                order: 'order DESC'
+            }, function(e, u) {
+                should.not.exist(e);
+                should.exist(u);
+                u.order.should.equal(2);
+                u.name.should.equal('John Lennon');
+                done();
+            });
+        });
+
+    });
+
     describe('exists', function() {
 
         before(seed);
 
         it('should check whether record exist', function(done) {
-            User.exists(1, function(err, exists) {
-                should.not.exist(err);
-                should.exist(exists);
-                exists.should.be.true;
-                done();
+            User.findOne(function(e, u) {
+                User.exists(u.id, function(err, exists) {
+                    should.not.exist(err);
+                    should.exist(exists);
+                    exists.should.be.true;
+                    done();
+                });
             });
         });
 
@@ -159,12 +211,13 @@ describe('basic-querying', function() {
 
     });
 
+
 });
 
 function seed(done) {
     var count = 0;
     var beatles = [
-        {   id: 1,
+        {
             name: 'John Lennon',
             mail: 'john@b3atl3s.co.uk',
             role: 'lead',
