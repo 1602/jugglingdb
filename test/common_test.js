@@ -209,42 +209,6 @@ function testOrm(schema) {
         test.done();
     });
 
-    it('should be exported to JSON', function (test) {
-        var outString = '{"title":"hello, json","date":1,"published":false,"likes":[],"related":[],"id":1}'
-        if (schema.name === 'nano')
-            outString = '{"title":"hello, json","subject":null,"content":null,"date":1,"published":false,"likes":[],"related":[],"_rev":null,"id":1,"userId":null}'
-        
-        test.equal(JSON.stringify(new Post({id: 1, title: 'hello, json', date: 1})),outString);
-        test.done();
-    });
-
-    it('should create object', function (test) {
-        Post.create(function (err, post) {
-            if (err) throw err;
-            test.ok(post.id, 'Id present');
-            test.ok(!post.title, 'Title is blank');
-            Post.exists(post.id, function (err, exists) {
-                if (err) throw err;
-                test.ok(exists);
-                test.done();
-            });
-        });
-    });
-
-    it('should create object without callback', function (test) {
-        var uniqueTitle = 'Unique title ' + Date.now();
-        Post.create({title: uniqueTitle});
-
-        setTimeout(delayedCallback, 100);
-
-        function delayedCallback() {
-            Post.all({where: {title: uniqueTitle}}, function (err, posts) {
-                test.equal(posts.length, 1);
-                test.done();
-            });
-        }
-    });
-
     it('should save object', function (test) {
         var title = 'Initial title', title2 = 'Hello world',
             date = new Date;
@@ -419,53 +383,6 @@ function testOrm(schema) {
             test.done();
         });
     });
-
-    it('should fetch count of records in collection', function (test) {
-        Post.count(function (err, count) {
-            console.log(countOfposts, count);
-            test.equal(countOfposts, count, 'unfiltered count');
-            Post.count({title: 'title'}, function (err, count) {
-                console.log(countOfpostsFiltered, count, 'filtered count');
-                test.equal(countOfpostsFiltered, count, 'filtered count');
-                test.done();
-            });
-        });
-    });
-
-    it('should find filtered set of records', function (test) {
-        var wait = 1;
-
-        // exact match with string
-        Post.all({where: {title: 'New title'}}, function (err, res) {
-            var pass = true;
-            res.forEach(function (r) {
-                if (r.title != 'New title') pass = false;
-            });
-            test.ok(res.length > 0, 'Exact match with string returns dataset');
-            test.ok(pass, 'Exact match with string');
-            done();
-        });
-
-        // matching null
-        // Post.all({where: {title: null}}, function (err, res) {
-
-        //     var pass = true;
-        //     res.forEach(function (r) {
-        //         if (r.title != null) pass = false;
-        //     });
-        //     test.ok(res.length > 0, 'Matching null returns dataset');
-        //     test.ok(pass, 'Matching null');
-        //     done();
-        // });
-
-        function done() {
-            if (--wait === 0) {
-                test.done();
-            }
-        }
-
-    });
-
 
     it('should find records filtered with multiple attributes', function (test) {
         var d = new Date;
