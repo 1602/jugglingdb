@@ -60,7 +60,6 @@
     "./docs/man/model.3",
     "./docs/man/hooks.3",
     "./docs/man/validations.3",
-    "./docs/man/jugglingdb.3",
     "./docs/man/roadmap.3",
     "./docs/man/changelog.3"
   ],
@@ -71,5 +70,8 @@
     "semicov": "*",
     "should": "~1.2.2",
     "mocha": "~1.8.2"
+  },
+  "dependencies": {
+    "inflection": "~1.2.5"
   }
 }
