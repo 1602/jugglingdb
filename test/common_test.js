@@ -2,28 +2,6 @@
 var Schema = require('../index').Schema;
 var Text = Schema.Text;
 
-// var schemas = {
-//     // riak: {},
-//     mysql: {
-//         database: 'myapp_test',
-//         username: 'root'
-//     },
-//     postgres:  {
-//         database: 'myapp_test',
-//         username: 'postgres'
-//     },
-//     sqlite3:   {
-//         database: ':memory:'
-//     },
-//     neo4j:     { url: 'http://localhost:7474/' },
-//     // mongoose:  { url: 'mongodb://travis:test@localhost:27017/myapp' },
-//     mongodb:   { url: 'mongodb://travis:test@localhost:27017/myapp' },
-//     redis2:     {},
-//     memory:    {},
-//     cradle:    {},
-//     nano: { url: 'http://localhost:5984/nano-test' }
-// };
-
 var nbSchemaRequests = 0;
 
 var batch;

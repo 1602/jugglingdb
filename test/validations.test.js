@@ -15,7 +15,7 @@ function getValidAttributes() {
 describe('validations', function() {
 
     beforeEach(function() {
-        db = new j.Schema('memory');
+        db = getSchema();
         User = db.define('User', {
             email: String,
             name: String,
@@ -29,6 +29,10 @@ describe('validations', function() {
             createdByScript: Boolean,
             updatedAt: Date
         });
+    });
+
+    afterEach(function() {
+        db.disconnect();
     });
 
     describe('presence', function() {

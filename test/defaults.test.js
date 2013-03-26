@@ -1,5 +1,4 @@
-var Schema = require('../').Schema;
-var db = new Schema('memory');
+var db = getSchema();
 
 describe('defaults', function() {
     var Server;

@@ -9,7 +9,7 @@ var j = require('../'),
 describe('hooks', function() {
 
     before(function() {
-        db = new Schema('memory');
+        db = getSchema();
 
         User = db.define('User', {
             email: String,

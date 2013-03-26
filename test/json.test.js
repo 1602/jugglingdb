@@ -5,7 +5,7 @@ describe('JSON property', function() {
     var schema, Model;
 
     it('should be defined', function() {
-        schema = new Schema('memory');
+        schema = getSchema();
         Model = schema.define('Model', {propertyName: Schema.JSON});
         var m = new Model;
         (new Boolean('propertyName' in m)).should.eql(true);
