@@ -10,10 +10,12 @@ describe('include', function() {
             passports.length.should.be.ok;
             passports.forEach(function(p) {
                 p.__cachedRelations.should.have.property('owner');
-                if (p.ownerId === null) {
-                    should.not.exist(p.__cachedRelations.owner);
+                var owner = p.__cachedRelations.owner;
+                if (!p.ownerId) {
+                    should.not.exist(owner);
                 } else {
-                    p.__cachedRelations.owner.id.should.equal(p.ownerId);
+                    should.exist(owner);
+                    owner.id.should.equal(p.ownerId);
                 }
             });
             done();
@@ -43,9 +45,10 @@ describe('include', function() {
             passports.forEach(function(p) {
                 p.__cachedRelations.should.have.property('owner');
                 var user = p.__cachedRelations.owner;
-                if (p.ownerId === null) {
+                if (!p.ownerId) {
                     should.not.exist(user);
                 } else {
+                    should.exist(user);
                     user.id.should.equal(p.ownerId);
                     user.__cachedRelations.should.have.property('posts');
                     user.__cachedRelations.posts.forEach(function(pp) {
@@ -67,9 +70,10 @@ describe('include', function() {
             passports.forEach(function(p) {
                 p.__cachedRelations.should.have.property('owner');
                 var user = p.__cachedRelations.owner;
-                if (p.ownerId === null) {
+                if (!p.ownerId) {
                     should.not.exist(user);
                 } else {
+                    should.exist(user);
                     user.id.should.equal(p.ownerId);
                     user.__cachedRelations.should.have.property('posts');
                     user.__cachedRelations.posts.forEach(function(pp) {
