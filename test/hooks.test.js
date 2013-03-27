@@ -8,15 +8,17 @@ var j = require('../'),
 
 describe('hooks', function() {
 
-    before(function() {
+    before(function(done) {
         db = getSchema();
 
         User = db.define('User', {
-            email: String,
+            email: {type: String, index: true},
             name: String,
             password: String,
             state: String
         });
+
+        db.automigrate(done);
     });
 
     describe('initialize', function() {
@@ -108,6 +110,26 @@ describe('hooks', function() {
                     done();
                 };
                 user.save();
+            });
+        });
+
+        it('should save actual modifications to database', function(done) {
+            User.beforeSave = function(next, data) {
+                data.password = 'hash';
+                next();
+            };
+            User.destroyAll(function() {
+                User.create({
+                    email: 'james.bond@example.com',
+                    password: 'secret'
+                }, function() {
+                    User.findOne({
+                        where: {email: 'james.bond@example.com'}
+                    }, function(err, jb) {
+                        jb.password.should.equal('hash');
+                        done();
+                    });
+                });
             });
         });
     });
