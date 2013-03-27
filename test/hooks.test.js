@@ -8,15 +8,17 @@ var j = require('../'),
 
 describe('hooks', function() {
 
-    before(function() {
+    before(function(done) {
         db = getSchema();
 
         User = db.define('User', {
-            email: String,
+            email: {type: String, index: true},
             name: String,
             password: String,
             state: String
         });
+
+        db.automigrate(done);
     });
 
     describe('initialize', function() {

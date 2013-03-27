@@ -2,7 +2,7 @@ var db, User, should = require('should');
 
 describe('basic-querying', function() {
 
-    before(function() {
+    before(function(done) {
         db = getSchema();
 
         User = db.define('User', {
@@ -11,6 +11,8 @@ describe('basic-querying', function() {
             role: {type: String, index: true},
             order: {type: Number, index: true}
         });
+
+        db.automigrate(done);
 
     });
 
@@ -193,7 +195,7 @@ describe('basic-querying', function() {
                 User.exists(u.id, function(err, exists) {
                     should.not.exist(err);
                     should.exist(exists);
-                    exists.should.be.true;
+                    exists.should.be.ok;
                     done();
                 });
             });
@@ -203,7 +205,7 @@ describe('basic-querying', function() {
             User.destroyAll(function() {
                 User.exists(42, function(err, exists) {
                     should.not.exist(err);
-                    exists.should.be.false;
+                    exists.should.not.be.ok;
                     done();
                 });
             });
