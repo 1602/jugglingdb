@@ -8,15 +8,17 @@ var j = require('../'),
 
 describe('hooks', function() {
 
-    before(function() {
+    before(function(done) {
         db = getSchema();
 
         User = db.define('User', {
-            email: String,
+            email: {type: String, index: true},
             name: String,
             password: String,
             state: String
         });
+
+        db.automigrate(done);
     });
 
     describe('initialize', function() {
@@ -110,6 +112,51 @@ describe('hooks', function() {
                 user.save();
             });
         });
+
+        it('should save actual modifications to database', function(done) {
+            User.beforeSave = function(next, data) {
+                data.password = 'hash';
+                next();
+            };
+            User.destroyAll(function() {
+                User.create({
+                    email: 'james.bond@example.com',
+                    password: 'secret'
+                }, function() {
+                    User.findOne({
+                        where: {email: 'james.bond@example.com'}
+                    }, function(err, jb) {
+                        jb.password.should.equal('hash');
+                        done();
+                    });
+                });
+            });
+        });
+
+        it('should save actual modifications on updateAttributes', function(done) {
+            User.beforeSave = function(next, data) {
+                data.password = 'hash';
+                next();
+            };
+            User.destroyAll(function() {
+                User.create({
+                    email: 'james.bond@example.com'
+                }, function(err, u) {
+                    u.updateAttribute('password', 'new password', function(e, u) {
+                        should.not.exist(e);
+                        should.exist(u);
+                        u.password.should.equal('hash');
+                        User.findOne({
+                            where: {email: 'james.bond@example.com'}
+                        }, function(err, jb) {
+                            jb.password.should.equal('hash');
+                            done();
+                        });
+                    });
+                });
+            });
+        });
+
     });
 
     describe('update', function() {
