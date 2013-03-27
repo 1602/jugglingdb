@@ -3,12 +3,12 @@ JugglingDB(3) - cross-database ORM for nodejs and browser
 
 ## DESCRIPTION
 
-JugglingDB is cross-db ORM for nodejs, providing **common interface** to access
-most popular database formats.  Currently supported are: mysql, sqlite3,
+JugglingDB is a cross-db ORM for nodejs, providing **common interface** to access
+most popular database formats.  Currently supported db formats are: mysql, sqlite3,
 postgres, couchdb, mongodb, redis, neo4j and in-memory-storage.
 
 JugglingDB also works on client-side (using WebService and Memory adapters),
-which allows to write rich client-side apps talking to server using JSON API.
+which allow to write rich client-side apps talking to server using JSON API.
 
 
 ## INSTALLATION
@@ -63,7 +63,8 @@ All adapters available as separate packages at
 
 ## CONTRIBUTION
 
-TODO: briefly describe contribution
+You can take part in improvement of jugglingdb codebase and documents. If you see that some improvements can be done to jugglingdb, then fork repository, make proposed changes and then create new pull request.
+Please remember that your contribution is highly supported. Be sure to follow the discussion in google group and see [github issues][issues] before you make changes. It preferable that you post new comment in google group or in github before you make changes and create pull request.
 
 ## FUTURE
 
