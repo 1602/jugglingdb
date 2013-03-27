@@ -33,6 +33,7 @@ describe('basic-querying', function() {
 
         it('should query by id: found', function(done) {
             User.create(function(err, u) {
+                should.not.exist(err);
                 should.exist(u.id);
                 User.find(u.id, function(err, u) {
                     should.exist(u);

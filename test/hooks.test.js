@@ -132,6 +132,31 @@ describe('hooks', function() {
                 });
             });
         });
+
+        it('should save actual modifications on updateAttributes', function(done) {
+            User.beforeSave = function(next, data) {
+                data.password = 'hash';
+                next();
+            };
+            User.destroyAll(function() {
+                User.create({
+                    email: 'james.bond@example.com'
+                }, function(err, u) {
+                    u.updateAttribute('password', 'new password', function(e, u) {
+                        should.not.exist(e);
+                        should.exist(u);
+                        u.password.should.equal('hash');
+                        User.findOne({
+                            where: {email: 'james.bond@example.com'}
+                        }, function(err, jb) {
+                            jb.password.should.equal('hash');
+                            done();
+                        });
+                    });
+                });
+            });
+        });
+
     });
 
     describe('update', function() {
