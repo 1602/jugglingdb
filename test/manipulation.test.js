@@ -83,8 +83,33 @@ describe('manipulation', function() {
     });
 
     describe('destroy', function() {
-        it('should destroy record');
-        it('should destroy all records');
+
+        it('should destroy record', function(done) {
+            Person.create(function(err, p){ 
+                p.destroy(function(err) {
+                    should.not.exist(err);
+                    Person.exists(p.id, function(err, ex) {
+                        ex.should.not.be.ok;
+                        done();
+                    });
+                });
+            });
+        });
+
+        it('should destroy all records', function (done) {
+            Person.destroyAll(function (err) {
+                should.not.exist(err);
+                Person.all(function (err, posts) {
+                    posts.should.have.lengthOf(0);
+                    Person.count(function (err, count) {
+                        count.should.eql(0);
+                        done();
+                    });
+                });
+            });
+        });
+
+        // TODO: implement destroy with filtered set
         it('should destroy filtered set of records');
     });
 
