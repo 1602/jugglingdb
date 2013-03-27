@@ -5,17 +5,29 @@ jugglingdb-hooks(3) - Hooks and object lifecycle.
 
 Hook is a class method called on object when some event happens. List of events:
 
-* initialize - called after `new Model` called
-* create - called before and after create
-* update - called before and after save (except create)
-* save   - called before and after save (including both create and update)
-* validate - called before and after validations
-* destroy - called before and after destroy on instance
+* `initialize`:
+Called after `new Model` called.
+
+* `create`:
+Called before and after create.
+
+* `update`:
+Called before and after save (except create).
+
+* `save`:
+Called before and after save (including both create and update).
+
+* `validate`:
+Called before and after validations.
+
+* `destroy`:
+Called before and after destroy on instance.
+
 
 Each hook except `initialize` accepts callback as first argument. This callback
 should be called when hook done. All hooks called on object instance, but it's
 not recommended to use `this` for updating in all hooks where data argument
-available (second arguments for all data-related before-hooks: save, update,
+available (second argument for all data-related before-hooks: save, update,
 create).
 
 ## INITIALIZE
@@ -32,7 +44,7 @@ being applied.
 ## CREATE
 
 Create hooks called when object created.
-The `beforeCreate` hook accepts data as second arguments.
+The `beforeCreate` hook accepts `data` as a second argument.
 
     Model.beforeCreate = function(next, data) {
         // use data argument to update object
@@ -61,7 +73,7 @@ Example output will be:
 ## UPDATE
 
 Update hooks called on each save except create. 
-The `beforeUpdate` hook accepts data as second arguments.
+The `beforeUpdate` hook accepts data as second argument.
 Data argument only containing actual data for update, not full object data.
 
     Model.beforeUpdate = function(next, data) {
@@ -92,11 +104,13 @@ Example output will be:
 ## SAVE
 
 Save hooks called on each save, both update and create.
-The `beforeSave` hook accepts data as second arguments.
-For before save hook data argument is the same as this.
+The `beforeSave` hook accepts `data` as a second argument.
+For `beforeSave` hook `data` argument is the same as `this`.
 
     Model.beforeSave = function(next, data) {
-        data.tags = JSON.parse(data.tags);
+        if ('string' !== typeof data.tags) {
+            data.tags = JSON.stringify(data.tags);
+        }
         next();
     };
 

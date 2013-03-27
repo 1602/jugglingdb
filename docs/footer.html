@@ -1,13 +1,17 @@
 <script>
     var filename = location.href.match(/([^\/]+)?\.3.html(#.*?)?$/);
-    if (filename) {
-        var div = document.createElement('div');
-        div.innerHTML = 'Found a typo? ' +
-            linkTo('View', 'blob') + ' and ' +
-            linkTo('edit', 'edit') + ' this file online at GitHub.';
-
-        document.getElementById('man').appendChild(div);
+    if (!filename) {
+        filename = [null, 'jugglingdb'];
     }
+    var div = document.createElement('div');
+    div.innerHTML = 'Found a typo? ' +
+        linkTo('View', 'blob') +
+        ' and ' +
+        'edit' +
+        //linkTo('edit', 'edit') +
+        ' this file online at GitHub.';
+
+    document.getElementById('man').appendChild(div);
 
     function linkTo(text, dir) {
         return '<a href="https://github.com/1602/jugglingdb/' +
