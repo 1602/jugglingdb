@@ -42,7 +42,7 @@ describe('hooks', function() {
                 }
             };
             User.create({name: 'Nickolay'}, function(err, u) {
-                u.id.should.be.a('number');
+                u.id.should.be.ok;
                 u.name.should.equal('Nickolay Rozental');
                 done();
             });

@@ -146,7 +146,7 @@ describe('basic-querying', function() {
                 User.findOne(function(e, u) {
                     should.not.exist(e);
                     should.exist(u);
-                    u.id.should.equal(users[0].id);
+                    u.id.toString().should.equal(users[0].id.toString());
                     done();
                 });
             });
@@ -182,6 +182,16 @@ describe('basic-querying', function() {
                 u.order.should.equal(2);
                 u.name.should.equal('John Lennon');
                 done();
+            });
+        });
+
+        it.only('should work even when find by id', function(done) {
+            User.findOne(function(e, u) {
+                User.findOne({where: {id: u.id}}, function(err, user) {
+                    should.not.exist(err);
+                    should.exist(user);
+                    done();
+                });
             });
         });
 
