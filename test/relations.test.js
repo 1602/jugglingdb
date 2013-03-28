@@ -43,7 +43,7 @@ describe('relations', function() {
             (new Author).readers.should.be.an.instanceOf(Function);
             Object.keys((new Reader).toObject()).should.include('authorId');
 
-            db.automigrate(done);
+            db.autoupdate(done);
         });
 
         it('should build record on scope', function(done) {
@@ -115,7 +115,20 @@ describe('relations', function() {
             // (new Fear).mind.build().should.be.an.instanceOf(Mind);
         });
 
-        it('can be declared in short form');
+        it('can be used to query data', function(done) {
+            List.hasMany('todos', {model: Item});
+            List.create(function(e, list) {
+                should.not.exist(e);
+                should.exist(list);
+                list.todos.create(function(err, todo) {
+                    todo.list(function(e, l) {
+                        should.not.exist(e);
+                        should.exist(l);
+                        done();
+                    });
+                });
+            });
+        });
     });
 
     describe('hasAndBelongsToMany', function() {

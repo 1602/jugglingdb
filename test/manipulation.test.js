@@ -76,10 +76,68 @@ describe('manipulation', function() {
     });
 
     describe('save', function() {
-        it('should save new object');
-        it('should save existing object');
-        it('should save invalid object (skipping validation)');
-        it('should save throw error on validation');
+
+        it('should save new object', function(done) {
+            var p = new Person;
+            p.save(function(err) {
+                should.not.exist(err);
+                should.exist(p.id);
+                done();
+            });
+        });
+
+        it('should save existing object', function(done) {
+            Person.findOne(function(err, p) {
+                should.not.exist(err);
+                p.name = 'Hans';
+                p.propertyChanged('name').should.be.true;
+                p.save(function(err) {
+                    should.not.exist(err);
+                    p.propertyChanged('name').should.be.false;
+                    Person.findOne(function(err, p) {
+                        should.not.exist(err);
+                        p.name.should.equal('Hans');
+                        p.propertyChanged('name').should.be.false;
+                        done();
+                    });
+                });
+            });
+        });
+
+        it('should save invalid object (skipping validation)', function(done) {
+            Person.findOne(function(err, p) {
+                should.not.exist(err);
+                p.isValid = function(done) {
+                    process.nextTick(done);
+                    return false;
+                };
+                p.name = 'Nana';
+                p.save(function(err) {
+                    should.exist(err);
+                    p.propertyChanged('name').should.be.true;
+                    p.save({validate: false}, function(err) {
+                        should.not.exist(err);
+                        p.propertyChanged('name').should.be.false;
+                        done();
+                    });
+                });
+            });
+        });
+
+        it('should save throw error on validation', function() {
+            Person.findOne(function(err, p) {
+                should.not.exist(err);
+                p.isValid = function(cb) {
+                    cb(false);
+                    return false;
+                };
+                (function() {
+                    p.save({
+                        'throws': true
+                    });
+                }).should.throw('Validation error');
+            });
+        });
     });
 
     describe('destroy', function() {
