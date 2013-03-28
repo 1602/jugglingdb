@@ -105,7 +105,7 @@ describe('hooks', function() {
         it('should save full object', function(done) {
             User.create(function(err, user) {
                 User.beforeSave = function(next, data) {
-                    data.toObject().should.have.keys('id', 'name', 'email',
+                    data.should.have.keys('id', 'name', 'email',
                         'password', 'state')
                     done();
                 };
@@ -207,10 +207,11 @@ describe('hooks', function() {
     describe('destroy', function() {
         afterEach(removeHooks('Destroy'));
 
-        it('should be triggered on destroy', function() {
+        it('should be triggered on destroy', function(done) {
             var hook = 'not called';
-            User.beforeDestroy = function() {
+            User.beforeDestroy = function(next) {
                 hook = 'called';
+                next();
             };
             User.afterDestroy = function() {
                 hook.should.eql('called');
@@ -220,6 +221,96 @@ describe('hooks', function() {
                 user.destroy();
             });
         });
+    });
+
+    describe('lifecycle', function() {
+        var life = [], user;
+        before(function(done) {
+            User.beforeSave     = function(d){life.push('beforeSave');   d();};
+            User.beforeCreate   = function(d){life.push('beforeCreate'); d();};
+            User.beforeUpdate   = function(d){life.push('beforeUpdate'); d();};
+            User.beforeDestroy  = function(d){life.push('beforeDestroy');d();};
+            User.beforeValidate = function(d){life.push('beforeValidate');d();};
+            User.afterInitialize= function( ){life.push('afterInitialize');  };
+            User.afterSave      = function(d){life.push('afterSave');    d();};
+            User.afterCreate    = function(d){life.push('afterCreate');  d();};
+            User.afterUpdate    = function(d){life.push('afterUpdate');  d();};
+            User.afterDestroy   = function(d){life.push('afterDestroy'); d();};
+            User.afterValidate  = function(d){life.push('afterValidate');d();};
+            User.create(function(e, u) {
+                user = u;
+                life = [];
+                done();
+            });
+        });
+        beforeEach(function() {
+            life = [];
+        });
+
+        it('should describe create sequence', function(done) {
+            User.create(function() {
+                life.should.eql([
+                    'afterInitialize',
+                    'beforeValidate',
+                    'afterValidate',
+                    'beforeCreate',
+                    'beforeSave',
+                    'afterInitialize',
+                    'afterSave',
+                    'afterCreate'
+                ]);
+                done();
+            });
+        });
+
+        it('should describe new+save sequence', function(done) {
+            var u = new User;
+            u.save(function() {
+                life.should.eql([
+                    'afterInitialize',
+                    'beforeValidate',
+                    'afterValidate',
+                    'beforeCreate',
+                    'beforeSave',
+                    'afterInitialize',
+                    'afterSave',
+                    'afterCreate'
+                ]);
+                done();
+            });
+        });
+
+        it('should describe new+save sequence', function(done) {
+            var u = new User;
+            u.save(function() {
+                life.should.eql([
+                    'afterInitialize',
+                    'beforeValidate',
+                    'afterValidate',
+                    'beforeCreate',
+                    'beforeSave',
+                    'afterInitialize',
+                    'afterSave',
+                    'afterCreate'
+                ]);
+                done();
+            });
+        });
+
+        it('should describe updateAttributes sequence', function(done) {
+            user.updateAttributes({name: 'Antony'}, function() {
+                life.should.eql([
+                    'beforeValidate',
+                    'afterValidate',
+                    'beforeSave',
+                    'beforeUpdate',
+                    'afterUpdate',
+                    'afterSave',
+                ]);
+                done();
+            });
+        });
+
     });
 });
 
