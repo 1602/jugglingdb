@@ -13,7 +13,7 @@ function getValidAttributes() {
     };
 }
 
-describe.only('validations', function() {
+describe('validations', function() {
 
     before(function(done) {
         db = getSchema();
