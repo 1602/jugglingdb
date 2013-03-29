@@ -6,10 +6,10 @@ describe('basic-querying', function() {
         db = getSchema();
 
         User = db.define('User', {
-            name: String,
+            name: {type: String, sort: true},
             email: {type: String, index: true},
             role: {type: String, index: true},
-            order: {type: Number, index: true}
+            order: {type: Number, index: true, sort: true}
         });
 
         db.automigrate(done);
@@ -142,7 +142,7 @@ describe('basic-querying', function() {
         before(seed);
 
         it('should find first record (default sort by id)', function(done) {
-            User.all({sort: 'id'}, function(err, users) {
+            User.all({order: 'id'}, function(err, users) {
                 User.findOne(function(e, u) {
                     should.not.exist(e);
                     should.exist(u);
@@ -172,7 +172,8 @@ describe('basic-querying', function() {
             });
         });
 
-        it('should find last record in filtered set', function(done) {
+        // TODO: it's not basic query, move to advanced querying test
+        it.skip('should find last record in filtered set', function(done) {
             User.findOne({
                 where: {role: 'lead'},
                 order: 'order DESC'

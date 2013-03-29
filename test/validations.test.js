@@ -1,4 +1,5 @@
 var j = require('../'), db, User;
+var should = require('should');
 
 function getValidAttributes() {
     return {
@@ -12,9 +13,9 @@ function getValidAttributes() {
     };
 }
 
-describe('validations', function() {
+describe.only('validations', function() {
 
-    beforeEach(function() {
+    before(function(done) {
         db = getSchema();
         User = db.define('User', {
             email: String,
@@ -29,10 +30,33 @@ describe('validations', function() {
             createdByScript: Boolean,
             updatedAt: Date
         });
+        db.automigrate(done);
     });
 
-    afterEach(function() {
+    beforeEach(function(done) {
+        User.destroyAll(function() {
+            delete User._validations;
+            done();
+        });
+    });
+
+    after(function() {
         db.disconnect();
+    });
+
+    describe('commons', function() {
+
+        describe('skipping', function() {
+            it('should allow to skip using if: attribute', function() {
+                User.validatesPresenceOf('pendingPeriod', {if: 'createdByAdmin'});
+                var user = new User;
+                user.createdByAdmin = true;
+                user.isValid().should.be.false;
+                user.errors.pendingPeriod.should.eql(['can\'t be blank']);
+                user.pendingPeriod = 1
+                user.isValid().should.be.true;
+            });
+        });
     });
 
     describe('presence', function() {
@@ -47,17 +71,9 @@ describe('validations', function() {
         });
 
         it('should skip validation by property (if/unless)', function() {
-            User.validatesPresenceOf('pendingPeriod', {if: 'createdByAdmin'});
             User.validatesPresenceOf('domain', {unless: 'createdByScript'});
 
             var user = new User(getValidAttributes())
-            user.isValid().should.be.true;
-
-            user.createdByAdmin = true;
-            user.isValid().should.be.false;
-            user.errors.pendingPeriod.should.eql(['can\'t be blank']);
-
-            user.pendingPeriod = 1
             user.isValid().should.be.true;
 
             user.createdByScript = false;
@@ -98,8 +114,10 @@ describe('validations', function() {
                         u.save(done);
                     });
                 });
-            })).should.be.false;
+                // async validations always falsy when called as sync
+            })).should.not.be.ok;
         });
+
     });
 
     describe('format', function() {
