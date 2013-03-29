@@ -280,23 +280,6 @@ describe('hooks', function() {
             });
         });
 
-        it('should describe new+save sequence', function(done) {
-            var u = new User;
-            u.save(function() {
-                life.should.eql([
-                    'afterInitialize',
-                    'beforeValidate',
-                    'afterValidate',
-                    'beforeCreate',
-                    'beforeSave',
-                    'afterInitialize',
-                    'afterSave',
-                    'afterCreate'
-                ]);
-                done();
-            });
-        });
-
         it('should describe updateAttributes sequence', function(done) {
             user.updateAttributes({name: 'Antony'}, function() {
                 life.should.eql([
@@ -306,6 +289,30 @@ describe('hooks', function() {
                     'beforeUpdate',
                     'afterUpdate',
                     'afterSave',
+                ]);
+                done();
+            });
+        });
+
+        it('should describe isValid sequence', function(done) {
+            should.not.exist(
+                user.constructor._validations,
+                'Expected user to have no validations, but she have');
+            user.isValid(function(valid) {
+                valid.should.be.true;
+                life.should.eql([
+                    'beforeValidate',
+                    'afterValidate'
+                ]);
+                done();
+            });
+        });
+
+        it('should describe destroy sequence', function(done) {
+            user.destroy(function() {
+                life.should.eql([
+                    'beforeDestroy',
+                    'afterDestroy'
                 ]);
                 done();
             });
