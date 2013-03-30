@@ -148,6 +148,29 @@ describe('manipulation', function() {
                 }).should.throw('Validation error');
             });
         });
+
+    });
+
+    describe('updateAttributes', function() {
+        var person;
+
+        before(function(done) {
+            Person.destroyAll(function() {
+                person = Person.create(done);
+            });
+        });
+
+        it('should update one attribute', function(done) {
+            person.updateAttribute('name', 'Paul Graham', function(err, p) {
+                should.not.exist(err);
+                Person.all(function(e, ps) {
+                    should.not.exist(err);
+                    ps.should.have.lengthOf(1);
+                    ps.pop().name.should.equal('Paul Graham');
+                    done();
+                });
+            });
+        });
     });
 
     describe('destroy', function() {
