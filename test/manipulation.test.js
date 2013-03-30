@@ -37,6 +37,16 @@ describe('manipulation', function() {
             });
         });
 
+        it('should return instance of object', function(done) {
+            var person = Person.create(function(err, p) {
+                p.id.should.eql(person.id);
+                done();
+            });
+            should.exist(person);
+            person.should.be.an.instanceOf(Person);
+            should.not.exist(person.id);
+        });
+
         it('should work when called without callback', function(done) {
             Person.afterCreate = function(next) {
                 this.should.be.an.instanceOf(Person);
