@@ -221,6 +221,22 @@ describe('hooks', function() {
                 user.destroy();
             });
         });
+
+        it('afterDestroy should not be triggered on failed destroy', function(done) {
+            var old = User.schema.adapter.destroy;
+            User.schema.adapter.destroy = function(modelName, id, cb) {
+                cb(new Error('error'));
+            }
+            User.afterDestroy = function() {
+                throw new Error('shouldn\'t be called')
+            };
+            User.create(function (err, user) {
+                user.destroy(function(err) {
+                    User.schema.adapter.destroy = old;
+                    done();
+                });
+            });
+        });
     });
 
     describe('lifecycle', function() {
