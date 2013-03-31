@@ -11,6 +11,12 @@ test-verbose:
 testing:
 	$(TESTER) $(OPTS) --watch $(TESTS)
 
+about-testing:
+	@echo "\n## TESTING\n"
+	@echo "  make test               # Run all tests in silent mode"
+	@echo "  make test-verbose       # Run all tests in verbose mode"
+	@echo "  make testing            # Run tests continuously"
+
 ## DOCS
 
 MAN_DOCS = $(shell find docs -name '*.md' \
@@ -38,5 +44,53 @@ build: man
 
 web: html
 	rsync ./docs/html/* jugglingdb.co:/var/www/apps/jugglingdb.co/public
+
+about-docs:
+	@echo "\n## DOCS\n"
+	@echo "  make man                # Create docs for man"
+	@echo "  make html               # Create docs in html"
+	@echo "  make web                # Publish docs to jugglingdb.co"
+
+## WORKFLOW
+
+GITBRANCH = $(shell git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+
+REPO = marcusgreenwood/hatchjs
+FROM = $(GITBRANCH)
+TO = $(GITBRANCH)
+
+pull:
+	git pull origin $(FROM)
+
+safe-pull:
+	git pull origin $(FROM) --no-commit
+
+push: test
+	git push origin $(TO)
+
+feature:
+	git checkout -b feature-$(filter-out $@,$(MAKECMDGOALS))
+%:
+	@:
+
+version-build:
+	@echo "Increasing version build, publishing package, then push, hit Ctrl+C to skip before 'three'"
+	@sleep 1 && echo 'one...'
+	@sleep 1 && echo 'two...'
+	@sleep 1 && echo 'three!'
+	@sleep 1
+	npm version build && npm publish && git push
+
+about-workflow:
+	@echo "\n## WORKFLOW\n"
+	@echo "  make pull               # Pull changes from current branch"
+	@echo "  make push               # Push changes to current branch"
+	@echo "  make feature {name}     # Create feature branch 'feature-name'"
+	@echo "  make pr                 # Make pull request"
+	@echo "  make version-build      # Create new build version"
+
+## HELP
+
+help: about-testing about-docs about-workflow
 
 .PHONY: test docs
