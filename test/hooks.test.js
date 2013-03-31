@@ -217,18 +217,18 @@ describe('hooks', function() {
             });
         });
 
-        it('afterUpdate should not be triggered on failed save', function(done) {
+        it('should not trigger after-hook on failed save', function(done) {
             User.afterUpdate = function() {
-                throw new Error('shouldn\'t be called')
+                should.fail('afterUpdate shouldn\'t be called')
             };
             User.create(function (err, user) {
-                var old = User.schema.adapter.save;
+                var save = User.schema.adapter.save;
                 User.schema.adapter.save = function(modelName, id, cb) {
-                    cb(new Error('error'));
+                    User.schema.adapter.save = save;
+                    cb(new Error('Error'));
                 }
 
                 user.save(function(err) {
-                    User.schema.adapter.save = old;
                     done();
                 });
             });
@@ -236,6 +236,7 @@ describe('hooks', function() {
     });
 
     describe('destroy', function() {
+
         afterEach(removeHooks('Destroy'));
 
         it('should be triggered on destroy', function(done) {
@@ -244,30 +245,31 @@ describe('hooks', function() {
                 hook = 'called';
                 next();
             };
-            User.afterDestroy = function() {
+            User.afterDestroy = function(next) {
                 hook.should.eql('called');
-                done();
+                next();
             };
             User.create(function (err, user) {
-                user.destroy();
+                user.destroy(done);
             });
         });
 
-        it('afterDestroy should not be triggered on failed destroy', function(done) {
-            var old = User.schema.adapter.destroy;
+        it('should not trigger after-hook on failed destroy', function(done) {
+            var destroy = User.schema.adapter.destroy;
             User.schema.adapter.destroy = function(modelName, id, cb) {
                 cb(new Error('error'));
             }
             User.afterDestroy = function() {
-                throw new Error('shouldn\'t be called')
+                should.fail('afterDestroy shouldn\'t be called')
             };
             User.create(function (err, user) {
                 user.destroy(function(err) {
-                    User.schema.adapter.destroy = old;
+                    User.schema.adapter.destroy = destroy;
                     done();
                 });
             });
         });
+
     });
 
     describe('lifecycle', function() {
