@@ -56,20 +56,22 @@ about-docs:
 GITBRANCH = $(shell git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
 
 REPO = marcusgreenwood/hatchjs
+TARGET = origin
 FROM = $(GITBRANCH)
 TO = $(GITBRANCH)
 
 pull:
-	git pull origin $(FROM)
+	git pull $(TARGET) $(FROM)
 
 safe-pull:
-	git pull origin $(FROM) --no-commit
+	git pull $(TARGET) $(FROM) --no-commit
 
 push: test
-	git push origin $(TO)
+	git push $(TARGET) $(TO)
 
 feature:
 	git checkout -b feature-$(filter-out $@,$(MAKECMDGOALS))
+	git push -u $(TARGET) feature-$(filter-out $@,$(MAKECMDGOALS))
 %:
 	@:
 
