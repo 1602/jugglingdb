@@ -117,14 +117,16 @@ describe('relations', function() {
 
         it('can be used to query data', function(done) {
             List.hasMany('todos', {model: Item});
-            List.create(function(e, list) {
-                should.not.exist(e);
-                should.exist(list);
-                list.todos.create(function(err, todo) {
-                    todo.list(function(e, l) {
-                        should.not.exist(e);
-                        should.exist(l);
-                        done();
+            db.automigrate(function() {
+                List.create(function(e, list) {
+                    should.not.exist(e);
+                    should.exist(list);
+                    list.todos.create(function(err, todo) {
+                        todo.list(function(e, l) {
+                            should.not.exist(e);
+                            should.exist(l);
+                            done();
+                        });
                     });
                 });
             });
