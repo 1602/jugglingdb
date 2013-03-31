@@ -1,7 +1,7 @@
 {
   "name": "jugglingdb",
   "description": "ORM for every database: redis, mysql, neo4j, mongodb, couchdb, postgres, sqlite",
-  "version": "0.2.0-26",
+  "version": "0.2.0-27",
   "author": "Anatoliy Chakkaev <rpm1602@gmail.com>",
   "contributors": [
     {
