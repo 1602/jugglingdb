@@ -22,6 +22,15 @@ instance.
         console.log(user instanceof User);
     });
 
+When called with array of objects as first argument `Model.create` creates bunch
+of records. Both `err` and `model instance` arguments passed to callback will be
+arrays then. When no errors happened `err` argument will be null.
+
+The value returned from `Model.create` depends on second argument too. In case
+of Array it will return an array of instances, otherwise single instance. But be
+away, this instance(s) aren't save to database yet and you have to wait until
+callback called to be able to do id-sensitive stuff.
+
 ### Model.prototype.save([options[, callback]]);
 
 Save instance to database, options is an object {validate: true, throws: false},
