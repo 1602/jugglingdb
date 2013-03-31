@@ -37,6 +37,16 @@ describe('manipulation', function() {
             });
         });
 
+        it('should return instance of object', function(done) {
+            var person = Person.create(function(err, p) {
+                p.id.should.eql(person.id);
+                done();
+            });
+            should.exist(person);
+            person.should.be.an.instanceOf(Person);
+            should.not.exist(person.id);
+        });
+
         it('should work when called without callback', function(done) {
             Person.afterCreate = function(next) {
                 this.should.be.an.instanceOf(Person);
@@ -69,9 +79,34 @@ describe('manipulation', function() {
                 should.exist(this.id);
                 Person.afterCreate = null;
                 next();
-                setTimeout(done, 10);
+                setTimeout(done, 30);
             };
             Person.create();
+        });
+
+        it('should create batch of objects', function(done) {
+            var batch = [{name: 'Shaltay'}, {name: 'Boltay'}, {}];
+            Person.create(batch, function(e, ps) {
+                should.not.exist(e);
+                should.exist(ps);
+                ps.should.be.instanceOf(Array);
+                ps.should.have.lengthOf(batch.length);
+
+                Person.validatesPresenceOf('name');
+                Person.create(batch, function(errors, persons) {
+                    delete Person._validations;
+                    should.exist(errors);
+                    errors.should.have.lengthOf(batch.length);
+                    should.not.exist(errors[0]);
+                    should.not.exist(errors[1]);
+                    should.exist(errors[2]);
+
+                    should.exist(persons);
+                    persons.should.have.lengthOf(batch.length);
+                    persons[0].errors.should.be.false;
+                    done();
+                }).should.be.instanceOf(Array);
+            }).should.have.lengthOf(3);
         });
     });
 
@@ -136,6 +171,29 @@ describe('manipulation', function() {
                         'throws': true
                     });
                 }).should.throw('Validation error');
+            });
+        });
+
+    });
+
+    describe('updateAttributes', function() {
+        var person;
+
+        before(function(done) {
+            Person.destroyAll(function() {
+                person = Person.create(done);
+            });
+        });
+
+        it('should update one attribute', function(done) {
+            person.updateAttribute('name', 'Paul Graham', function(err, p) {
+                should.not.exist(err);
+                Person.all(function(e, ps) {
+                    should.not.exist(err);
+                    ps.should.have.lengthOf(1);
+                    ps.pop().name.should.equal('Paul Graham');
+                    done();
+                });
             });
         });
     });

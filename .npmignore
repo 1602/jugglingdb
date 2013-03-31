@@ -8,3 +8,4 @@ v8.log
 benchmark.js
 analyse.r
 docs/html
+npm-debug.log
