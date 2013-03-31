@@ -24,15 +24,15 @@ Called before and after validations.
 Called before and after destroy on instance.
 
 
-Each hook except `initialize` accepts callback as first argument. This callback
-should be called when hook done. All hooks called on object instance, but it's
-not recommended to use `this` for updating in all hooks where data argument
+Each hook except `initialize` accepts callback as the first argument. This callback
+should be called when hook is done. All hooks are called on object instance, but it's
+not recommended to use `this` for updating all hooks where data argument is
 available (second argument for all data-related before-hooks: save, update,
 create).
 
 ## INITIALIZE
 
-Initialize hook called when new object created after all setters and default
+Initialize hook called when new object created after all setters and defaults
 being applied.
 
     Model.afterInitialize = function() {
@@ -43,7 +43,7 @@ being applied.
 
 ## CREATE
 
-Create hooks called when object created.
+Create hooks is being called when object is created.
 The `beforeCreate` hook accepts `data` as a second argument.
 
     Model.beforeCreate = function(next, data) {
@@ -74,7 +74,7 @@ Example output will be:
 
 Update hooks called on each save except create. 
 The `beforeUpdate` hook accepts data as second argument.
-Data argument only containing actual data for update, not full object data.
+The data argument contains only actual data for update, not full object data.
 
     Model.beforeUpdate = function(next, data) {
         // use data argument to update object
@@ -103,9 +103,8 @@ Example output will be:
 
 ## SAVE
 
-Save hooks called on each save, both update and create.
-The `beforeSave` hook accepts `data` as a second argument.
-For `beforeSave` hook `data` argument is the same as `this`.
+Save hooks called on each save, both during update and create.
+The `beforeSave` hook accepts `data` as a second argument. For this cook hook `data` argument is the same as `this` when model.save() is called.  When model.updateAttributes() called data argument contains only actual changes. 
 
     Model.beforeSave = function(next, data) {
         if ('string' !== typeof data.tags) {
@@ -120,12 +119,12 @@ For `beforeSave` hook `data` argument is the same as `this`.
 
 ## DESTROY
 
-Destroy hooks called when `model.destroy()` called. Please note that
+Hook is destroyed once `model.destroy()` is called. Please note that
 `destroyAll` method doesn't call destroy hooks.
 
 ## VALIDATE
 
-Validate hooks callen before and after validation and should be used for data
+Validate hooks called before and after validation and should be used for data
 modification and not for validation. Use custom validation described in
 jugglingdb-validations(3) man section.
 
