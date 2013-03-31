@@ -72,6 +72,20 @@ describe('hooks', function() {
             (new User).save();
         });
 
+        it('afterCreate should not be triggered on failed create', function(done) {
+            var old = User.schema.adapter.create;
+            User.schema.adapter.create = function(modelName, id, cb) {
+                cb(new Error('error'));
+            }
+
+            User.afterCreate = function() {
+                throw new Error('shouldn\'t be called')
+            };
+            User.create(function (err, user) {
+                User.schema.adapter.create = old;
+                done();
+            });
+        });
     });
 
     describe('save', function() {
@@ -200,6 +214,23 @@ describe('hooks', function() {
                     done();
                 };
                 user.updateAttributes({name: 1, email: 2});
+            });
+        });
+
+        it('afterUpdate should not be triggered on failed save', function(done) {
+            User.afterUpdate = function() {
+                throw new Error('shouldn\'t be called')
+            };
+            User.create(function (err, user) {
+                var old = User.schema.adapter.save;
+                User.schema.adapter.save = function(modelName, id, cb) {
+                    cb(new Error('error'));
+                }
+
+                user.save(function(err) {
+                    User.schema.adapter.save = old;
+                    done();
+                });
             });
         });
     });
