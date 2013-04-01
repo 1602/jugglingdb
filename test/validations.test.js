@@ -73,6 +73,20 @@ describe('validations', function() {
                 });
             });
 
+            it('should work on update', function(done) {
+                User.validatesPresenceOf('name');
+                User.create({name: 'Valid'}, function(e, d) {
+                    d.updateAttribute('name', null, function(e) {
+                        should.exist(e);
+                        e.should.be.instanceOf(Error);
+                        d.updateAttribute('name', 'Vasiliy', function(e) {
+                            should.not.exist(e);
+                            done();
+                        });
+                    })
+                });
+            });
+
         });
     });
 
