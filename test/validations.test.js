@@ -60,7 +60,7 @@ describe('validations', function() {
 
         });
 
-        describe.only('lifecycle', function() {
+        describe('lifecycle', function() {
 
             it('should work on create', function(done) {
                 User.validatesPresenceOf('name');
