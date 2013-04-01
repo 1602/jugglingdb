@@ -47,6 +47,7 @@ describe('validations', function() {
     describe('commons', function() {
 
         describe('skipping', function() {
+
             it('should allow to skip using if: attribute', function() {
                 User.validatesPresenceOf('pendingPeriod', {if: 'createdByAdmin'});
                 var user = new User;
@@ -56,6 +57,22 @@ describe('validations', function() {
                 user.pendingPeriod = 1
                 user.isValid().should.be.true;
             });
+
+        });
+
+        describe.only('lifecycle', function() {
+
+            it('should work on create', function(done) {
+                User.validatesPresenceOf('name');
+                User.create(function(e) {
+                    should.exist(e);
+                    User.create({name: 'Valid'}, function(e, d) {
+                        should.not.exist(e);
+                        done();
+                    });
+                });
+            });
+
         });
     });
 
