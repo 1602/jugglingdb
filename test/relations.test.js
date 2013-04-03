@@ -92,6 +92,29 @@ describe('relations', function() {
                 });
             }
         });
+
+        it('should find scoped record', function(done) {
+            var id;
+            Book.create(function(err, book) {
+                book.chapters.create({name: 'a'}, function(err, ch) {
+                    id = ch.id;
+                    book.chapters.create({name: 'z'}, function() {
+                        book.chapters.create({name: 'c'}, function() {
+                            fetch(book);
+                        });
+                    });
+                });
+            });
+
+            function fetch(book) {
+                book.chapters.find(id, function(err, ch) {
+                    should.not.exist(err);
+                    should.exist(ch);
+                    ch.id.should.equal(id);
+                    done();
+                });
+            }
+        });
     });
 
     describe('belongsTo', function() {
