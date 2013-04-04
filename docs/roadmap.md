@@ -19,6 +19,8 @@ jugglingdb-roadmap - The Future of JugglingDB
 
 ## MODEL CORE
 
+* schema switching
+* common transaction support
 * virtual attributes
 * object presentation modes
 * mass-assignment protection
