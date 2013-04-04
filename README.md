@@ -131,7 +131,8 @@ var schema = new Schema('redis', {port: 6379}); //port number depends on your co
 var Post = schema.define('Post', {
     title:     { type: String, length: 255 },
     content:   { type: Schema.Text },
-    date:      { type: Date,    default: Date.now },
+    date:      { type: Date,    default: function () { return new Date;} },
+    timestamp: { type: Number,  default: Date.now },
     published: { type: Boolean, default: false, index: true }
 });
 
