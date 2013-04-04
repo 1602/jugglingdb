@@ -1,4 +1,5 @@
 var j = require('../'), db, User;
+var ValidationError = require('../lib/validations.js').ValidationError;
 var should = require('should');
 
 function getValidAttributes() {
@@ -63,8 +64,9 @@ describe('validations', function() {
         describe('lifecycle', function() {
 
             it('should work on create', function(done) {
+                delete User._validations;
                 User.validatesPresenceOf('name');
-                User.create(function(e) {
+                User.create(function(e, u) {
                     should.exist(e);
                     User.create({name: 'Valid'}, function(e, d) {
                         should.not.exist(e);
@@ -74,16 +76,28 @@ describe('validations', function() {
             });
 
             it('should work on update', function(done) {
+                delete User._validations;
                 User.validatesPresenceOf('name');
                 User.create({name: 'Valid'}, function(e, d) {
                     d.updateAttribute('name', null, function(e) {
                         should.exist(e);
                         e.should.be.instanceOf(Error);
+                        e.should.be.instanceOf(ValidationError);
                         d.updateAttribute('name', 'Vasiliy', function(e) {
                             should.not.exist(e);
                             done();
                         });
                     })
+                });
+            });
+
+            it('should return error code', function(done) {
+                delete User._validations;
+                User.validatesPresenceOf('name');
+                User.create(function(e, u) {
+                    should.exist(e);
+                    e.codes.name.should.eql(['presence']);
+                    done();
                 });
             });
 
