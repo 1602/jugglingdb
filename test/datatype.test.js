@@ -1,7 +1,9 @@
-var db, Model;
-var should = require('should');
+// This test written in mocha+should.js
+var should = require('./init.js');
 
-describe.only('datatypes', function() {
+var db, Model;
+
+describe('datatypes', function() {
 
     before(function(done){
         db = getSchema();

@@ -1,4 +1,7 @@
-var db, User, Post, Passport, City, Street, Building, should = require('should');
+// This test written in mocha+should.js
+var should = require('./init.js');
+
+var db, User, Post, Passport, City, Street, Building;
 var nbSchemaRequests = 0;
 
 describe('include', function() {

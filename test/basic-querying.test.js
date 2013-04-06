@@ -1,4 +1,6 @@
-var db, User, should = require('should');
+// This test written in mocha+should.js
+var should = require('./init.js');
+var db, User;
 
 describe('basic-querying', function() {
 

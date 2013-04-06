@@ -1,4 +1,4 @@
-require('should');
+module.exports = require('should');
 
 if (!process.env.TRAVIS) {
     if (typeof __cov === 'undefined') {

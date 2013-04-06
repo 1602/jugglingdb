@@ -1,3 +1,6 @@
+// This test written in mocha+should.js
+var should = require('./init.js');
+
 var db = getSchema();
 
 describe('defaults', function() {

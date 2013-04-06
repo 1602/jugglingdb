@@ -1,4 +1,7 @@
-var db, Person, should = require('should');
+// This test written in mocha+should.js
+var should = require('./init.js');
+
+var db, Person;
 
 describe('manipulation', function() {
 

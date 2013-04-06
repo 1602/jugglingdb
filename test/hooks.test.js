@@ -1,5 +1,7 @@
+// This test written in mocha+should.js
+var should = require('./init.js');
+
 var j = require('../'),
-    should = require('should'),
     Schema = j.Schema,
     AbstractClass = j.AbstractClass,
     Hookable = j.Hookable,
