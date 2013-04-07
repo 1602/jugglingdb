@@ -21,11 +21,15 @@ describe('datatypes', function() {
 
     it('should keep types when get read data from db', function(done) {
         var d = new Date, id;
+
         Model.create({
-            str: 'hello', date: d, num: 3, bool: true, list: ['test']
+            str: 'hello', date: d, num: '3', bool: 1, list: ['test']
         }, function(err, m) {
             should.not.exist(err);
             should.exist(m && m.id);
+            m.str.should.be.a('string');
+            m.num.should.be.a('number');
+            m.bool.should.be.a('boolean');
             id = m.id;
             testFind(testAll);
         });
@@ -55,6 +59,7 @@ describe('datatypes', function() {
                 done();
             });
         }
+
     });
 
 });

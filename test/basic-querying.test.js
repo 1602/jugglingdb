@@ -188,7 +188,7 @@ describe('basic-querying', function() {
             });
         });
 
-        it('should work even when find by id', function(done) {
+        it.skip('should work even when find by id', function(done) {
             User.findOne(function(e, u) {
                 User.findOne({where: {id: u.id}}, function(err, user) {
                     should.not.exist(err);
