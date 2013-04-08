@@ -13,6 +13,9 @@ jugglingdb-changelog(3) - The History of JugglingDB
   This data could be modified and it will be saved to database after hook done.
   **NOTE**: this change could break some code.
 
+* **Datatypes**:
+  Now object casts type of member on assignment.
+
 ### 0.2.1
 
 * Introduced `include` method
