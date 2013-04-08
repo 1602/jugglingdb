@@ -238,8 +238,8 @@ The following callbacks supported:
     - afterUpdate
     - beforeDestroy
     - afterDestroy
-    - beforeValidation
-    - afterValidation
+    - beforeValidate
+    - afterValidate
 
 Each callback is class method of the model, it should accept single argument: `next`, this is callback which
 should be called after end of the hook. Except `afterInitialize` because this method is syncronous (called after `new Model`).
@@ -249,19 +249,21 @@ should be called after end of the hook. Except `afterInitialize` because this me
 ```javascript
 var user = new User;
 // afterInitialize
-user.save(callback);
-// beforeValidation
-// afterValidation
+user.save(callback); // If Model.id isn't set, save will invoke Model.create() instead
+// beforeValidate
+// afterValidate
 // beforeSave
-// beforeCreate
-// afterCreate
+// beforeUpdate
+// afterUpdate
 // afterSave
 // callback
 user.updateAttribute('email', 'email@example.com', callback);
+// beforeValidate
+// afterValidate
+// beforeSave
 // beforeUpdate
-// beforeValidation
-// afterValidation
 // afterUpdate
+// afterSave
 // callback
 user.destroy(callback);
 // beforeDestroy
@@ -271,6 +273,8 @@ User.create(data, callback);
 // beforeValidate
 // afterValidate
 // beforeCreate
+// beforeSave
+// afterSave
 // afterCreate
 // callback
 ```
