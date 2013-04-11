@@ -159,7 +159,13 @@ describe('relations', function() {
         });
     });
 
-    describe('hasAndBelongsToMany', function() {
-        it('can be declared');
+    describe.skip('hasAndBelongsToMany', function() {
+        var Article, Tag;
+        it('can be declared', function(done) {
+            Article = db.define('Article', {title: String});
+            Tag = db.define('Tag', {name: String});
+            Article.hasAndBelongsToMany('tags');
+        });
     });
+
 });

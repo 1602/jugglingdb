@@ -2,8 +2,7 @@ var fs = require('fs');
 var path = require('path');
 
 exports.Schema = require('./lib/schema').Schema;
-exports.AbstractClass = require('./lib/model.js').AbstractClass;
-exports.Validatable = require('./lib/validations.js').Validatable;
+exports.AbstractClass = require('./lib/model.js');
 
 var baseSQL = './lib/sql';
 

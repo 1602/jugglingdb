@@ -174,8 +174,7 @@ describe('basic-querying', function() {
             });
         });
 
-        // TODO: it's not basic query, move to advanced querying test
-        it.skip('should find last record in filtered set', function(done) {
+        it('should find last record in filtered set', function(done) {
             User.findOne({
                 where: {role: 'lead'},
                 order: 'order DESC'
@@ -188,7 +187,7 @@ describe('basic-querying', function() {
             });
         });
 
-        it.skip('should work even when find by id', function(done) {
+        it('should work even when find by id', function(done) {
             User.findOne(function(e, u) {
                 User.findOne({where: {id: u.id}}, function(err, user) {
                     should.not.exist(err);

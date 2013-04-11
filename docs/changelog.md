@@ -14,7 +14,9 @@ jugglingdb-changelog(3) - The History of JugglingDB
   **NOTE**: this change could break some code.
 
 * **Datatypes**:
-  Now object casts type of member on assignment.
+  Now object casts type of member on assignment. It may cause issues if
+  mongodb's ObjectID was manually used as type for property. Solution: not use
+  it as type directly, and specify wrapper instead.
 
 ### 0.2.1
 
