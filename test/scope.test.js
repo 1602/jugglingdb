@@ -4,6 +4,7 @@ var should = require('./init.js');
 var db, Railway, Station;
 
 describe('sc0pe', function() {
+
     before(function() {
         db = getSchema();
         Railway = db.define('Railway', {
@@ -16,7 +17,6 @@ describe('sc0pe', function() {
             isActive: {type: Boolean, index: true},
             isUndeground: {type: Boolean, index: true}
         });
-
     });
 
     beforeEach(function(done) {
@@ -27,7 +27,6 @@ describe('sc0pe', function() {
 
     it('should define scope with query', function(done) {
         Station.scope('active', {where: {isActive: true}});
-
         Station.active.create(function(err, station) {
             should.not.exist(err);
             should.exist(station);

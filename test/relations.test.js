@@ -159,13 +159,78 @@ describe('relations', function() {
         });
     });
 
-    describe.skip('hasAndBelongsToMany', function() {
-        var Article, Tag;
+    describe('hasAndBelongsToMany', function() {
+        var Article, Tag, ArticleTag;
         it('can be declared', function(done) {
             Article = db.define('Article', {title: String});
             Tag = db.define('Tag', {name: String});
             Article.hasAndBelongsToMany('tags');
+            ArticleTag = db.models.ArticleTag;
+            db.automigrate(function() {
+                Article.destroyAll(function() {
+                    Tag.destroyAll(function() {
+                        ArticleTag.destroyAll(done)
+                    });
+                });
+            });
         });
+
+        it('should allow to create instances on scope', function(done) {
+            Article.create(function(e, article) {
+                article.tags.create({name: 'popular'}, function(e, t) {
+                    t.should.be.an.instanceOf(Tag);
+                    ArticleTag.findOne(function(e, at) {
+                        should.exist(at);
+                        at.tagId.should.equal(t.id);
+                        at.articleId.should.equal(article.id);
+                        done();
+                    });
+                });
+            });
+        });
+
+        it('should allow to fetch scoped instances', function(done) {
+            Article.findOne(function(e, article) {
+                article.tags(function(e, tags) {
+                    should.not.exist(e);
+                    should.exist(tags);
+                    done();
+                });
+            });
+        });
+
+        it('should allow to add connection with instance', function(done) {
+            Article.findOne(function(e, article) {
+                Tag.create({name: 'awesome'}, function(e, tag) {
+                    article.tags.add(tag, function(e, at) {
+                        should.not.exist(e);
+                        should.exist(at);
+                        at.should.be.an.instanceOf(ArticleTag);
+                        at.tagId.should.equal(tag.id);
+                        at.articleId.should.equal(article.id);
+                        done();
+                    });
+                });
+            });
+        });
+
+        it('should allow to remove connection with instance', function(done) {
+            Article.findOne(function(e, article) {
+                article.tags(function(e, tags) {
+                    var len = tags.length;
+                    article.tags.remove(tags[0], function(e, at) {
+                        should.not.exist(e);
+                        article.tags(true, function(e, tags) {
+                            tags.should.have.lengthOf(len - 1);
+                            done();
+                        });
+                    });
+                });
+            });
+        });
+
+        it('should allow to destroy instance and connection');
+
     });
 
 });
