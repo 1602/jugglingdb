@@ -57,6 +57,33 @@ describe('relations', function() {
             });
         });
 
+        it('should create related object(sync mode)', function(done) {
+            Book.hasMany(Chapter);
+            Chapter.belongsTo(Book);
+            Book.create(function(err, book) {
+                Chapter.create({bookId: book.id}, function(err, chapter) {
+                    var bookFromChapter = chapter.book();
+                    bookFromChapter.should.be.an.instanceOf(Book);
+                    bookFromChapter.id.should.equal(book.id);
+                    done();
+                })
+            });
+        });
+
+        it('should create related object(async mode)', function(done) {
+            Book.hasMany(Chapter);
+            Chapter.belongsTo(Book);
+            Book.create(function(err, book) {
+                Chapter.create({bookId: book.id}, function(err, chapter) {
+                    chapter.book(function(err, bookFromChapter){
+                        bookFromChapter.should.be.an.instanceOf(Book);
+                        bookFromChapter.id.should.equal(book.id);
+                        done();
+                    })
+                })
+            });
+        });
+
         it('should create record on scope', function(done) {
             Book.create(function(err, book) {
                 book.chapters.create(function(err, c) {
