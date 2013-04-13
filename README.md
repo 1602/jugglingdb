@@ -147,6 +147,8 @@ var User = schema.define('User', {
     restPath: '/users' // tell WebService adapter which path use as API endpoint
 });
 
+var Group = schema.define('Group', {name: String});
+
 // define any custom method
 User.prototype.getNameAndAge = function () {
     return this.name + ', ' + this.age;
@@ -155,7 +157,11 @@ User.prototype.getNameAndAge = function () {
 // models also accessible in schema:
 schema.models.User;
 schema.models.Post;
+```
 
+SEE [schema(3)](http://jugglingdb.co/schema.3.html) for details schema usage.
+
+```javascript
 // setup relationships
 User.hasMany(Post,   {as: 'posts',  foreignKey: 'userId'});
 // creates instance methods:
@@ -168,6 +174,12 @@ Post.belongsTo(User, {as: 'author', foreignKey: 'userId'});
 // post.author(callback) -- getter when called with function
 // post.author() -- sync getter when called without params
 // post.author(user) -- setter when called with object
+
+User.hasAndBelongsToMany('groups');
+// user.groups(callback) - get groups of user
+// user.groups.create(data, callback) - create new group and connect with user
+// user.groups.add(group, callback) - connect existing group with user
+// user.groups.remove(group, callback) - remove connection between group and user
 
 schema.automigrate(); // required only for mysql NOTE: it will drop User and Post tables
 
@@ -208,6 +220,12 @@ User.count([conditions, ]cb)
 user.destroy(cb);
 // destroy all instances
 User.destroyAll(cb);
+```
+
+SEE [model(3)](http://jugglingdb.co/model.3.html) for more information about
+jugglingdb Model API. Or `man jugglingdb-model` in terminal.
+
+```javascript
 
 // Setup validations
 User.validatesPresenceOf('name', 'email')
@@ -225,9 +243,12 @@ user.isValid(function (valid) {
 
 ```
 
-## Callbacks
+SEE ALSO [jugglingdb-validations(3)](http://jugglingdb.co/validations.3.html) or
+`man jugglingdb-validations` in terminal. Validation tests: ./test/validations.test.js
 
-The following callbacks supported:
+## Hooks
+
+The following hooks supported:
 
     - afterInitialize
     - beforeCreate
@@ -279,8 +300,9 @@ User.create(data, callback);
 // callback
 ```
 
-Read the tests for usage examples: ./test/common_test.js
-Validations: ./test/validations.test.js
+SEE [jugglingdb-hooks](http://jugglingdb.co/hooks.3.html) or type this command
+in your fav terminal: `man jugglingdb-hooks`. Also check tests for usage
+examples: ./test/hooks.test.js
 
 ## Your own database adapter
 
@@ -290,7 +312,9 @@ To use custom adapter, pass it's package name as first argument to `Schema` cons
 
 In that case your adapter should be named as 'jugglingdb-mycouch' npm package.
 
-## Testing
+## Testing [outdated]
+
+TODO: upd this section
 
 Core of jugglingdb tests only basic features (database-agnostic) like
 validations, hooks and runs db-specific tests using memory storage. It also
@@ -325,8 +349,30 @@ correctly (host, port, username, password).
 
 ## Contributing
 
-If you have found a bug please write unit test, and make sure all other tests still pass before pushing code to repo.
+If you have found a bug please try to write unit test before reporting. Before
+submit pull request make sure all tests still passed. Check
+[roadmap](http://jugglingdb.co/roadmap.3.html), github issues if you want to
+help. Contribution to docs highly appreciated. Contents of man pages and
+http://jugglingdb.co generated from md files stored in this repo at ./docs repo
 
-## License
+## MIT License
 
-MIT
+    Copyright (C) 2011 by Anatoliy Chakkaev <mail [åt] anatoliy [døt] in>
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
