@@ -181,7 +181,7 @@ TODO: document
 
 ### hasAndBelongsToMany
 
-TODO: implement and document
+TODO: document
 
 ## SEE ALSO
 

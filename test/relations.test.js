@@ -229,8 +229,6 @@ describe('relations', function() {
             });
         });
 
-        it('should allow to destroy instance and connection');
-
     });
 
 });
