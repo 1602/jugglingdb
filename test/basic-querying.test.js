@@ -145,7 +145,7 @@ describe('basic-querying', function() {
 
         it('should find first record (default sort by id)', function(done) {
             User.all({order: 'id'}, function(err, users) {
-                User.findOne({order: 'id'}, function(e, u) {
+                User.findOne(function(e, u) {
                     should.not.exist(e);
                     should.exist(u);
                     u.id.toString().should.equal(users[0].id.toString());
