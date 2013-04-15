@@ -183,8 +183,8 @@ describe('relations', function() {
                     t.should.be.an.instanceOf(Tag);
                     ArticleTag.findOne(function(e, at) {
                         should.exist(at);
-                        at.tagId.should.equal(t.id);
-                        at.articleId.should.equal(article.id);
+                        at.tagId.toString().should.equal(t.id.toString());
+                        at.articleId.toString().should.equal(article.id.toString());
                         done();
                     });
                 });
@@ -220,7 +220,8 @@ describe('relations', function() {
             Article.findOne(function(e, article) {
                 article.tags(function(e, tags) {
                     var len = tags.length;
-                    article.tags.remove(tags[0], function(e, at) {
+                    tags.should.not.be.empty;
+                    article.tags.remove(tags[0], function(e) {
                         should.not.exist(e);
                         article.tags(true, function(e, tags) {
                             tags.should.have.lengthOf(len - 1);
