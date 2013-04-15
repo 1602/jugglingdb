@@ -78,7 +78,6 @@ describe('relations', function() {
                     });
                 });
             });
-
             function fetch(book) {
                 book.chapters(function(err, ch) {
                     should.not.exist(err);
@@ -151,12 +150,15 @@ describe('relations', function() {
                         todo.list(function(e, l) {
                             should.not.exist(e);
                             should.exist(l);
+                            l.should.be.an.instanceOf(List);
+                            todo.list().should.equal(l.id);
                             done();
                         });
                     });
                 });
             });
         });
+
     });
 
     describe('hasAndBelongsToMany', function() {
