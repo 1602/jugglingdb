@@ -159,6 +159,21 @@ describe('relations', function() {
             });
         });
 
+        it('could accept objects when creating on scope', function(done) {
+            List.create(function(e, list) {
+                should.not.exist(e);
+                should.exist(list);
+                Item.create({list: list}, function(err, item) {
+                    should.not.exist(err);
+                    should.exist(item);
+                    should.exist(item.listId);
+                    item.listId.should.equal(list.id);
+                    item.__cachedRelations.list.should.equal(list);
+                    done();
+                });
+            });
+        });
+
     });
 
     describe('hasAndBelongsToMany', function() {

@@ -137,7 +137,7 @@ describe('hooks', function() {
             User.destroyAll(function() {
                 User.create({
                     email: 'james.bond@example.com',
-                    password: 'secret'
+                    password: '53cr3t'
                 }, function() {
                     User.findOne({
                         where: {email: 'james.bond@example.com'}
@@ -306,7 +306,6 @@ describe('hooks', function() {
                     'afterValidate',
                     'beforeCreate',
                     'beforeSave',
-                    'afterInitialize',
                     'afterSave',
                     'afterCreate'
                 ]);
@@ -323,7 +322,6 @@ describe('hooks', function() {
                     'afterValidate',
                     'beforeCreate',
                     'beforeSave',
-                    'afterInitialize',
                     'afterSave',
                     'afterCreate'
                 ]);
