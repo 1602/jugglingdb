@@ -60,6 +60,24 @@ describe('basic-querying', function() {
                 done();
             });
         });
+        
+        it('should query limited collection', function(done) {
+            User.all({limit: 3}, function(err, users) {
+                should.exists(users);
+                should.not.exists(err);
+                users.should.have.lengthOf(3);
+                done();
+            });
+        });
+        
+        it('should query offset collection with limit', function(done) {
+            User.all({skip: 1, limit: 4}, function(err, users) {
+                should.exists(users);
+                should.not.exists(err);
+                users.should.have.lengthOf(4);
+                done();
+            });
+        });
 
         it('should query filtered collection', function(done) {
             User.all({where: {role: 'lead'}}, function(err, users) {
