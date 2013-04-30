@@ -103,6 +103,12 @@ describe('validations', function() {
                 });
             });
 
+            it('should allow to modify error after validation', function(done) {
+                User.afterValidate = function(next) {
+                    next();
+                };
+            });
+
         });
     });
 
