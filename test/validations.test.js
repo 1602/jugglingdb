@@ -107,6 +107,7 @@ describe('validations', function() {
                 User.afterValidate = function(next) {
                     next();
                 };
+                done();
             });
 
         });
