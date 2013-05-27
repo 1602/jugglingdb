@@ -82,7 +82,7 @@ check following list of available adapters
 
     <!-- RethinkDB -->
     <tr>
-      <td><a href="http://www.rethinkdb.com/"><img src="http://www.rethinkdb.com/favicon.ico" alt="RethinkDB" width="16" height="16" /></a> Redis</td>
+      <td><a href="http://www.rethinkdb.com/"><img src="http://www.rethinkdb.com/favicon.ico" alt="RethinkDB" width="16" height="16" /></a> RethinkDB</td>
       <td><a href="https://github.com/fuwaneko/jugglingdb-rethink">jugglingdb-rethink</a></td>
       <td><a href="https://github.com/fuwaneko">Tewi Inaba</a></td>
       <td><a href="https://travis-ci.org/fuwaneko/jugglingdb-rethink"><img src="https://travis-ci.org/fuwaneko/jugglingdb-rethink.png?branch=master" alt="Build Status" /></a></td>
