@@ -80,6 +80,14 @@ check following list of available adapters
       <td><a href="https://travis-ci.org/jugglingdb/redis-adapter"><img src="https://travis-ci.org/jugglingdb/redis-adapter.png?branch=master" alt="Build Status" /></a></td>
     </tr>
 
+    <!-- RethinkDB -->
+    <tr>
+      <td><a href="http://www.rethinkdb.com/"><img src="http://www.rethinkdb.com/favicon.ico" alt="RethinkDB" width="16" height="16" /></a> RethinkDB</td>
+      <td><a href="https://github.com/fuwaneko/jugglingdb-rethink">jugglingdb-rethink</a></td>
+      <td><a href="https://github.com/fuwaneko">Tewi Inaba</a></td>
+      <td><a href="https://travis-ci.org/fuwaneko/jugglingdb-rethink"><img src="https://travis-ci.org/fuwaneko/jugglingdb-rethink.png?branch=master" alt="Build Status" /></a></td>
+    </tr>
+
     <!-- SQLite -->
     <tr>
       <td><a href="http://www.sqlite.org/"><img width="16" src="https://github.com/1602/jugglingdb/raw/master/media/sqlite.png" style="vertical-align:middle"" alt="SQLite" /></a> SQLite</td>
