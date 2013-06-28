@@ -156,6 +156,21 @@ describe('validations', function() {
             })).should.be.false;
         });
 
+        it('should correctly handle null values', function(done) {
+            User.validatesUniquenessOf('email', {allowNull: true});
+            var u = new User({email: null});
+            Boolean(u.isValid(function(valid) {
+                valid.should.be.true;
+                u.save(function() {
+                    var u2 = new User({email: null});
+                    u2.isValid(function(valid) {
+                        valid.should.be.true;
+                        done();
+                    });
+                });
+            })).should.be.false;
+        });
+
         it('should handle same object modification', function(done) {
             User.validatesUniquenessOf('email');
             var u = new User({email: 'hey'});
