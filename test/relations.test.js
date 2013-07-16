@@ -247,6 +247,28 @@ describe('relations', function() {
             });
         });
 
+        it('should remove the correct connection', function(done) {
+            Article.create({title: 'Article 1'}, function(e, article1) {
+                Article.create({title: 'Article 2'}, function(e, article2) {
+                    Tag.create({name: 'correct'}, function(e, tag) {
+                        article1.tags.add(tag, function(e, at) {
+                            article2.tags.add(tag, function(e, at) {
+                                article2.tags.remove(tag, function(e) {
+                                    article2.tags(true, function(e, tags) {
+                                        tags.should.have.lengthOf(0);
+                                        article1.tags(true, function(e, tags) {
+                                            tags.should.have.lengthOf(1);
+                                            done();
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+
     });
 
 });
