@@ -98,7 +98,19 @@ Examples of model definition:
         },
         activated: { type: Boolean, default: false }
     }, {
-        tableName: 'users'
+        table: 'users'
+    });
+
+#### Custom database column/field names
+
+You can store the data using a different field/column name by specifying the
+`name` property in the field definition.
+
+For example, to store `firstName` as `first_name`:
+
+    var User = schema.define('User', {
+      firstName: { type: String, name: 'first_name' },
+      lastName: { type: String, name: 'last_name' }
     });
 
 ### DB structure syncronization
