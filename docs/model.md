@@ -84,6 +84,23 @@ instance.
 Delete all Model instances from database. Be aware: `destroyAll` method doesn't
 perform destroy hooks.
 
+### Model.iterate(options, iterator, callback)
+
+Iterate through dataset and perform async method iterator. This method designed
+to work with large datasets loading data by batches. First argument (options) is
+optional and have same signature as for Model.all, it has additional member
+`batchSize` which allows to specify size of batch loaded into memory from the
+database.
+
+Iterator argument is a function that accepts three arguments: item, callback and
+index in collection.
+
+    Model.iterate({batchSize: 100}, function(obj, next, i) {
+        doSomethingAsync(obj, next);
+    }, function(err) {
+        // all done
+    });
+
 ## DB READ METHODS
 
 ### Model.find(id, callback);
