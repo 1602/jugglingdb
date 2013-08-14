@@ -18,6 +18,9 @@ jugglingdb-changelog(3) - The History of JugglingDB
   mongodb's ObjectID was manually used as type for property. Solution: not use
   it as type directly, and specify wrapper instead.
 
+* **Model.iterate(opts, iterator, callback)**:
+  Async iterator for large datasets.
+
 ### 0.2.1
 
 * Introduced `include` method
