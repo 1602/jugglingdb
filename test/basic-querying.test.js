@@ -88,6 +88,37 @@ describe('basic-querying', function() {
             });
         });
 
+        it('should query collection using or operator', function(done) {
+            User.all({where: { $or : [ { name : 'Paul McCartney'} , { name : 'John Lennon'} ] }}, function(err, users) {
+                should.exists(users);
+                should.not.exists(err);
+                users.should.have.lengthOf(2);
+                users.forEach(function(u) {
+                    u.role.should.eql('lead');
+                });
+                done();
+            });
+        });
+
+        it('should query collection using or operator on different fields', function(done) {
+            User.all({where: { $or : [ { name : 'Not a User'} , { order : '5'} ] }}, function(err, users) {
+                should.exists(users);
+                should.not.exists(err);
+                users.should.have.lengthOf(1);
+                users[0].order.should.eql('5');
+                done();
+            });
+        });
+
+        it('should query collection using or operator combined with and operator', function(done) {
+            User.all({where: { name : 'Ringo Starr', $or : [ { name : 'Not a User'} , { order : '5'} ] }}, function(err, users) {
+                should.exists(users);
+                should.not.exists(err);
+                users.should.have.lengthOf(2);
+                done();
+            });
+        });
+
         it('should query collection sorted by numeric field', function(done) {
             User.all({order: 'order'}, function(err, users) {
                 should.exists(users);
