@@ -62,4 +62,9 @@ describe('datatypes', function() {
 
     });
 
+    it('should convert "false" to false for boolean', function() {
+        var m = new Model({bool: 'false'});
+        m.bool.should.equal(false);
+    });
+
 });
