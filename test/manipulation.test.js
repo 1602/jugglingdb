@@ -162,6 +162,26 @@ describe('manipulation', function() {
             });
         });
 
+        it('should save invalid new object (skipping validation)', function (done) {
+            var p = new Person();
+            p.isNewRecord().should.be.true;
+
+            p.isValid = function(done) {
+                if (done) {
+                    process.nextTick(done);
+                }
+                return false;
+            };
+            p.isValid().should.be.false;
+            
+            p.save({ validate: false }, function (err) {
+                should.not.exist(err);
+                p.isNewRecord().should.be.false;
+                p.isValid().should.be.false;
+                done();
+            });
+        });
+
         it('should save throw error on validation', function() {
             Person.findOne(function(err, p) {
                 should.not.exist(err);
