@@ -23,6 +23,23 @@ describe('hooks', function() {
         db.automigrate(done);
     });
 
+    describe('behavior', function() {
+
+        it('should allow to break flow in case of error', function(done) {
+
+            var Model = db.define('Model');
+            Model.beforeCreate = function(next, data) {
+                next(new Error('Fail'));
+            };
+
+            Model.create(function(err, model) {
+                should.not.exist(model);
+                should.exist(err);
+                done();
+            });
+        });
+    });
+
     describe('initialize', function() {
 
         afterEach(function() {
