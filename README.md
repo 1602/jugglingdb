@@ -270,8 +270,9 @@ The following hooks supported:
     - beforeValidate
     - afterValidate
 
-Each callback is class method of the model, it should accept single argument: `next`, this is callback which
-should be called after end of the hook. Except `afterInitialize` because this method is syncronous (called after `new Model`).
+Each callback is class method of the model, it should accept single argument: `next`, this is callback which should be called after end of the hook. Except `afterInitialize` because this method is syncronous (called after `new Model`).
+
+During beforehooks the `next` callback accepts one argument, which is used to terminate flow. The argument passed on as the `err` parameter to the API method callback.
 
 ## Object lifecycle:
 
