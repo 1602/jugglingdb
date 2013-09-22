@@ -53,13 +53,13 @@ Human-written manual sections are:
 All adapters available as separate packages at
 [github.com/jugglingdb] and published in npm.
 
-* MySQL:    [github][jugglingdb-mysql]     [npm][mysql-adapter-npm]
-* SQLite3:  [github][jugglingdb-sqlite3]   [npm][sqlite3-adapter-npm]
-* Postgres: [github][jugglingdb-postgres]  [npm][postgres-adapter-npm]
-* Redis:    [github][jugglingdb-redis]     [npm][redis-adapter-npm]
-* MongoDB:  [github][jugglingdb-mongodb]   [npm][mongodb-adapter-npm]
-* CouchDB/nano: [github][jugglingdb-nano]  [npm][nano-adapter-npm]
-* Firebird: [github][jugglingdb-firebird]  [npm][firebird-adapter-npm]
+* MySQL:    [github](jugglingdb-mysql)     [npm](mysql-adapter-npm)
+* SQLite3:  [github](jugglingdb-sqlite3)   [npm](sqlite3-adapter-npm)
+* Postgres: [github](jugglingdb-postgres)  [npm](postgres-adapter-npm)
+* Redis:    [github](jugglingdb-redis)     [npm](redis-adapter-npm)
+* MongoDB:  [github](jugglingdb-mongodb)  [npm](mongodb-adapter-npm)
+* CouchDB/nano: [github](jugglingdb-nano)  [npm](nano-adapter-npm)
+* Firebird: [github](jugglingdb-firebird)  [npm](firebird-adapter-npm)
 
 ## CONTRIBUTION
 
