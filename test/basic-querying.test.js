@@ -11,7 +11,8 @@ describe('basic-querying', function() {
             name: {type: String, sort: true},
             email: {type: String, index: true},
             role: {type: String, index: true},
-            order: {type: Number, index: true, sort: true}
+            order: {type: Number, index: true, sort: true},
+            birthday: { type: Date }
         });
 
         db.automigrate(done);
@@ -132,6 +133,15 @@ describe('basic-querying', function() {
             });
         });
 
+        it('should query date ranges', function(done) {
+            User.all({where: {birthday: {lt: new Date('1940-10-10'), gt: new Date('1940-10-01')}}}, function(err, users) {
+                should.not.exist(err);
+                should.exist(users);
+                users.length.should.equal(1);
+                users[0].name.should.equal('John Lennon');
+                done();
+            });
+        });
     });
 
     describe('count', function() {
@@ -149,6 +159,15 @@ describe('basic-querying', function() {
 
         it('should query filtered count', function(done) {
             User.count({role: 'lead'}, function(err, n) {
+                should.not.exist(err);
+                should.exist(n);
+                n.should.equal(2);
+                done();
+            });
+        });
+
+        it('should support date filtering', function(done) {
+            User.count({birthday: {lt: new Date('1940-10-01')}}, function(err, n) {
                 should.not.exist(err);
                 should.exist(n);
                 n.should.equal(2);
@@ -215,6 +234,14 @@ describe('basic-querying', function() {
             });
         });
 
+        it('should work with date equality', function(done) {
+            User.findOne({where: {birthday: new Date('1940-10-09')}}, function(e, u) {
+                should.not.exist(e);
+                should.exist(u);
+                u.name.should.equal('John Lennon');
+                done();
+            });
+        });
     });
 
     describe('exists', function() {
@@ -254,17 +281,19 @@ function seed(done) {
             name: 'John Lennon',
             mail: 'john@b3atl3s.co.uk',
             role: 'lead',
-            order: 2
+            order: 2,
+            birthday: new Date('1940-10-09')
         }, {
             name: 'Paul McCartney',
             mail: 'paul@b3atl3s.co.uk',
             role: 'lead',
-            order: 1
+            order: 1,
+            birthday: new Date('1942-06-18')
         },
-        {name: 'George Harrison', order: 5},
-        {name: 'Ringo Starr', order: 6},
-        {name: 'Pete Best', order: 4},
-        {name: 'Stuart Sutcliffe', order: 3}
+        {name: 'George Harrison', birthday: new Date('1943-02-25'), order: 5},
+        {name: 'Ringo Starr', birthday: new Date('1940-07-07'), order: 6},
+        {name: 'Pete Best', birthday: new Date('1941-11-24'), order: 4},
+        {name: 'Stuart Sutcliffe', birthday: new Date('1940-06-23'), order: 3}
     ];
     User.destroyAll(function() {
         beatles.forEach(function(beatle) {
