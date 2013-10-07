@@ -228,6 +228,8 @@ User.count([conditions, ]cb)
 user.destroy(cb);
 // destroy all instances
 User.destroyAll(cb);
+// update a post (currently only on the mysql adapter)
+Post.update({ where:{id:'1'}, update:{ published:false }}, cb);
 ```
 
 SEE [model(3)](http://jugglingdb.co/model.3.html) for more information about
