@@ -119,8 +119,16 @@ The `beforeSave` hook accepts `data` as a second argument. For this cook hook `d
 
 ## DESTROY
 
-Hook is destroyed once `model.destroy()` is called. Please note that
+Hook is called once `model.destroy()` is called. Please note that
 `destroyAll` method doesn't call destroy hooks.
+
+    Model.beforeDestroy = function(next, data) {
+        next();
+    };
+
+    Model.afterDestroy = function(next) {
+        next();
+    };
 
 ## VALIDATE
 

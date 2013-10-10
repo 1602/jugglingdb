@@ -117,6 +117,42 @@ describe('relations', function() {
                 });
             }
         });
+
+        it('should destroy scoped record', function(done) {
+            Book.create(function(err, book) {
+                book.chapters.create({name: 'a'}, function(err, ch) {
+                    book.chapters.destroy(ch.id, function(err) {
+                        should.not.exist(err);
+                        book.chapters.find(ch.id, function(err, ch) {
+                            should.exist(err);
+                            err.message.should.equal('Not found');
+                            should.not.exist(ch);
+                            done();
+                        });
+                    });
+                });
+            });
+        });
+
+        it('should not allow destroy not scoped records', function(done) {
+            Book.create(function(err, book1) {
+                book1.chapters.create({name: 'a'}, function(err, ch) {
+                    var id = ch.id
+                    Book.create(function(err, book2) {
+                        book2.chapters.destroy(ch.id, function(err) {
+                            should.exist(err);
+                            err.message.should.equal('Permission denied');
+                            book1.chapters.find(ch.id, function(err, ch) {
+                                should.not.exist(err);
+                                should.exist(ch);
+                                ch.id.should.equal(id);
+                                done();
+                            });
+                        });
+                    });
+                });
+            });
+        });
     });
 
     describe('belongsTo', function() {
