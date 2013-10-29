@@ -98,7 +98,7 @@ Examples of model definition:
         },
         activated: { type: Boolean, default: false }
     }, {
-        tableName: 'users'
+        table: 'users'
     });
 
 ### DB structure syncronization
