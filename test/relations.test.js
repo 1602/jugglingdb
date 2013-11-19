@@ -7,7 +7,7 @@ describe('relations', function() {
     before(function(done) {
         db = getSchema();
         Book = db.define('Book', {name: String});
-        Chapter = db.define('Chapter', {name: {type: String, index: true}});
+        Chapter = db.define('Chapter', {name: {type: String, index: true, limit: 20}});
         Author = db.define('Author', {name: String});
         Reader = db.define('Reader', {name: String});
 

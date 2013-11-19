@@ -14,7 +14,7 @@ describe('hooks', function() {
         db = getSchema();
 
         User = db.define('User', {
-            email: {type: String, index: true},
+            email: {type: String, index: true, limit: 100},
             name: String,
             password: String,
             state: String
