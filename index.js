@@ -20,6 +20,12 @@ exports.loadSchema = function(filename, settings, compound) {
             conf = {driver: 'memory'};
         }
         schema[k] = new Schema(conf.driver, conf);
+        schema[k].on('define', function(m, name, prop, sett) {
+            compound.models[name] = m;
+            if (conf.backyard) {
+                schema[k].backyard.define(name, prop, sett);
+            }
+        });
         schema[k].name = k;
         schema.push(schema[k]);
         if (conf.backyard) {
@@ -33,14 +39,10 @@ exports.loadSchema = function(filename, settings, compound) {
         }
     });
 
+    return schema;
+
     function define(db, def) {
-        if (db.waitForConnect) {
-            db.on('connected', function() {
-                def(db, compound);
-            });
-        } else {
-            def(db, compound);
-        }
+        def(db, compound);
     }
 };
 
@@ -62,6 +64,10 @@ exports.init = function (compound) {
                 compound.on('ready', function() {
                     compound.orm.schema.forEach(function(s) {
                         s.autoupdate();
+                        if (s.backyard) {
+                            s.backyard.autoupdate();
+                            s.backyard.log = s.log;
+                        }
                     });
                 });
             }
