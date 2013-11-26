@@ -1,6 +1,6 @@
 var should = require('./init.js'), db, User;
 
-describe.only('i18n', function() {
+describe('i18n', function() {
     db = getSchema();
 
     before(function() {
@@ -38,12 +38,14 @@ describe.only('i18n', function() {
         User.validatesPresenceOf('name', 'email');
     });
 
-    it('should hook up localized string', function() {
+    it('should hook up localized string', function(done) {
         User.create({email: 'John.Doe@example.com', name: 'John Doe'}, function(err, user) {
-        User.create({email: 'John.Doe@example.com'}, function(err, user) {
-            console.log(user.errors.__localize('ru'));
-            console.log(err);
-        });
+            User.create({email: 'John.Doe@example.com'}, function(err, user) {
+                var errors = user.errors.__localize('ru');
+                errors.name[0].should.equal('can\'t be blank');
+                errors.email[0].should.equal('Электропочта уже взят');
+                done();
+            });
         });
     });
 });
