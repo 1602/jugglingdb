@@ -77,7 +77,7 @@ argumets:
   (String, Number, Date, Boolean), or object with {type: String|Number|...,
   index: true|false} format.
 * **settings**:
-  Object with model-wide settings such as `tableName` or so.
+  Object with model-wide settings such as `table` or so.
 
 Examples of model definition:
 
