@@ -272,6 +272,7 @@ describe('relations', function() {
                 article.tags(function(e, tags) {
                     var len = tags.length;
                     tags.should.not.be.empty;
+                    should.exist(tags[0]);
                     article.tags.remove(tags[0], function(e) {
                         should.not.exist(e);
                         article.tags(true, function(e, tags) {
