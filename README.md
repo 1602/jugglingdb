@@ -189,7 +189,7 @@ User.hasAndBelongsToMany('groups');
 // user.groups.add(group, callback) - connect existing group with user
 // user.groups.remove(group, callback) - remove connection between group and user
 
-schema.automigrate(); // required only for mysql NOTE: it will drop User and Post tables
+schema.automigrate(); // required only for mysql and postgres NOTE: it will drop User and Post tables
 
 // work with models:
 var user = new User;
