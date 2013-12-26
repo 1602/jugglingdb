@@ -88,6 +88,20 @@ describe('basic-querying', function() {
             });
         });
 
+        it ( "should query filtered collection with or conditions", function ( done ) {
+            var where = {
+                or: [ { role: "lead", or: [ { id: 2 }, { id:5 } ] }, 
+                    { order: 3 }
+                ]
+            };
+            User.all ( { where: where }, function ( err, users ) {
+                should.exists ( users );
+                should.not.exists ( err );
+                users.should.have.length ( 2 );
+                done ( );
+            } );
+        } );
+
         it('should query collection sorted by numeric field', function(done) {
             User.all({order: 'order'}, function(err, users) {
                 should.exists(users);
