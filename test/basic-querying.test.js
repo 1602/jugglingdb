@@ -98,6 +98,7 @@ describe('basic-querying', function() {
                 should.exists ( users );
                 should.not.exists ( err );
                 users.should.have.length ( 2 );
+                console.log(users)
                 done ( );
             } );
         } );
@@ -165,6 +166,20 @@ describe('basic-querying', function() {
             User.count({role: 'lead'}, function(err, n) {
                 should.not.exist(err);
                 should.exist(n);
+                n.should.equal(2);
+                done();
+            });
+        });
+
+        it ( "should query or condition filtered count", function(done) {
+            var where = {
+                or: [ { role: "lead", or: [ { id: 8 }, { id:5 } ] }, 
+                    { order: 3 }
+                ]
+            };
+            User.count(where, function(err, n) {
+                should.not.exists(err);
+                should.exists(n);
                 n.should.equal(2);
                 done();
             });
