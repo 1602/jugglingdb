@@ -244,6 +244,20 @@ describe('basic-querying', function() {
             });
         });
 
+        it('should work when find by or condition', function(done) {
+            var where = {
+                or: [ { role: "lead", or: [ { order: 1 }, { order:4 } ] }, 
+                    { order: 3 }
+                ]
+            };
+            User.findOne({where: where},function(e, u) {
+                should.not.exist(e);
+                should.exist(u);
+                u.name.should.equal('Paul McCartney');
+                done();
+            });
+        });
+
     });
 
     describe('exists', function() {
