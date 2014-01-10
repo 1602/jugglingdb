@@ -6,11 +6,13 @@ var ValidationError = require('../lib/validations.js').ValidationError;
 
 function getValidAttributes() {
     return {
-        name: 'Anatoliy',
+        name: 'Maria',
         email: 'email@example.com',
         state: '',
+        bio: 'haha',
         age: 26,
-        gender: 'male',
+        countryCode: 'RU',
+        gender: 'female',
         createdByAdmin: false,
         createdByScript: true
     };
@@ -26,8 +28,10 @@ describe('validations', function() {
             password: String,
             state: String,
             age: Number,
+            bio: String,
             gender: String,
             domain: String,
+            countryCode: String,
             pendingPeriod: Number,
             createdByAdmin: Boolean,
             createdByScript: Boolean,
@@ -207,7 +211,50 @@ describe('validations', function() {
     });
 
     describe('length', function() {
-        it('should validate length');
+        it('should validate max length', function(done) {
+            User.validatesLengthOf('gender', {max: 6});
+            var u = new User(getValidAttributes());
+            u.isValid(function(valid) {
+                u.errors.should.be.not.ok;
+                valid.should.be.true;
+                u.gender = 'undefined';
+                u.isValid(function(valid) {
+                    u.errors.should.be.ok;
+                    valid.should.be.false;
+                    done();
+                });
+            });
+        });
+
+        it('should validate min length', function(done) {
+            User.validatesLengthOf('bio', {min: 3});
+            var u = new User({bio: 'ha'});
+            u.isValid(function(valid) {
+                u.errors.should.be.ok;
+                valid.should.be.false;
+                u.bio = 'undefined';
+                u.isValid(function(valid) {
+                    u.errors.should.be.not.ok;
+                    valid.should.be.true;
+                    done();
+                });
+            });
+        });
+
+        it('should validate exact length', function(done) {
+            User.validatesLengthOf('countryCode', {is: 2});
+            var u = new User(getValidAttributes());
+            u.isValid(function(valid) {
+                u.errors.should.be.not.ok;
+                valid.should.be.true;
+                u.countryCode = 'RUS';
+                u.isValid(function(valid) {
+                    u.errors.should.be.ok;
+                    valid.should.be.false;
+                    done();
+                });
+            });
+        });
     });
 
     describe('custom', function() {
