@@ -272,6 +272,29 @@ describe('manipulation', function() {
                 done();
             });
         });
+
+        it('should take limit into account', function(done) {
+            var num = 0;
+            Person.iterate({batchSize: 20, limit: 21}, function(person, next, i) {
+                num += 1;
+                next();
+            }, function(err) {
+                num.should.equal(21);
+                done();
+            });
+        });
+
+        it('should process in concurrent mode', function(done) {
+            var num = 0, time = Date.now();
+            Person.iterate({batchSize: 10, limit: 21, concurrent: true}, function(person, next, i) {
+                num += 1;
+                setTimeout(next, 20);
+            }, function(err) {
+                num.should.equal(21);
+                should.ok(Date.now() - time < 100, 'should work in less than 100ms');
+                done();
+            });
+        });
     });
 
     describe('initialize', function() {
