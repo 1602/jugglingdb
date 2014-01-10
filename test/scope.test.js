@@ -61,4 +61,19 @@ describe('sc0pe', function() {
             });
         });
     });
+
+    it('should destroy all', function(done) {
+        Station.inactive.ground.create(function() {
+            Station.inactive(function(err, ss) {
+                console.log(arguments);
+                ss.should.have.lengthOf(1);
+                Station.inactive.destroyAll(function() {
+                    Station.inactive(true, function(err, ss) {
+                        ss.should.have.lengthOf(0);
+                        done();
+                    });
+                });
+            });
+        });
+    });
 });
