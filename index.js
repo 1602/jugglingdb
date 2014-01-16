@@ -104,3 +104,5 @@ var commonTest = './test/common_test';
 exports.__defineGetter__('test', function () {
     return require(commonTest);
 });
+
+exports.QueryChainer = require('./lib/querychainer').QueryChainer;

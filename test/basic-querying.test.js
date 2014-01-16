@@ -88,6 +88,16 @@ describe('basic-querying', function() {
             });
         });
 
+        it ('should query filtered collection with or conditions', function(done) {
+            var where = {or: [{role: 'lead', or: [{order: 1}, {order: 4}]}, {order: 3}]};
+            User.all ({where: where}, function(err, users) {
+                should.exists(users);
+                should.not.exists(err);
+                users.should.have.length(2);
+                done ();
+            });
+        });
+
         it('should query collection sorted by numeric field', function(done) {
             User.all({order: 'order'}, function(err, users) {
                 should.exists(users);
@@ -155,6 +165,16 @@ describe('basic-querying', function() {
                 done();
             });
         });
+
+        it ('should query or condition filtered count', function(done) {
+            var where = {or: [{role: 'lead', or: [{order: 1}, {order: 4}]}, {order: 3}]};
+            User.count(where, function(err, n) {
+                should.not.exists(err);
+                should.exists(n);
+                n.should.equal(2);
+                done();
+            });
+        });
     });
 
     describe('findOne', function() {
@@ -212,6 +232,16 @@ describe('basic-querying', function() {
                     should.exist(user);
                     done();
                 });
+            });
+        });
+
+        it('should work when find by or condition', function(done) {
+            var where = {or: [{role: 'lead', or: [{order: 1}, {order: 4}]}, {order: 3}]};
+            User.findOne({where: where},function(e, u) {
+                should.not.exist(e);
+                should.exist(u);
+                u.name.should.equal('Paul McCartney');
+                done();
             });
         });
 
