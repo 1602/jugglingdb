@@ -68,10 +68,10 @@
   ],
   "devDependencies": {
     "semicov": "*",
-    "should": "~1.2.2",
+    "should": "~3.0.1",
     "mocha": "~1.8.2"
   },
   "dependencies": {
-    "inflection": "~1.2.5"
+    "inflection": "~1.2.7"
   }
 }
