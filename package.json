@@ -72,6 +72,6 @@
     "mocha": "~1.8.2"
   },
   "dependencies": {
-    "inflection": "~1.2.7"
+    "inflection": "=1.2.7"
   }
 }
