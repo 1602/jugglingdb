@@ -9,12 +9,12 @@ describe('manipulation', function() {
         db = getSchema();
 
         Person = db.define('Person', {
-            name: String,
+            name: {type: String, name: 'full_name'},
             gender: String,
             married: Boolean,
             age: {type: Number, index: true},
             dob: Date,
-            createdAt: {type: Number, default: Date.now}
+            createdAt: {type: Number, default: Date.now, name: 'created_at'}
         });
 
         db.automigrate(done);
@@ -194,6 +194,16 @@ describe('manipulation', function() {
                         'throws': true
                     });
                 }).should.throw('Validation error');
+            });
+        });
+
+        it('should save with custom fields', function() {
+            Person.create({name: 'Anatoliy'}, function(err, p) {
+              should.exist(p.id);
+              should.exist(p.name);
+              should.not.exist(p['full_name']);
+              var storedObj = JSON.parse(db.adapter.cache.Person[p.id]);
+              should.exist(storedObj['full_name']);
             });
         });
 
