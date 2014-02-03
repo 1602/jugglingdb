@@ -141,8 +141,7 @@ function setup(done) {
     Building = db.define('Building');
     User = db.define('User', {
         name: String,
-        age: Number,
-        hasAssets: { type: Boolean, default: false }
+        age: Number
     });
     Passport = db.define('Passport', {
         number: String
@@ -169,8 +168,8 @@ function setup(done) {
             clearAndCreate(
                 User,
                 [
-                    {name: 'User A', age: 21, hasAssets: true},
-                    {name: 'User B', age: 22, hasAssets: true},
+                    {name: 'User A', age: 21},
+                    {name: 'User B', age: 22},
                     {name: 'User C', age: 23},
                     {name: 'User D', age: 24},
                     {name: 'User E', age: 25}
