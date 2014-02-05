@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/1602/jugglingdb.png?label=ready)](https://waffle.io/1602/jugglingdb)
 ## About [<img src="https://secure.travis-ci.org/1602/jugglingdb.png" />](http://travis-ci.org/#!/1602/jugglingdb)
 
 [JugglingDB(3)](http://jugglingdb.co) is cross-db ORM for nodejs, providing
