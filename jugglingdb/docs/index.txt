@@ -1,0 +1,33 @@
+# man pages
+jugglingdb(3)              index
+jugglingdb-changelog(3)    changelog.3
+jugglingdb-roadmap(3)      roadmap.3
+jugglingdb-validations(3)  validations.3
+jugglingdb-hooks(3)        hooks.3
+jugglingdb-schema(3)       schema.3
+jugglingdb-model(3)        model.3
+jugglingdb-adapter(3)      adapter.3
+
+# adapters github
+jugglingdb-nano            https://github.com/jugglingdb/nano-adapter
+jugglingdb-mysql           https://github.com/jugglingdb/mysql-adapter
+jugglingdb-firebird        https://github.com/jugglingdb/firebird-adapter
+jugglingdb-sqlite3         https://github.com/jugglingdb/sqlite3-adapter
+jugglingdb-postgres        https://github.com/jugglingdb/postgres-adapter
+jugglingdb-redis           https://github.com/jugglingdb/redis-adapter
+jugglingdb-mongodb         https://github.com/jugglingdb/mongodb-adapter
+
+# adapters npm
+nano-adapter-npm           https://npmjs.org/package/jugglingdb-nano
+mysql-adapter-npm          https://npmjs.org/package/jugglingdb-mysql
+firebird-adapter-npm       https://npmjs.org/package/jugglingdb-firebird
+sqlite3-adapter-npm        https://npmjs.org/package/jugglingdb-sqlite3
+postgres-adapter-npm       https://npmjs.org/package/jugglingdb-postgres
+redis-adapter-npm          https://npmjs.org/package/jugglingdb-redis
+mongodb-adapter-npm        https://npmjs.org/package/jugglingdb-mongodb
+
+# external resources
+github.com/jugglingdb      https://github.com/jugglingdb
+github.com/1602/jugglingdb https://github.com/1602/jugglingdb
+issues                     https://github.com/1602/jugglingdb/issues?state=open
+jsdoc.info/1602/jugglingdb http://jsdoc.info/1602/jugglingdb

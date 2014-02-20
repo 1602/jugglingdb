@@ -1,0 +1,66 @@
+<script>
+    var filename = location.href.match(/([^\/]+)?\.3.html(#.*?)?$/);
+    if (!filename) {
+        filename = [null, 'jugglingdb'];
+    }
+    var div = document.createElement('div');
+    div.innerHTML = 'Found a typo? ' +
+        linkTo('View', 'blob') +
+        ' and ' +
+        'edit' +
+        //linkTo('edit', 'edit') +
+        ' this file online at GitHub.';
+
+    document.getElementById('man').appendChild(div);
+
+    function linkTo(text, dir) {
+        return '<a href="https://github.com/1602/jugglingdb/' +
+            dir + '/master/docs/' + filename[1] + '.md">' + text + '</a>';
+    }
+
+    addLink('h3', '&para;');
+    addLink('h2', '&sect;');
+
+    function addLink(tag, sign) {
+        var els = document.getElementsByTagName(tag);
+        for (var i = 0; i < els.length; i += 1) {
+            var el = els[i];
+            el.innerHTML = '<a class="section-link" href="#' + el.id +
+                '">' + sign + '</a>' + el.innerHTML;
+            // el.style = 'margin-left: -1em';
+        }
+    }
+</script>
+<style>
+    .section-link {
+        visibility: hidden;
+    }
+
+    .mp h1, .mp h2, .mp h3 {
+        position: relative;
+        left: -1em;
+    }
+
+    a.section-link:hover,
+    a.section-link:link,
+    a.section-link {
+        color: #999;
+        text-decoration: none;
+    }
+
+    h1:hover .section-link,
+    h2:hover .section-link,
+    h3:hover .section-link {
+        visibility: visible;
+    }
+
+    .mp pre code {
+        color: #565758;
+    }
+
+    /*
+    pre {
+        background: #eee;
+    }
+    */
+</style>
