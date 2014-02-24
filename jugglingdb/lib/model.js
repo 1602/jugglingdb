@@ -507,66 +507,6 @@ AbstractClass.all = function all(params, cb) {
 };
 
 /**
- * Find all instances of Model, matched by query, unless specific columns are
-*  provided in the attributes param, which will return either an array of objects(if multiple columns provided)
-*  or an array of column data if only one provided.
- * make sure you have marked as `index: true` fields for filter or sort
- *
- * @param {Object} params (optional)
- *
- * - where: Object `{ key: val, key2: {gt: 'val2'}}`
-*  - attributes: Array '['id, 'name']
- * - include: String, Object or Array. See AbstractClass.include documentation.
- * - order: String
- * - limit: Number
- * - skip: Number
- *
- * @param {Function} callback (required) called with arguments:
- *
- * - err (null or Error)
- * - Array of instances
- */
-AbstractClass.select = function all(params, cb) {
-    if (stillConnecting(this.schema, this, arguments)) return;
-
-    if (arguments.length === 1) {
-        cb = params;
-        params = null;
-    }
-    if (params) {
-        if ('skip' in params) {
-            params.offset = params.skip;
-        } else if ('offset' in params) {
-            params.skip = params.offset;
-        }
-    }
-    var constr = this;
-    this.schema.adapter.select(this.modelName, params, function (err, data) {
-        if (data && data.forEach) {
-            if (!params || !params.onlyKeys) {
-                data.forEach(function (d, i) {
-                    var obj = new constr;
-                    if (params && !params.attributes) {
-                        obj._initProperties(d, false);
-                        if (params && params.include && params.collect) {
-                            data[i] = obj.__cachedRelations[params.collect];
-                        } else {
-                            data[i] = obj;
-                        }
-                    }
-                });
-            }
-            if (data && data.countBeforeLimit) {
-                data.countBeforeLimit = data.countBeforeLimit;
-            }
-            cb(err, data);
-        }
-        else
-            cb(err, []);
-    });
-};
-
-/**
  * Iterate through dataset and perform async method iterator. This method
  * designed to work with large datasets loading data by batches.
  *
