@@ -131,9 +131,12 @@ describe('basic-querying', function() {
                 done();
             });
         });
+    });
 
+    describe('select', function () {
+        
         it('should query collection and return given attribute as array', function(done) {
-            User.all({attributes: ['id']}, function(err, users) {
+            User.select({attributes: ['id']}, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 users.should.be.instanceOf(Array);
@@ -142,7 +145,7 @@ describe('basic-querying', function() {
         });
 
         it('should query collection and return given attributes', function(done) {
-            User.all({attributes: ['id', 'name']}, function(err, users) {
+            User.select({attributes: ['id', 'name']}, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 users.mail.should.be.null;
@@ -152,7 +155,6 @@ describe('basic-querying', function() {
                 done();
             });
         });
-
     });
 
     describe('count', function() {
