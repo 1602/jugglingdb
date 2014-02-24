@@ -215,6 +215,12 @@ Post.all(cb)
 Post.all({where: {userId: user.id}, order: 'id', limit: 10, skip: 20});
 // the same as prev
 user.posts(cb)
+// all posts
+Post.select(cb)
+// specific column from Post(returns array of data, ex. [1,2,3,4])
+Post.select({where: {userId: user.id}, attributes: ['id']}, cb)
+// specific columns from Post(returns array of objects, ex [{id: 1, name: 'Todd'}, {id: 2, name: 'Bill'})
+Post.select({where: {userId: user.id}, attributes: ['id' , 'name']}, cb)
 // get one latest post
 Post.findOne({where: {published: true}, order: 'date DESC'}, cb);
 // same as new Post({userId: user.id});
