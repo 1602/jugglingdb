@@ -131,7 +131,30 @@ describe('basic-querying', function() {
                 done();
             });
         });
+    });
 
+    describe('select', function () {
+        
+        it('should query collection and return given attribute as array', function(done) {
+            User.select({attributes: ['id']}, function(err, users) {
+                should.exists(users);
+                should.not.exists(err);
+                users.should.be.instanceOf(Array);
+                done();
+            });
+        });
+
+        it('should query collection and return given attributes', function(done) {
+            User.select({attributes: ['id', 'name']}, function(err, users) {
+                should.exists(users);
+                should.not.exists(err);
+                should.not.exists(users.mail);
+                should.not.exists(users.order);
+                should.not.exists(users.id);
+                should.not.exists(users.name);
+                done();
+            });
+        });
     });
 
     describe('count', function() {
