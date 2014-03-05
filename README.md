@@ -91,10 +91,17 @@ check following list of available adapters
 
     <!-- SQLite -->
     <tr>
-      <td><a href="http://www.sqlite.org/"><img width="16" src="https://github.com/1602/jugglingdb/raw/master/media/sqlite.png" style="vertical-align:middle"" alt="SQLite" /></a> SQLite</td>
+      <td><a href="http://www.sqlite.org/"><img width="16" src="https://github.com/1602/jugglingdb/raw/master/media/sqlite.png" style="vertical-align:middle" alt="SQLite" /></a> SQLite</td>
       <td><a href="https://github.com/jugglingdb/sqlite3-adapter">jugglingdb/sqlite3-adapter</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
       <td><a href="https://travis-ci.org/jugglingdb/sqlite3-adapter"><img src="https://travis-ci.org/jugglingdb/sqlite3-adapter.png?branch=master" alt="Build Status" /></a></td>
+    </tr>
+    <!-- ArangoDB -->
+    <tr>
+      <td><a href="http://www.arangodb.org/"><img src="http://www.arangodb.org/wp-content/themes/triagens/images/favicon.ico" style="vertical-align:middle" alt="ArangoDB" /></a> ArangoDB</td>
+      <td><a href="https://github.com/m0ppers/jugglingdb-arango">jugglingdb-arango</a></td>
+      <td><a href="https://github.com/m0ppers">Andreas Streichardt</a></td>
+      <td><a href="https://travis-ci.org/m0ppers/jugglingdb-arango"><img src="https://travis-ci.org/m0ppers/jugglingdb-arango.png?branch=master" alt="Build Status" /></a></td>
     </tr>
     <tr>
       <td>WebService</td>
