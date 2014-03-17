@@ -60,4 +60,14 @@ describe('list', function() {
         });
 
     });
+
+    describe("#save", function () {
+
+        it("should save itself to it's parent's parent", function () {
+            var p = new Page({widgets: [{foo: 'bar'}, {foo: 'baz'}]});
+            p.widgets.find('bar', 'foo').save();
+        });
+
+    });
+
 });
