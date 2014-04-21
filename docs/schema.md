@@ -66,7 +66,7 @@ forwarded to adapter if adapter have ability to connect/disconnect.
 ### Model definition
 
 To define model schema have single method `schema.define`. It accepts three
-argumets:
+arguments:
 
 * **model name**:
   String name in camel-case with first upper-case letter. This name will be used
@@ -113,7 +113,7 @@ For example, to store `firstName` as `first_name`:
       lastName: { type: String, name: 'last_name' }
     });
 
-### DB structure syncronization
+### DB structure synchronization
 
 Schema instance have two methods for updating db structure: automigrate and
 autoupdate.
