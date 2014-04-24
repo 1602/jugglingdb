@@ -106,7 +106,8 @@ describe('manipulation', function() {
 
                     should.exist(persons);
                     persons.should.have.lengthOf(batch.length);
-                    persons[0].errors.should.be.false;
+                    should.not.exist(persons[0].errors);
+                    should.exist(persons[2].errors);
                     done();
                 }).should.be.instanceOf(Array);
             }).should.have.lengthOf(3);
@@ -173,7 +174,7 @@ describe('manipulation', function() {
                 return false;
             };
             p.isValid().should.be.false;
-            
+
             p.save({ validate: false }, function (err) {
                 should.not.exist(err);
                 p.isNewRecord().should.be.false;
@@ -234,7 +235,7 @@ describe('manipulation', function() {
     describe('destroy', function() {
 
         it('should destroy record', function(done) {
-            Person.create(function(err, p){ 
+            Person.create(function(err, p){
                 p.destroy(function(err) {
                     should.not.exist(err);
                     Person.exists(p.id, function(err, ex) {
