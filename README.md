@@ -1,5 +1,5 @@
 [![Stories in Ready](https://badge.waffle.io/1602/jugglingdb.png?label=ready)](https://waffle.io/1602/jugglingdb)
-## About [<img src="https://secure.travis-ci.org/1602/jugglingdb.png" />](http://travis-ci.org/#!/1602/jugglingdb)
+## About [<img src="https://api.travis-ci.org/1602/jugglingdb.svg" />](http://travis-ci.org/#!/1602/jugglingdb)
 
 [JugglingDB(3)](http://jugglingdb.co) is cross-db ORM for nodejs, providing
 **common interface** to access most popular database formats.  Currently
@@ -46,7 +46,7 @@ check following list of available adapters
       <td><a href="http://www.mongodb.org"><img src="http://mongodb.ru/favicon.ico" alt="MongoDB" /></a> MongoDB</td>
       <td><a href="https://github.com/jugglingdb/mongodb-adapter">jugglingdb/mongodb-adapter</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://travis-ci.org/jugglingdb/mongodb-adapter"><img src="https://travis-ci.org/jugglingdb/mongodb-adapter.png?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://travis-ci.org/jugglingdb/mongodb-adapter"><img src="https://travis-ci.org/jugglingdb/mongodb-adapter.svg?branch=master" alt="Build Status" /></a></td>
     </tr>
 
     <!-- MySQL -->
@@ -54,7 +54,7 @@ check following list of available adapters
       <td><a href="http://www.mysql.com/"><img src="https://github.com/1602/jugglingdb/raw/master/media/mysql.ico" style="vertical-align:middle"" alt="MySQL" /></a> MySQL</td>
       <td><a href="https://github.com/jugglingdb/mysql-adapter">jugglingdb/mysql</a></td>
       <td><a href="https://github.com/dgsan">dgsan</a></td>
-      <td><a href="https://travis-ci.org/jugglingdb/mysql-adapter"><img src="https://travis-ci.org/jugglingdb/mysql-adapter.png?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://travis-ci.org/jugglingdb/mysql-adapter"><img src="https://travis-ci.org/jugglingdb/mysql-adapter.svg?branch=master" alt="Build Status" /></a></td>
     </tr>
 
     <!-- CouchDB / nano -->
@@ -62,7 +62,7 @@ check following list of available adapters
       <td><a href="http://couchdb.apache.org/"><img width="16" src="http://couchdb.apache.org/favicon.ico" style="vertical-align:middle"" alt="CouchDB" /></a> CouchDB / nano</td>
       <td><a href="https://github.com/jugglingdb/nano-adapter">jugglingdb/nano-adapter</a></td>
       <td><a href="https://github.com/nrw">Nicholas Westlake</a></td>
-      <td><a href="https://travis-ci.org/jugglingdb/nano-adapter"><img src="https://travis-ci.org/jugglingdb/nano-adapter.png?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://travis-ci.org/jugglingdb/nano-adapter"><img src="https://travis-ci.org/jugglingdb/nano-adapter.svg?branch=master" alt="Build Status" /></a></td>
     </tr>
 
     <!-- PostgreSQL -->
@@ -70,7 +70,7 @@ check following list of available adapters
       <td><a href="http://www.postgresql.org/"><img src="http://www.postgresql.org/favicon.ico" style="vertical-align:middle"" alt="PostgreSQL" /></a> PostgreSQL</td>
       <td><a href="https://github.com/jugglingdb/postgres-adapter">jugglingdb/postgres-adapter</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://travis-ci.org/jugglingdb/postgres-adapter"><img src="https://travis-ci.org/jugglingdb/postgres-adapter.png?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://travis-ci.org/jugglingdb/postgres-adapter"><img src="https://travis-ci.org/jugglingdb/postgres-adapter.svg?branch=master" alt="Build Status" /></a></td>
     </tr>
 
     <!-- Redis -->
@@ -78,7 +78,7 @@ check following list of available adapters
       <td><a href="http://redis.io/"><img src="http://redis.io/images/favicon.png" alt="Redis" /></a> Redis</td>
       <td><a href="https://github.com/jugglingdb/redis-adapter">jugglingdb-redis</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://travis-ci.org/jugglingdb/redis-adapter"><img src="https://travis-ci.org/jugglingdb/redis-adapter.png?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://travis-ci.org/jugglingdb/redis-adapter"><img src="https://travis-ci.org/jugglingdb/redis-adapter.svg?branch=master" alt="Build Status" /></a></td>
     </tr>
 
     <!-- RethinkDB -->
@@ -86,7 +86,7 @@ check following list of available adapters
       <td><a href="http://www.rethinkdb.com/"><img src="http://www.rethinkdb.com/favicon.ico" alt="RethinkDB" width="16" height="16" /></a> RethinkDB</td>
       <td><a href="https://github.com/fuwaneko/jugglingdb-rethink">jugglingdb-rethink</a></td>
       <td><a href="https://github.com/fuwaneko">Tewi Inaba</a></td>
-      <td><a href="https://travis-ci.org/fuwaneko/jugglingdb-rethink"><img src="https://travis-ci.org/fuwaneko/jugglingdb-rethink.png?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://travis-ci.org/fuwaneko/jugglingdb-rethink"><img src="https://travis-ci.org/fuwaneko/jugglingdb-rethink.svg?branch=master" alt="Build Status" /></a></td>
     </tr>
 
     <!-- SQLite -->
@@ -94,14 +94,14 @@ check following list of available adapters
       <td><a href="http://www.sqlite.org/"><img width="16" src="https://github.com/1602/jugglingdb/raw/master/media/sqlite.png" style="vertical-align:middle" alt="SQLite" /></a> SQLite</td>
       <td><a href="https://github.com/jugglingdb/sqlite3-adapter">jugglingdb/sqlite3-adapter</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://travis-ci.org/jugglingdb/sqlite3-adapter"><img src="https://travis-ci.org/jugglingdb/sqlite3-adapter.png?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://travis-ci.org/jugglingdb/sqlite3-adapter"><img src="https://travis-ci.org/jugglingdb/sqlite3-adapter.svg?branch=master" alt="Build Status" /></a></td>
     </tr>
     <!-- ArangoDB -->
     <tr>
       <td><a href="http://www.arangodb.org/"><img src="http://www.arangodb.org/wp-content/themes/triagens/images/favicon.ico" style="vertical-align:middle" alt="ArangoDB" /></a> ArangoDB</td>
       <td><a href="https://github.com/m0ppers/jugglingdb-arango">jugglingdb-arango</a></td>
       <td><a href="https://github.com/m0ppers">Andreas Streichardt</a></td>
-      <td><a href="https://travis-ci.org/m0ppers/jugglingdb-arango"><img src="https://travis-ci.org/m0ppers/jugglingdb-arango.png?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://travis-ci.org/m0ppers/jugglingdb-arango"><img src="https://travis-ci.org/m0ppers/jugglingdb-arango.svg?branch=master" alt="Build Status" /></a></td>
     </tr>
     <tr>
       <td>WebService</td>
