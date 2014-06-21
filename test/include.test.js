@@ -1,8 +1,10 @@
 // This test written in mocha+should.js
 var should = require('./init.js');
 
-var db, User, Post, Passport, City, Street, Building;
+var db, User, Post, Passport, City, Street, Building, Asset;
 var nbSchemaRequests = 0;
+
+var createdUsers = [];
 
 describe('include', function() {
 
@@ -34,6 +36,27 @@ describe('include', function() {
                 u.__cachedRelations.should.have.property('posts');
                 u.__cachedRelations.posts.forEach(function(p) {
                     p.userId.should.equal(u.id);
+                });
+            });
+            done();
+        });
+    });
+
+    it('should fetch hasAndBelongsToMany relation', function(done) {
+        User.all({include: ['assets']}, function(err, users) {
+            should.not.exist(err);
+            should.exist(users);
+            users.length.should.be.ok;
+            users.forEach(function(user) {
+                user.__cachedRelations.should.have.property('assets');
+                if (user.id === createdUsers[0].id) {
+                    user.__cachedRelations.assets.should.have.length(3);
+                }
+                if (user.id === createdUsers[1].id) {
+                    user.__cachedRelations.assets.should.have.length(1);
+                }
+                user.__cachedRelations.assets.forEach(function(a) {
+                    a.url.should.startWith('http://placekitten.com');
                 });
             });
             done();
@@ -109,7 +132,6 @@ describe('include', function() {
             done();
         });
     });
-
 });
 
 function setup(done) {
@@ -127,16 +149,20 @@ function setup(done) {
     Post = db.define('Post', {
         title: String
     });
+    Asset = db.define('Asset', {
+        url: String
+    });
 
     Passport.belongsTo('owner', {model: User});
     User.hasMany('passports', {foreignKey: 'ownerId'});
     User.hasMany('posts', {foreignKey: 'userId'});
     Post.belongsTo('author', {model: User, foreignKey: 'userId'});
+    User.hasAndBelongsToMany('assets');
 
     db.automigrate(function() {
-        var createdUsers = [];
         var createdPassports = [];
         var createdPosts = [];
+        var createdAssets = [];
         createUsers();
         function createUsers() {
             clearAndCreate(
@@ -182,6 +208,28 @@ function setup(done) {
                 ],
                 function(items) {
                     createdPosts = items;
+                    createAssets();
+                }
+            );
+        }
+
+        function createAssets() {
+            clearAndCreateScoped(
+                'assets',
+                [
+                    {url: 'http://placekitten.com/200/200'},
+                    {url: 'http://placekitten.com/300/300'},
+                    {url: 'http://placekitten.com/400/400'},
+                    {url: 'http://placekitten.com/500/500'}
+                ],
+                [
+                    createdUsers[0],
+                    createdUsers[0],
+                    createdUsers[0],
+                    createdUsers[1]
+                ],
+                function(items) {
+                    createdAssets = items;
                     done();
                 }
             );
@@ -192,6 +240,7 @@ function setup(done) {
 
 function clearAndCreate(model, data, callback) {
     var createdItems = [];
+
     model.destroyAll(function () {
         nextItem(null, null);
     });
@@ -207,5 +256,45 @@ function clearAndCreate(model, data, callback) {
         }
         model.create(data[itemIndex], nextItem);
         itemIndex++;
+    }
+}
+
+function clearAndCreateScoped(modelName, data, scope, callback) {
+    var createdItems = [];
+
+    var clearedItemIndex = 0;
+    if (scope && scope.length) {
+
+        scope.forEach(function (instance) {
+            instance[modelName].destroyAll(function (err) {
+                clearedItemIndex++;
+                if (clearedItemIndex >= scope.length) {
+                    createItems();
+                }
+            });
+        });
+
+    } else {
+
+        callback(createdItems);
+    }
+
+    var itemIndex = 0;
+    function nextItem(err, lastItem) {
+        itemIndex++;
+
+        if (lastItem !== null) {
+            createdItems.push(lastItem);
+        }
+        if (itemIndex >= data.length) {
+            callback(createdItems);
+            return;
+        }
+    }
+
+    function createItems() {
+        scope.forEach(function (instance, instanceIndex) {
+            instance[modelName].create(data[instanceIndex], nextItem);
+        });
     }
 }
