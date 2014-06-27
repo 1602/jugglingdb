@@ -122,6 +122,14 @@ check following list of available adapters
       maintainer</td>
       <td>n/a</td>
     </tr>
+    
+    <!-- DynamoDB -->
+    <tr>
+      <td><a href="http://en.wikipedia.org/wiki/Amazon_DynamoDB"><img src="https://github.com/tmpaul/jugglingdb-dynamodb" style="vertical-align:middle" alt="DynamoDB" /></a> MySQL</td>
+      <td><a href="https://github.com/tmpaul/jugglingdb-dynamodb">tmpaul/jugglingdb-dynamodb</a></td>
+      <td><a href="https://github.com/tmpaul">tmpaul</a></td>
+      <td><a href="https://travis-ci.org/tmpaul/jugglingdb-dynamodb"><img src="https://travis-ci.org/tmpaul/jugglingdb-dynamodb.svg?branch=master" alt="Build Status" /></a></td>
+    </tr>
 
   </tbody>
 </table>
