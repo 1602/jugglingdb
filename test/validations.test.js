@@ -41,6 +41,7 @@ describe('validations', function() {
     });
 
     beforeEach(function(done) {
+        User.beforeValidate = null
         User.destroyAll(function() {
             delete User._validations;
             done();
@@ -50,6 +51,51 @@ describe('validations', function() {
     after(function() {
         db.disconnect();
     });
+
+    describe('hooks', function() {
+
+        it('should trigger beforeValidate with data (has validations)', function(done) {
+
+            User.validatesPresenceOf('name');
+            User.beforeValidate = function(next, data) {
+                should.exist(data)
+                next(new Error('Fail'));
+            };
+
+            var user = new User;
+            user.isValid(function(valid) {
+                // when validate hook fails, valid should be false
+                valid.should.equal(false)
+                done()
+            }, { name: 'test' })
+        });
+
+        it('should trigger beforeValidate with data (no validations set)', function(done) {
+            User.beforeValidate = function(next, data) {
+                should.exist(data)
+                data.name.should.equal('test')
+                next();
+            };
+            var user = new User;
+            user.isValid(function(valid) {
+                valid.should.equal(true)
+                done()
+            }, { name: 'test' })
+        });
+
+        it('should allow flow break by pass error to callback', function(done) {
+
+            User.beforeValidate = function(next) {
+                next(new Error('failed'));
+            };
+            User.create(function(err, model) {
+                should.exist(err);
+                should.exist(model);
+                done()
+            })
+        })
+
+    })
 
     describe('commons', function() {
 
@@ -215,7 +261,7 @@ describe('validations', function() {
             User.validatesLengthOf('gender', {max: 6});
             var u = new User(getValidAttributes());
             u.isValid(function(valid) {
-                u.errors.should.be.not.ok;
+                should.not.exist(u.errors);
                 valid.should.be.true;
                 u.gender = 'undefined';
                 u.isValid(function(valid) {
@@ -234,7 +280,7 @@ describe('validations', function() {
                 valid.should.be.false;
                 u.bio = 'undefined';
                 u.isValid(function(valid) {
-                    u.errors.should.be.not.ok;
+                    should.not.exist(u.errors);
                     valid.should.be.true;
                     done();
                 });
@@ -245,11 +291,11 @@ describe('validations', function() {
             User.validatesLengthOf('countryCode', {is: 2});
             var u = new User(getValidAttributes());
             u.isValid(function(valid) {
-                u.errors.should.be.not.ok;
+                should.not.exist(u.errors);
                 valid.should.be.true;
                 u.countryCode = 'RUS';
                 u.isValid(function(valid) {
-                    u.errors.should.be.ok;
+                    should.exist(u.errors);
                     valid.should.be.false;
                     done();
                 });
