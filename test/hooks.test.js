@@ -14,13 +14,30 @@ describe('hooks', function() {
         db = getSchema();
 
         User = db.define('User', {
-            email: {type: String, index: true},
+            email: {type: String, index: true, limit: 100},
             name: String,
             password: String,
             state: String
         });
 
         db.automigrate(done);
+    });
+
+    describe('behavior', function() {
+
+        it('should allow to break flow in case of error', function(done) {
+
+            var Model = db.define('Model');
+            Model.beforeCreate = function(next, data) {
+                next(new Error('Fail'));
+            };
+
+            Model.create(function(err, model) {
+                should.not.exist(model);
+                should.exist(err);
+                done();
+            });
+        });
     });
 
     describe('initialize', function() {

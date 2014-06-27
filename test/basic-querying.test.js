@@ -8,10 +8,10 @@ describe('basic-querying', function() {
         db = getSchema();
 
         User = db.define('User', {
-            name: {type: String, sort: true},
-            email: {type: String, index: true},
-            role: {type: String, index: true},
-            order: {type: Number, index: true, sort: true}
+            name: {type: String, sort: true, limit: 100},
+            email: {type: String, index: true, limit: 100},
+            role: {type: String, index: true, limit: 100},
+            order: {type: Number, index: true, sort: true, limit: 100}
         });
 
         db.automigrate(done);

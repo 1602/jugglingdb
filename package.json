@@ -1,7 +1,7 @@
 {
   "name": "jugglingdb",
   "description": "ORM for every database: redis, mysql, neo4j, mongodb, couchdb, postgres, sqlite",
-  "version": "0.2.0-34",
+  "version": "0.2.13",
   "author": "Anatoliy Chakkaev <rpm1602@gmail.com>",
   "contributors": [
     {
@@ -68,10 +68,10 @@
   ],
   "devDependencies": {
     "semicov": "*",
-    "should": "~1.2.2",
+    "should": "~3.0.1",
     "mocha": "~1.8.2"
   },
   "dependencies": {
-    "inflection": "~1.2.5"
+    "inflection": "=1.2.7"
   }
 }

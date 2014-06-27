@@ -9,12 +9,12 @@ describe('manipulation', function() {
         db = getSchema();
 
         Person = db.define('Person', {
-            name: String,
+            name: {type: String, name: 'full_name'},
             gender: String,
             married: Boolean,
             age: {type: Number, index: true},
             dob: Date,
-            createdAt: {type: Number, default: Date.now}
+            createdAt: {type: Number, default: Date.now, name: 'created_at'}
         });
 
         db.automigrate(done);
@@ -106,7 +106,8 @@ describe('manipulation', function() {
 
                     should.exist(persons);
                     persons.should.have.lengthOf(batch.length);
-                    persons[0].errors.should.be.false;
+                    should.not.exist(persons[0].errors);
+                    should.exist(persons[2].errors);
                     done();
                 }).should.be.instanceOf(Array);
             }).should.have.lengthOf(3);
@@ -162,6 +163,26 @@ describe('manipulation', function() {
             });
         });
 
+        it('should save invalid new object (skipping validation)', function (done) {
+            var p = new Person();
+            p.isNewRecord().should.be.true;
+
+            p.isValid = function(done) {
+                if (done) {
+                    process.nextTick(done);
+                }
+                return false;
+            };
+            p.isValid().should.be.false;
+
+            p.save({ validate: false }, function (err) {
+                should.not.exist(err);
+                p.isNewRecord().should.be.false;
+                p.isValid().should.be.false;
+                done();
+            });
+        });
+
         it('should save throw error on validation', function() {
             Person.findOne(function(err, p) {
                 should.not.exist(err);
@@ -174,6 +195,16 @@ describe('manipulation', function() {
                         'throws': true
                     });
                 }).should.throw('Validation error');
+            });
+        });
+
+        it('should save with custom fields', function() {
+            Person.create({name: 'Anatoliy'}, function(err, p) {
+              should.exist(p.id);
+              should.exist(p.name);
+              should.not.exist(p['full_name']);
+              var storedObj = JSON.parse(db.adapter.cache.Person[p.id]);
+              should.exist(storedObj['full_name']);
             });
         });
 
@@ -204,7 +235,7 @@ describe('manipulation', function() {
     describe('destroy', function() {
 
         it('should destroy record', function(done) {
-            Person.create(function(err, p){ 
+            Person.create(function(err, p){
                 p.destroy(function(err) {
                     should.not.exist(err);
                     Person.exists(p.id, function(err, ex) {
@@ -230,6 +261,51 @@ describe('manipulation', function() {
 
         // TODO: implement destroy with filtered set
         it('should destroy filtered set of records');
+    });
+
+    describe('iterate', function() {
+
+        before(function(next) {
+            var ps = [];
+            for (var i = 0; i < 507; i += 1) {
+                ps.push({name: 'Person ' + i});
+            }
+            Person.create(ps, next);
+        });
+
+        it('should iterate through the batch of objects', function(done) {
+            var num = 0;
+            Person.iterate({batchSize: 100}, function(person, next, i) {
+                num += 1;
+                next();
+            }, function(err) {
+                num.should.equal(507);
+                done();
+            });
+        });
+
+        it('should take limit into account', function(done) {
+            var num = 0;
+            Person.iterate({batchSize: 20, limit: 21}, function(person, next, i) {
+                num += 1;
+                next();
+            }, function(err) {
+                num.should.equal(21);
+                done();
+            });
+        });
+
+        it('should process in concurrent mode', function(done) {
+            var num = 0, time = Date.now();
+            Person.iterate({batchSize: 10, limit: 21, concurrent: true}, function(person, next, i) {
+                num += 1;
+                setTimeout(next, 20);
+            }, function(err) {
+                num.should.equal(21);
+                should.ok(Date.now() - time < 100, 'should work in less than 100ms');
+                done();
+            });
+        });
     });
 
     describe('initialize', function() {

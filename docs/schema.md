@@ -66,7 +66,7 @@ forwarded to adapter if adapter have ability to connect/disconnect.
 ### Model definition
 
 To define model schema have single method `schema.define`. It accepts three
-argumets:
+arguments:
 
 * **model name**:
   String name in camel-case with first upper-case letter. This name will be used
@@ -77,7 +77,7 @@ argumets:
   (String, Number, Date, Boolean), or object with {type: String|Number|...,
   index: true|false} format.
 * **settings**:
-  Object with model-wide settings such as `tableName` or so.
+  Object with model-wide settings such as `table` or so.
 
 Examples of model definition:
 
@@ -98,10 +98,22 @@ Examples of model definition:
         },
         activated: { type: Boolean, default: false }
     }, {
-        tableName: 'users'
+        table: 'users'
     });
 
-### DB structure syncronization
+#### Custom database column/field names
+
+You can store the data using a different field/column name by specifying the
+`name` property in the field definition.
+
+For example, to store `firstName` as `first_name`:
+
+    var User = schema.define('User', {
+      firstName: { type: String, name: 'first_name' },
+      lastName: { type: String, name: 'last_name' }
+    });
+
+### DB structure synchronization
 
 Schema instance have two methods for updating db structure: automigrate and
 autoupdate.

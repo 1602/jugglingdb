@@ -6,11 +6,13 @@ var ValidationError = require('../lib/validations.js').ValidationError;
 
 function getValidAttributes() {
     return {
-        name: 'Anatoliy',
+        name: 'Maria',
         email: 'email@example.com',
         state: '',
+        bio: 'haha',
         age: 26,
-        gender: 'male',
+        countryCode: 'RU',
+        gender: 'female',
         createdByAdmin: false,
         createdByScript: true
     };
@@ -26,8 +28,10 @@ describe('validations', function() {
             password: String,
             state: String,
             age: Number,
+            bio: String,
             gender: String,
             domain: String,
+            countryCode: String,
             pendingPeriod: Number,
             createdByAdmin: Boolean,
             createdByScript: Boolean,
@@ -37,6 +41,7 @@ describe('validations', function() {
     });
 
     beforeEach(function(done) {
+        User.beforeValidate = null
         User.destroyAll(function() {
             delete User._validations;
             done();
@@ -46,6 +51,51 @@ describe('validations', function() {
     after(function() {
         db.disconnect();
     });
+
+    describe('hooks', function() {
+
+        it('should trigger beforeValidate with data (has validations)', function(done) {
+
+            User.validatesPresenceOf('name');
+            User.beforeValidate = function(next, data) {
+                should.exist(data)
+                next(new Error('Fail'));
+            };
+
+            var user = new User;
+            user.isValid(function(valid) {
+                // when validate hook fails, valid should be false
+                valid.should.equal(false)
+                done()
+            }, { name: 'test' })
+        });
+
+        it('should trigger beforeValidate with data (no validations set)', function(done) {
+            User.beforeValidate = function(next, data) {
+                should.exist(data)
+                data.name.should.equal('test')
+                next();
+            };
+            var user = new User;
+            user.isValid(function(valid) {
+                valid.should.equal(true)
+                done()
+            }, { name: 'test' })
+        });
+
+        it('should allow flow break by pass error to callback', function(done) {
+
+            User.beforeValidate = function(next) {
+                next(new Error('failed'));
+            };
+            User.create(function(err, model) {
+                should.exist(err);
+                should.exist(model);
+                done()
+            })
+        })
+
+    })
 
     describe('commons', function() {
 
@@ -156,6 +206,21 @@ describe('validations', function() {
             })).should.be.false;
         });
 
+        it('should correctly handle null values', function(done) {
+            User.validatesUniquenessOf('email', {allowNull: true});
+            var u = new User({email: null});
+            Boolean(u.isValid(function(valid) {
+                valid.should.be.true;
+                u.save(function() {
+                    var u2 = new User({email: null});
+                    u2.isValid(function(valid) {
+                        valid.should.be.true;
+                        done();
+                    });
+                });
+            })).should.be.false;
+        });
+
         it('should handle same object modification', function(done) {
             User.validatesUniquenessOf('email');
             var u = new User({email: 'hey'});
@@ -192,7 +257,50 @@ describe('validations', function() {
     });
 
     describe('length', function() {
-        it('should validate length');
+        it('should validate max length', function(done) {
+            User.validatesLengthOf('gender', {max: 6});
+            var u = new User(getValidAttributes());
+            u.isValid(function(valid) {
+                should.not.exist(u.errors);
+                valid.should.be.true;
+                u.gender = 'undefined';
+                u.isValid(function(valid) {
+                    u.errors.should.be.ok;
+                    valid.should.be.false;
+                    done();
+                });
+            });
+        });
+
+        it('should validate min length', function(done) {
+            User.validatesLengthOf('bio', {min: 3});
+            var u = new User({bio: 'ha'});
+            u.isValid(function(valid) {
+                u.errors.should.be.ok;
+                valid.should.be.false;
+                u.bio = 'undefined';
+                u.isValid(function(valid) {
+                    should.not.exist(u.errors);
+                    valid.should.be.true;
+                    done();
+                });
+            });
+        });
+
+        it('should validate exact length', function(done) {
+            User.validatesLengthOf('countryCode', {is: 2});
+            var u = new User(getValidAttributes());
+            u.isValid(function(valid) {
+                should.not.exist(u.errors);
+                valid.should.be.true;
+                u.countryCode = 'RUS';
+                u.isValid(function(valid) {
+                    should.exist(u.errors);
+                    valid.should.be.false;
+                    done();
+                });
+            });
+        });
     });
 
     describe('custom', function() {

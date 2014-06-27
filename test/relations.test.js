@@ -7,7 +7,7 @@ describe('relations', function() {
     before(function(done) {
         db = getSchema();
         Book = db.define('Book', {name: String});
-        Chapter = db.define('Chapter', {name: {type: String, index: true}});
+        Chapter = db.define('Chapter', {name: {type: String, index: true, limit: 20}});
         Author = db.define('Author', {name: String});
         Reader = db.define('Reader', {name: String});
 
@@ -116,6 +116,42 @@ describe('relations', function() {
                     done();
                 });
             }
+        });
+
+        it('should destroy scoped record', function(done) {
+            Book.create(function(err, book) {
+                book.chapters.create({name: 'a'}, function(err, ch) {
+                    book.chapters.destroy(ch.id, function(err) {
+                        should.not.exist(err);
+                        book.chapters.find(ch.id, function(err, ch) {
+                            should.exist(err);
+                            err.message.should.equal('Not found');
+                            should.not.exist(ch);
+                            done();
+                        });
+                    });
+                });
+            });
+        });
+
+        it('should not allow destroy not scoped records', function(done) {
+            Book.create(function(err, book1) {
+                book1.chapters.create({name: 'a'}, function(err, ch) {
+                    var id = ch.id
+                    Book.create(function(err, book2) {
+                        book2.chapters.destroy(ch.id, function(err) {
+                            should.exist(err);
+                            err.message.should.equal('Permission denied');
+                            book1.chapters.find(ch.id, function(err, ch) {
+                                should.not.exist(err);
+                                should.exist(ch);
+                                ch.id.should.equal(id);
+                                done();
+                            });
+                        });
+                    });
+                });
+            });
         });
     });
 
@@ -236,6 +272,7 @@ describe('relations', function() {
                 article.tags(function(e, tags) {
                     var len = tags.length;
                     tags.should.not.be.empty;
+                    should.exist(tags[0]);
                     article.tags.remove(tags[0], function(e) {
                         should.not.exist(e);
                         article.tags(true, function(e, tags) {
