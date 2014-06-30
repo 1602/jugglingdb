@@ -148,10 +148,11 @@ describe('basic-querying', function() {
             User.select({attributes: ['id', 'name']}, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
-                should.not.exists(users.mail);
-                should.not.exists(users.order);
-                should.not.exists(users.id);
-                should.not.exists(users.name);
+                should.not.exists(users.pop().mail);
+                console.log(users);
+                should.not.exists(users.pop().order);
+                should.exist(users.pop().name);
+                should.exist(users.pop().id);
                 done();
             });
         });
