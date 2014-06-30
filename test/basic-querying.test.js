@@ -13,7 +13,7 @@ describe('basic-querying', function() {
             role: {type: String, index: true, limit: 100},
             order: {type: Number, index: true, sort: true, limit: 100}
         });
-
+    
         db.automigrate(done);
 
     });
@@ -149,7 +149,6 @@ describe('basic-querying', function() {
                 should.exists(users);
                 should.not.exists(err);
                 should.not.exists(users.pop().mail);
-                console.log(users);
                 should.not.exists(users.pop().order);
                 should.exist(users.pop().name);
                 should.exist(users.pop().id);
