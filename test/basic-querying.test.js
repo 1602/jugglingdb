@@ -135,23 +135,35 @@ describe('basic-querying', function() {
 
     describe('select', function () {
         
-        it('should query collection and return given attribute as array', function(done) {
+        it('should query collection and return given attribute as  an array of Objects', function(done) {
             User.select({attributes: ['id']}, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 users.should.be.instanceOf(Array);
+                users.pop().should.be.instanceOf(Object).and.have.property('id');
+                done();
+            });
+        });
+        
+        it('should query collection and return given attribute as an array of Numbers', function(done) {
+            User.select({attributes: 'id'}, function(err, users) {
+                should.exists(users);
+                should.not.exists(err);
+                console.log(users);
+                users.should.be.instanceOf(Array);
+                users.pop().should.be.a.Number;
                 done();
             });
         });
 
-        it('should query collection and return given attributes', function(done) {
+        it('should query collection and return given attributes as an array of objects', function(done) {
             User.select({attributes: ['id', 'name']}, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 should.not.exists(users.pop().mail);
                 should.not.exists(users.pop().order);
-                should.exist(users.pop().name);
-                should.exist(users.pop().id);
+                users.pop().should.be.instanceOf(Object).and.have.property('id');
+                users.pop().should.be.instanceOf(Object).and.have.property('name');
                 done();
             });
         });
