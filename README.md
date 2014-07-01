@@ -1,5 +1,5 @@
 [![Stories in Ready](https://badge.waffle.io/1602/jugglingdb.png?label=ready)](https://waffle.io/1602/jugglingdb)
-## About [<img src="https://api.travis-ci.org/1602/jugglingdb.svg" />](http://travis-ci.org/#!/1602/jugglingdb)
+## About [<img src="https://travis-ci.org/jvskelton/jugglingdb.png?branch=Develop" />](http://travis-ci.org/#!/jvskelton/jugglingdb)
 
 [JugglingDB(3)](http://jugglingdb.co) is cross-db ORM for nodejs, providing
 **common interface** to access most popular database formats.  Currently
