@@ -133,10 +133,10 @@ describe('basic-querying', function() {
         });
     });
 
-    describe('select', function () {
+    describe('#all.attributes', function () {
         
         it('should query collection and return given attribute as  an array of Objects', function(done) {
-            User.select({attributes: ['id']}, function(err, users) {
+            User.all({attributes: ['id']}, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 users.should.be.instanceOf(Array);
@@ -146,7 +146,7 @@ describe('basic-querying', function() {
         });
         
         it('should query collection and return given attribute as an array of Numbers', function(done) {
-            User.select({attributes: 'id'}, function(err, users) {
+            User.all({attributes: 'id'}, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 users.should.be.instanceOf(Array);
@@ -156,7 +156,7 @@ describe('basic-querying', function() {
         });
 
         it('should query collection and return given attributes as an array of objects', function(done) {
-            User.select({attributes: ['id', 'name']}, function(err, users) {
+            User.all({attributes: ['id', 'name']}, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 should.not.exists(users.pop().mail);
