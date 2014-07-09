@@ -132,6 +132,83 @@ describe('include', function() {
             done();
         });
     });
+    
+    /*
+     * Test public async api synchronous return.
+     * E.g. user.posts(c) should return a list of posts when included.
+     */
+    describe('async getter', function() {
+
+        // Empty callback to pass to async getters.
+        var c = function() { };
+
+        it('should return sync Passport - Owner - Posts', function(done) {
+            Passport.all({include: {owner: 'posts'}}, function(err, passports) {
+                should.not.exist(err);
+                should.exist(passports);
+                passports.length.should.be.ok;
+                passports.forEach(function(p) {
+                    var user = p.owner(c);
+                    if (!p.ownerId) {
+                        should.not.exist(user);
+                    } else {
+                        should.exist(user);
+                        user.id.should.equal(p.ownerId);
+                        user.should.have.property('posts');
+                        user.posts(c).forEach(function(pp) {
+                            pp.userId.should.equal(user.id);
+                        });
+                    }
+                });
+                done();
+            });
+        });
+
+        it('should return sync Passports - User - Posts - User', function(done) {
+            Passport.all({
+                include: {owner: {posts: 'author'}}
+            }, function(err, passports) {
+                should.not.exist(err);
+                should.exist(passports);
+                passports.length.should.be.ok;
+                passports.forEach(function(p) {
+                    p.should.have.property('owner');
+                    var user = p.owner(c);
+                    if (!p.ownerId) {
+                        should.not.exist(user);
+                    } else {
+                        should.exist(user);
+                        user.id.should.equal(p.ownerId);
+                        user.should.have.property('posts');
+                        user.posts(c).forEach(function(pp) {
+                            pp.userId.should.equal(user.id);
+                            pp.should.have.property('author');
+                            var author = pp.author(c);
+                            author.id.should.equal(user.id);
+                        });
+                    }
+                });
+                done();
+            });
+        });
+
+        it('should return sync User - Posts AND Passports', function(done) {
+            User.all({include: ['posts', 'passports']}, function(err, users) {
+                should.not.exist(err);
+                should.exist(users);
+                users.length.should.be.ok;
+                users.forEach(function(user) {
+                    user.posts(c).forEach(function(p) {
+                        p.userId.should.equal(user.id);
+                    });
+                    user.passports(c).forEach(function(pp) {
+                        pp.ownerId.should.equal(user.id);
+                    });
+                });
+                done();
+            });
+        });
+    });
 });
 
 function setup(done) {
