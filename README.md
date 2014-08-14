@@ -227,7 +227,7 @@ Post.create(cb);
 // all posts
 Post.all(cb)
 // all posts by user
-Post.all({where: {userId: user.id}, order: 'id', limit: 10, skip: 20});
+Post.all({where: {userId: user.id}, order: 'id', limit: 10, skip: 20}, cb);
 // the same as prev
 user.posts(cb)
 // get one latest post
