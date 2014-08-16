@@ -227,7 +227,7 @@ Post.create(cb);
 // all posts
 Post.all(cb)
 // all posts by user
-Post.all({where: {userId: user.id}, order: 'id', limit: 10, skip: 20});
+Post.all({where: {userId: user.id}, order: 'id', limit: 10, skip: 20}, cb);
 // the same as prev
 user.posts(cb)
 // get one latest post
@@ -246,6 +246,8 @@ user.destroy(cb);
 User.destroyAll(cb);
 // update a post (currently only on the mysql adapter)
 Post.update({ where:{id:'1'}, update:{ published:false }}, cb);
+// update bulk posts (currently only on the mysql adapter)
+Post.update([{ where:{id:'1'}, update:{ published:false }},{ where:{id:'2'}, update:{ published:true }}], cb);
 ```
 
 SEE [model(3)](http://jugglingdb.co/model.3.html) for more information about
