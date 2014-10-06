@@ -3,7 +3,16 @@
 TESTER = ./node_modules/.bin/mocha
 OPTS = --growl
 TESTS = test/*.test.js
+JSHINT = ./node_modules/.bin/jshint
 
+JS_FILES = $(shell find . -type f -name "*.js" \
+					 -not -path "./node_modules/*" -and \
+					 -not -path "./coverage/*" -and \
+					 -not -path "./lib/adapters/neo4j.js" -and \
+					 -not -path "./test/*")
+
+check:
+	@$(JSHINT) $(JS_FILES)
 test:
 	$(TESTER) $(OPTS) $(TESTS)
 test-verbose:
