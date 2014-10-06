@@ -8,6 +8,7 @@ JSHINT = ./node_modules/.bin/jshint
 JS_FILES = $(shell find . -type f -name "*.js" \
 					 -not -path "./node_modules/*" -and \
 					 -not -path "./coverage/*" -and \
+					 -not -path "./support/*" -and \
 					 -not -path "./lib/adapters/neo4j.js" -and \
 					 -not -path "./test/*")
 
