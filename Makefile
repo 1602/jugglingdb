@@ -13,7 +13,7 @@ JS_FILES = $(shell find . -type f -name "*.js" \
 
 check:
 	@$(JSHINT) $(JS_FILES)
-test:
+test: check
 	$(TESTER) $(OPTS) $(TESTS)
 test-verbose:
 	$(TESTER) $(OPTS) --reporter spec $(TESTS)
