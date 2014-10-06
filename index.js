@@ -84,9 +84,9 @@ exports.init = function (compound) {
     }
 
     function initialize() {
-        var railway = './lib/railway';
+        var railway = './lib/railway', init;
         try {
-            var init = require(railway);
+            init = require(railway);
         } catch (e) {
             console.log(e.stack);
         }
