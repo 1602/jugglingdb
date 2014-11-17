@@ -39,7 +39,7 @@ Hand written manual sections are:
   Model methods, features and internals.
 
 * jugglingdb-validations(3):
-  Built-in validators, creating custom validations, syncronous and asyncronous
+  Built-in validators, creating custom validations, synchronous and asynchronous
   object validation.
 
 * jugglingdb-hooks(3):
