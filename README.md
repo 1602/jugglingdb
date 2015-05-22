@@ -130,6 +130,21 @@ check following list of available adapters
       <td><a href="https://github.com/tmpaul">tmpaul</a></td>
       <td><a href="https://travis-ci.org/tmpaul/jugglingdb-dynamodb"><img src="https://travis-ci.org/tmpaul/jugglingdb-dynamodb.svg?branch=master" alt="Build Status" /></a></td>
     </tr>
+    
+    <tr>
+      <td><a href="http://www.microsoft.com/en-ca/server-cloud/products/sql-server/">SQL Server<a></td>
+      <td><a href="https://github.com/Quadrus/jugglingdb-mssql">Quadrus/jugglingdb-mssql</a></td>
+      <td><a href="https://github.com/Quadrus">Quadrus</a></td>
+      <td>n/a</td>
+    </tr>
+    
+    <tr>
+      <td><a href="https://msdn.microsoft.com/en-us/library/azure/jj553018.aspx">Azure Table Storage<a></td>
+      <td><a href="https://github.com/yads/jugglingdb-azure-tablestorage">yads/jugglingdb-azure-tablestorage</a></td>
+      <td><a href="https://github.com/yads">Vadim Kazakov</a></td>
+      <td>n/a</td>
+    </tr>
+
 
   </tbody>
 </table>
