@@ -75,6 +75,7 @@
   "dependencies": {
     "inflection": "=1.2.7"
   },
+  "license": "MIT",
   "jshintConfig": {
       "proto": true
   }
