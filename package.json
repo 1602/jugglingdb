@@ -73,9 +73,11 @@
     "jshint": "2.5.6"
   },
   "dependencies": {
-    "inflection": "=1.2.7"
+    "inflection": "=1.2.7",
+    "q": "=1.4.1",
+    "should": "=6.0.3"
   },
   "jshintConfig": {
-      "proto": true
+    "proto": true
   }
 }

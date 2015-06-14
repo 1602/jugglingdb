@@ -12,13 +12,13 @@ describe('relations', function() {
         Reader = db.define('Reader', {name: String});
 
         db.automigrate(function() {
-            Book.destroyAll(function() {
-                Chapter.destroyAll(function() {
-                    Author.destroyAll(function() {
-                        Reader.destroyAll(done);
-                    });
-                });
-            });
+            Book.destroyAll().then(function() {
+                return Chapter.destroyAll();
+            }).then(function() {
+                return Author.destroyAll();
+            }).then(function() {
+                return Reader.destroyAll();
+            }).then(done);
         });
     });
 
@@ -35,8 +35,8 @@ describe('relations', function() {
             b.chapters.should.be.an.instanceOf(Function);
             b.users.should.be.an.instanceOf(Function);
             b.authors.should.be.an.instanceOf(Function);
-            Object.keys((new Chapter).toObject()).should.include('bookId');
-            Object.keys((new Author).toObject()).should.include('projectId');
+            (new Chapter).toObject().should.have.property('bookId');
+            (new Author).toObject().should.have.property('projectId');
 
             db.automigrate(done);
         });
@@ -44,7 +44,7 @@ describe('relations', function() {
         it('can be declared in short form', function(done) {
             Author.hasMany('readers');
             (new Author).readers.should.be.an.instanceOf(Function);
-            Object.keys((new Reader).toObject()).should.include('authorId');
+            (new Reader).toObject().should.have.property('authorId');
 
             db.autoupdate(done);
         });
@@ -166,12 +166,12 @@ describe('relations', function() {
 
             // syntax 1 (old)
             Item.belongsTo(List);
-            Object.keys((new Item).toObject()).should.include('listId');
+            (new Item).toObject().should.have.property('listId');
             (new Item).list.should.be.an.instanceOf(Function);
 
             // syntax 2 (new)
             Fear.belongsTo('mind');
-            Object.keys((new Fear).toObject()).should.include('mindId');
+            (new Fear).toObject().should.have.property('mindId');
             (new Fear).mind.should.be.an.instanceOf(Function);
             // (new Fear).mind.build().should.be.an.instanceOf(Mind);
         });

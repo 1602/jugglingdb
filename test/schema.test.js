@@ -31,7 +31,8 @@ describe('schema', function() {
         tr.connected.should.be.false;
         tr.connecting.should.be.false;
         var called = false;
-        tr.models.Model.create(Array(3), function () {
+        tr.models.Model.should.not.equal(db.models.Model);
+        tr.models.Model.create([{},{}, {}], function () {
             called = true;
         });
         tr.connected.should.be.false;
