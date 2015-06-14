@@ -266,16 +266,20 @@ describe('manipulation', function() {
     describe('iterate', function() {
 
         before(function(next) {
-            var ps = [];
-            for (var i = 0; i < 507; i += 1) {
-                ps.push({name: 'Person ' + i});
-            }
-            Person.create(ps, next);
+            Person.destroyAll().then(function() {
+                var ps = [];
+                for (var i = 0; i < 507; i += 1) {
+                    ps.push({name: 'Person ' + i});
+                }
+                Person.create(ps).then(function(x) {
+                    next();
+                });
+            });
         });
 
         it('should iterate through the batch of objects', function(done) {
             var num = 0;
-            Person.iterate({batchSize: 100}, function(person, next, i) {
+            Person.iterate({batchSize: 100, limit: 507}, function(person, next, i) {
                 num += 1;
                 next();
             }, function(err) {

@@ -14,11 +14,11 @@ describe('Model', function() {
     it('should reset prev data on save', function(done) {
         var inst = new Model({field: 'hello'});
         inst.field = 'world';
-        inst.save(function(err, s) {
+        inst.save().then(function(s) {
             s.field.should.equal('world');
             s.propertyChanged('field').should.be.false;
             done();
-        });
+        }).catch(done);
     });
 
 });
