@@ -315,7 +315,6 @@ describe('validations', function() {
                 });
                 var u = new User(getValidAttributes());
                 u.isValid(function(valid) {
-                    should.not.exist(u.errors);
                     valid.should.be.false;
                 });
             });
