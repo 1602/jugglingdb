@@ -316,6 +316,7 @@ describe('validations', function() {
                 var u = new User(getValidAttributes());
                 u.isValid(function(valid) {
                     valid.should.be.false;
+                    done();
                 });
             });
         });
