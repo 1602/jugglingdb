@@ -31,20 +31,20 @@ describe('relations', function() {
             Book.hasMany(Chapter);
             Book.hasMany(Reader, {as: 'users'});
             Book.hasMany(Author, {foreignKey: 'projectId'});
-            var b = new Book;
+            var b = new Book();
             b.chapters.should.be.an.instanceOf(Function);
             b.users.should.be.an.instanceOf(Function);
             b.authors.should.be.an.instanceOf(Function);
-            (new Chapter).toObject().should.have.property('bookId');
-            (new Author).toObject().should.have.property('projectId');
+            (new Chapter()).toObject().should.have.property('bookId');
+            (new Author()).toObject().should.have.property('projectId');
 
             db.automigrate(done);
         });
 
         it('can be declared in short form', function(done) {
             Author.hasMany('readers');
-            (new Author).readers.should.be.an.instanceOf(Function);
-            (new Reader).toObject().should.have.property('authorId');
+            (new Author()).readers.should.be.an.instanceOf(Function);
+            (new Reader()).toObject().should.have.property('authorId');
 
             db.autoupdate(done);
         });
@@ -57,15 +57,16 @@ describe('relations', function() {
             });
         });
 
-        it('should create record on scope', function(done) {
-            Book.create(function(err, book) {
-                book.chapters.create(function(err, c) {
-                    should.not.exist(err);
+        it('should create record on scope', function() {
+            var book;
+            return Book.create()
+                .then(function(book_) {
+                    book = book_;
+                    return book.chapters.create();
+                }).then(function(c) {
                     should.exist(c);
                     c.bookId.should.equal(book.id);
-                    done();
                 });
-            });
         });
 
         it.skip('should fetch all scoped instances', function(done) {
@@ -137,7 +138,7 @@ describe('relations', function() {
         it('should not allow destroy not scoped records', function(done) {
             Book.create(function(err, book1) {
                 book1.chapters.create({name: 'a'}, function(err, ch) {
-                    var id = ch.id
+                    var id = ch.id;
                     Book.create(function(err, book2) {
                         book2.chapters.destroy(ch.id, function(err) {
                             should.exist(err);
@@ -166,13 +167,13 @@ describe('relations', function() {
 
             // syntax 1 (old)
             Item.belongsTo(List);
-            (new Item).toObject().should.have.property('listId');
-            (new Item).list.should.be.an.instanceOf(Function);
+            (new Item()).toObject().should.have.property('listId');
+            (new Item()).list.should.be.an.instanceOf(Function);
 
             // syntax 2 (new)
             Fear.belongsTo('mind');
-            (new Fear).toObject().should.have.property('mindId');
-            (new Fear).mind.should.be.an.instanceOf(Function);
+            (new Fear()).toObject().should.have.property('mindId');
+            (new Fear()).mind.should.be.an.instanceOf(Function);
             // (new Fear).mind.build().should.be.an.instanceOf(Mind);
         });
 
@@ -187,12 +188,30 @@ describe('relations', function() {
                             should.not.exist(e);
                             should.exist(l);
                             l.should.be.an.instanceOf(List);
-                            todo.list().should.equal(l.id);
                             done();
                         });
                     });
                 });
             });
+        });
+
+        it('can be used to query data as promise', function() {
+            List.hasMany('todos', {model: Item});
+            return db.automigrate()
+                .then(function() {
+                    return List.create();
+                })
+                .then(function(list) {
+                    should.exist(list);
+                    return list.todos.create();
+                })
+                .then(function(todo) {
+                    return todo.list();
+                })
+                .then(function(l) {
+                    should.exist(l);
+                    l.should.be.an.instanceOf(List);
+                });
         });
 
         it('could accept objects when creating on scope', function(done) {
@@ -214,7 +233,8 @@ describe('relations', function() {
 
     describe('hasAndBelongsToMany', function() {
         var Article, Tag, ArticleTag;
-        it('can be declared', function(done) {
+
+        before(function(done) {
             Article = db.define('Article', {title: String});
             Tag = db.define('Tag', {name: String});
             Article.hasAndBelongsToMany('tags');
@@ -222,7 +242,7 @@ describe('relations', function() {
             db.automigrate(function() {
                 Article.destroyAll(function() {
                     Tag.destroyAll(function() {
-                        ArticleTag.destroyAll(done)
+                        ArticleTag.destroyAll(done);
                     });
                 });
             });
@@ -274,6 +294,9 @@ describe('relations', function() {
                     tags.should.not.be.empty;
                     should.exist(tags[0]);
                     article.tags.remove(tags[0], function(e) {
+                        if (e) {
+                            console.log(e.stack);
+                        }
                         should.not.exist(e);
                         article.tags(true, function(e, tags) {
                             tags.should.have.lengthOf(len - 1);
@@ -284,26 +307,42 @@ describe('relations', function() {
             });
         });
 
-        it('should remove the correct connection', function(done) {
-            Article.create({title: 'Article 1'}, function(e, article1) {
-                Article.create({title: 'Article 2'}, function(e, article2) {
-                    Tag.create({name: 'correct'}, function(e, tag) {
-                        article1.tags.add(tag, function(e, at) {
-                            article2.tags.add(tag, function(e, at) {
-                                article2.tags.remove(tag, function(e) {
-                                    article2.tags(true, function(e, tags) {
-                                        tags.should.have.lengthOf(0);
-                                        article1.tags(true, function(e, tags) {
-                                            tags.should.have.lengthOf(1);
-                                            done();
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
+        it('should remove the correct connection', function() {
+            var article1, article2, tag;
+            return Article.create({title: 'Article 1'})
+                .then(function(article1_) {
+                    article1 = article1_;
+                    return Article.create({title: 'Article 2'});
+                })
+                .then(function(article2_) {
+                    article2 = article2_;
+                    return Tag.create({name: 'correct'});
+                })
+                .then(function(tag_) {
+                    tag = tag_;
+                    return article1.tags.add(tag);
+                })
+                .then(function() {
+                    return article2.tags.add(tag);
+                })
+                .then(function() {
+                    return article2.tags();
+                })
+                .then(function(tags) {
+                    tags.should.have.lengthOf(1);
+                    return article2.tags.remove(tag);
+                })
+                .then(function() {
+                    delete article2.__cachedRelations.tags;
+                    return article2.tags();
+                })
+                .then(function(tags) {
+                    tags.should.have.lengthOf(0);
+                    return article1.tags();
+                })
+                .then(function(tags) {
+                    tags.should.have.lengthOf(1);
                 });
-            });
         });
 
     });
