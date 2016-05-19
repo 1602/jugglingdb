@@ -74,8 +74,7 @@
   },
   "dependencies": {
     "inflection": "=1.2.7",
-    "when": "3.7.3",
-    "should": "=6.0.3"
+    "when": "3.7.3"
   },
   "jshintConfig": {
     "proto": true
