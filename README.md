@@ -6,7 +6,7 @@
 supported are: mysql, sqlite3, postgres, couchdb, mongodb, redis, neo4j and
 js-memory-storage (yep, self-written engine for test-usage only). You can add
 your favorite database adapter, checkout one of the existing adapters to learn
-how, it's super-easy, I guarantee.
+how.
 
 Jugglingdb also works on client-side (using WebService and Memory adapters),
 which allows to write rich client-side apps talking to server using JSON API.
@@ -15,7 +15,7 @@ which allows to write rich client-side apps talking to server using JSON API.
 
     npm install jugglingdb
 
-plus you should install appropriated adapter, for example for redis:
+and you should install appropriate adapter, for example for redis:
 
     npm install jugglingdb-redis
 
