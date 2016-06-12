@@ -1,7 +1,6 @@
 ## TESTS
 
 TESTER = ./node_modules/.bin/mocha
-OPTS = --growl
 TESTS = test/*.test.js
 JSHINT = ./node_modules/.bin/jshint
 
