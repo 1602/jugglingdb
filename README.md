@@ -48,6 +48,14 @@ check following list of available adapters
     </tr>
   </thead>
   <tbody>
+    <!-- ArangoDB -->
+    <tr>
+      <td><a href="http://www.arangodb.org/"><img src="https://www.arangodb.com/wp-content/uploads/2016/03/small-1.png" style="vertical-align:middle" alt="ArangoDB" /></a> ArangoDB</td>
+      <td><a href="https://github.com/m0ppers/jugglingdb-arango">jugglingdb-arango</a></td>
+      <td><a href="https://github.com/m0ppers">Andreas Streichardt</a></td>
+      <td><a href="https://travis-ci.org/m0ppers/jugglingdb-arango"><img src="https://travis-ci.org/m0ppers/jugglingdb-arango.svg?branch=master" alt="Build Status" /></a></td>
+    </tr>
+    
     <!-- Firebird -->
     <tr>
       <td><a href="http://firebirdsql.org"><img src="http://firebirdsql.org/favicon.ico" alt="Firebird"/></a> Firebird</td>
@@ -111,13 +119,6 @@ check following list of available adapters
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
       <td><a href="https://travis-ci.org/jugglingdb/sqlite3-adapter"><img src="https://travis-ci.org/jugglingdb/sqlite3-adapter.svg?branch=master" alt="Build Status" /></a></td>
     </tr>
-    <!-- ArangoDB -->
-    <tr>
-      <td><a href="http://www.arangodb.org/"><img src="http://www.arangodb.org/wp-content/themes/triagens/images/favicon.ico" style="vertical-align:middle" alt="ArangoDB" /></a> ArangoDB</td>
-      <td><a href="https://github.com/m0ppers/jugglingdb-arango">jugglingdb-arango</a></td>
-      <td><a href="https://github.com/m0ppers">Andreas Streichardt</a></td>
-      <td><a href="https://travis-ci.org/m0ppers/jugglingdb-arango"><img src="https://travis-ci.org/m0ppers/jugglingdb-arango.svg?branch=master" alt="Build Status" /></a></td>
-    </tr>
     <tr>
       <td>WebService</td>
       <td>built-in</td>
@@ -128,13 +129,6 @@ check following list of available adapters
       <td>Memory (bogus)</td>
       <td>built-in</td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td>n/a</td>
-    </tr>
-    <tr>
-      <td>Neo4j</td>
-      <td>built-in <i>TODO: move</i></td>
-      <td><a href="https://github.com/anatoliychakkaev"><strike>Anatoliy Chakkaev</strike></a> <u>/!\</u> Looking for
-      maintainer</td>
       <td>n/a</td>
     </tr>
     
