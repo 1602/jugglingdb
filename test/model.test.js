@@ -21,4 +21,12 @@ describe('Model', function() {
         }).catch(done);
     });
 
+    describe('#toString', function() {
+
+        it('should add model name to stringified representation', function() {
+            Model.toString().should.equal('[Model Model]');
+        });
+
+    });
+
 });
