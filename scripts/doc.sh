@@ -21,7 +21,7 @@ case $dest in
   *.html)
     (ronn -5 $1 --pipe\
       --style='print toc'\
-      --organization=1602\ Software\
+      --organization=1602\
       --manual=JugglingDB &&\
       cat docs/ga.html &&\
       cat docs/footer.html) > $2
