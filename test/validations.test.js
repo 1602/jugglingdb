@@ -134,7 +134,7 @@ describe('validations', function() {
                     d.updateAttribute('name', null, function(e) {
                         should.exist(e);
                         e.should.be.instanceOf(Error);
-                        e.should.be.instanceOf(ValidationError);
+                        e.name.should.equal('ValidationError');
                         d.updateAttribute('name', 'Vasiliy', function(e) {
                             should.not.exist(e);
                             done();
