@@ -6,7 +6,7 @@
 supported are: mysql, sqlite3, postgres, couchdb, mongodb, redis, neo4j and
 js-memory-storage (yep, self-written engine for test-usage only). You can add
 your favorite database adapter, checkout one of the existing adapters to learn
-how, it's super-easy, I guarantee.
+how.
 
 Jugglingdb also works on client-side (using WebService and Memory adapters),
 which allows to write rich client-side apps talking to server using JSON API.
@@ -15,7 +15,7 @@ which allows to write rich client-side apps talking to server using JSON API.
 
     npm install jugglingdb
 
-plus you should install appropriated adapter, for example for redis:
+and you should install appropriate adapter, for example for redis:
 
     npm install jugglingdb-redis
 
@@ -130,6 +130,21 @@ check following list of available adapters
       <td><a href="https://github.com/tmpaul">tmpaul</a></td>
       <td><a href="https://travis-ci.org/tmpaul/jugglingdb-dynamodb"><img src="https://travis-ci.org/tmpaul/jugglingdb-dynamodb.svg?branch=master" alt="Build Status" /></a></td>
     </tr>
+    
+    <tr>
+      <td><a href="http://www.microsoft.com/en-ca/server-cloud/products/sql-server/">SQL Server<a></td>
+      <td><a href="https://github.com/Quadrus/jugglingdb-mssql">Quadrus/jugglingdb-mssql</a></td>
+      <td><a href="https://github.com/Quadrus">Quadrus</a></td>
+      <td>n/a</td>
+    </tr>
+    
+    <tr>
+      <td><a href="https://msdn.microsoft.com/en-us/library/azure/jj553018.aspx">Azure Table Storage<a></td>
+      <td><a href="https://github.com/yads/jugglingdb-azure-tablestorage">yads/jugglingdb-azure-tablestorage</a></td>
+      <td><a href="https://github.com/yads">Vadim Kazakov</a></td>
+      <td>n/a</td>
+    </tr>
+
 
   </tbody>
 </table>

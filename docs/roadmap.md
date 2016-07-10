@@ -19,7 +19,7 @@ jugglingdb-roadmap - The Future of JugglingDB
 
 ## MODEL CORE
 
-* schema switching
+* freeze models
 * common transaction support
 * virtual attributes
 * object presentation modes
