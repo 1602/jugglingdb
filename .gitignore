@@ -11,3 +11,4 @@ docs/html
 docs/man
 npm-debug.log
 .idea
+.coveralls.yml
