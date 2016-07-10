@@ -99,9 +99,9 @@ check following list of available adapters
     <!-- Redis -->
     <tr>
       <td><a href="http://redis.io/"><img src="http://redis.io/images/favicon.png" alt="Redis" /></a> Redis</td>
-      <td><a href="https://github.com/jugglingdb/redis-adapter">jugglingdb-redis</a></td>
+      <td><a href="https://github.com/jugglingdb/redis-hq-adapter">jugglingdb-redis-hq</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://travis-ci.org/jugglingdb/redis-adapter"><img src="https://travis-ci.org/jugglingdb/redis-adapter.svg?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://travis-ci.org/jugglingdb/redis-hq-adapter"><img src="https://travis-ci.org/jugglingdb/redis-hq-adapter.svg?branch=master" alt="Build Status" /></a></td>
     </tr>
 
     <!-- RethinkDB -->
