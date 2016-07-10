@@ -1,7 +1,10 @@
+[![Coverage Status](https://coveralls.io/repos/github/1602/jugglingdb/badge.svg?branch=stable)](https://coveralls.io/github/1602/jugglingdb?branch=stable)
+
 [![Stories in Ready](https://badge.waffle.io/1602/jugglingdb.png?label=ready)](https://waffle.io/1602/jugglingdb)
+
 ## About [<img src="https://api.travis-ci.org/1602/jugglingdb.svg" />](http://travis-ci.org/#!/1602/jugglingdb)
 
-[JugglingDB(3)](http://jugglingdb.co) is cross-db ORM for nodejs, providing
+[JugglingDB(3)](http://1602.github.io/jugglingdb/) is cross-db ORM for nodejs, providing
 **common interface** to access most popular database formats.  Currently
 supported are: mysql, sqlite3, postgres, couchdb, mongodb, redis, neo4j and
 js-memory-storage (yep, self-written engine for test-usage only). You can add
@@ -198,7 +201,7 @@ schema.models.User;
 schema.models.Post;
 ```
 
-SEE [schema(3)](http://jugglingdb.co/schema.3.html) for details schema usage.
+SEE [schema(3)](http://1602.github.io/jugglingdb/schema.3.html) for details schema usage.
 
 ```javascript
 // setup relationships
@@ -265,7 +268,7 @@ Post.update({ where:{id:'1'}, update:{ published:false }}, cb);
 Post.update([{ where:{id:'1'}, update:{ published:false }},{ where:{id:'2'}, update:{ published:true }}], cb);
 ```
 
-SEE [model(3)](http://jugglingdb.co/model.3.html) for more information about
+SEE [model(3)](http://1602.github.com/jugglingdb/model.3.html) for more information about
 jugglingdb Model API. Or `man jugglingdb-model` in terminal.
 
 ```javascript
@@ -286,7 +289,7 @@ user.isValid(function (valid) {
 
 ```
 
-SEE ALSO [jugglingdb-validations(3)](http://jugglingdb.co/validations.3.html) or
+SEE ALSO [jugglingdb-validations(3)](http://1602.github.com/jugglingdb/validations.3.html) or
 `man jugglingdb-validations` in terminal. Validation tests: ./test/validations.test.js
 
 ## Hooks
@@ -344,7 +347,7 @@ User.create(data, callback);
 // callback
 ```
 
-SEE [jugglingdb-hooks](http://jugglingdb.co/hooks.3.html) or type this command
+SEE [jugglingdb-hooks](http://1602.github.com/jugglingdb/hooks.3.html) or type this command
 in your fav terminal: `man jugglingdb-hooks`. Also check tests for usage
 examples: ./test/hooks.test.js
 
@@ -395,9 +398,9 @@ correctly (host, port, username, password).
 
 If you have found a bug please try to write unit test before reporting. Before
 submit pull request make sure all tests still passed. Check
-[roadmap](http://jugglingdb.co/roadmap.3.html), github issues if you want to
+[roadmap](http://1602.github.com/jugglingdb/roadmap.3.html), github issues if you want to
 help. Contribution to docs highly appreciated. Contents of man pages and
-http://jugglingdb.co generated from md files stored in this repo at ./docs repo
+http://1602.github.com/jugglingdb/ generated from md files stored in this repo at ./docs repo
 
 ## MIT License
 

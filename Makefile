@@ -52,7 +52,7 @@ html: $(HTML_DOCS)
 build: man
 
 web: html
-	rsync ./docs/html/* jugglingdb.co:/var/www/apps/jugglingdb.co/public
+	cp ./docs/html/* ../docs
 
 about-docs:
 	@echo "\n## DOCS\n"
