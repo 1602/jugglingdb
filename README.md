@@ -50,7 +50,7 @@ check following list of available adapters
   <tbody>
     <!-- ArangoDB -->
     <tr>
-      <td><a href="http://www.arangodb.org/"><img src="https://www.arangodb.com/wp-content/uploads/2016/03/small-1.png" style="vertical-align:middle" alt="ArangoDB" /></a> ArangoDB</td>
+      <td><a href="http://www.arangodb.org/"><img width="16" height="16" src="https://www.arangodb.com/wp-content/uploads/2016/03/small-1.png" style="vertical-align:middle" alt="ArangoDB" /></a> ArangoDB</td>
       <td><a href="https://github.com/m0ppers/jugglingdb-arango">jugglingdb-arango</a></td>
       <td><a href="https://github.com/m0ppers">Andreas Streichardt</a></td>
       <td><a href="https://travis-ci.org/m0ppers/jugglingdb-arango"><img src="https://travis-ci.org/m0ppers/jugglingdb-arango.svg?branch=master" alt="Build Status" /></a></td>
