@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' value='text/html;charset=utf8'>
+  <meta name='generator' value='Ronn/v0.7.3 (http://github.com/rtomayko/ronn/tree/0.7.3)'>
+  <title>jugglingdb-schema(3) - Everything about schema, data types and model definition.</title>
+  <style type='text/css' media='all'>
+  /* style: man */
+  body#manpage {margin:0}
+  .mp {max-width:100ex;padding:0 9ex 1ex 4ex}
+  .mp p,.mp pre,.mp ul,.mp ol,.mp dl {margin:0 0 20px 0}
+  .mp h2 {margin:10px 0 0 0}
+  .mp > p,.mp > pre,.mp > ul,.mp > ol,.mp > dl {margin-left:8ex}
+  .mp h3 {margin:0 0 0 4ex}
+  .mp dt {margin:0;clear:left}
+  .mp dt.flush {float:left;width:8ex}
+  .mp dd {margin:0 0 0 9ex}
+  .mp h1,.mp h2,.mp h3,.mp h4 {clear:left}
+  .mp pre {margin-bottom:20px}
+  .mp pre+h2,.mp pre+h3 {margin-top:22px}
+  .mp h2+pre,.mp h3+pre {margin-top:5px}
+  .mp img {display:block;margin:auto}
+  .mp h1.man-title {display:none}
+  .mp,.mp code,.mp pre,.mp tt,.mp kbd,.mp samp,.mp h3,.mp h4 {font-family:monospace;font-size:14px;line-height:1.42857142857143}
+  .mp h2 {font-size:16px;line-height:1.25}
+  .mp h1 {font-size:20px;line-height:2}
+  .mp {text-align:justify;background:#fff}
+  .mp,.mp code,.mp pre,.mp pre code,.mp tt,.mp kbd,.mp samp {color:#131211}
+  .mp h1,.mp h2,.mp h3,.mp h4 {color:#030201}
+  .mp u {text-decoration:underline}
+  .mp code,.mp strong,.mp b {font-weight:bold;color:#131211}
+  .mp em,.mp var {font-style:italic;color:#232221;text-decoration:none}
+  .mp a,.mp a:link,.mp a:hover,.mp a code,.mp a pre,.mp a tt,.mp a kbd,.mp a samp {color:#0000ff}
+  .mp b.man-ref {font-weight:normal;color:#434241}
+  .mp pre {padding:0 4ex}
+  .mp pre code {font-weight:normal;color:#434241}
+  .mp h2+pre,h3+pre {padding-left:0}
+  ol.man-decor,ol.man-decor li {margin:3px 0 10px 0;padding:0;float:left;width:33%;list-style-type:none;text-transform:uppercase;color:#999;letter-spacing:1px}
+  ol.man-decor {width:100%}
+  ol.man-decor li.tl {text-align:left}
+  ol.man-decor li.tc {text-align:center;letter-spacing:4px}
+  ol.man-decor li.tr {text-align:right;float:right}
+  </style>
+  <style type='text/css' media='print'>
+  /* style: print */
+  .mp {max-width:none}
+  .man-navigation {display:none !important}
+  .mp a[href]:not([href^="#"]):not([data-bare-link]):after {content:" " attr(href)}
+  </style>
+  <style type='text/css' media='all'>
+  /* style: toc */
+  .man-navigation {display:block !important;position:fixed;top:0;left:113ex;height:100%;width:100%;padding:48px 0 0 0;border-left:1px solid #dbdbdb;background:#eee}
+  .man-navigation a,.man-navigation a:hover,.man-navigation a:link,.man-navigation a:visited {display:block;margin:0;padding:5px 2px 5px 30px;color:#999;text-decoration:none}
+  .man-navigation a:hover {color:#111;text-decoration:underline}
+  </style>
+</head>
+<!--
+  The following styles are deprecated and will be removed at some point:
+  div#man, div#man ol.man, div#man ol.head, div#man ol.man.
+
+  The .man-page, .man-decor, .man-head, .man-foot, .man-title, and
+  .man-navigation should be used instead.
+-->
+<body id='manpage'>
+  <div class='mp' id='man'>
+
+  <div class='man-navigation' style='display:none'>
+    <a href="#NAME">NAME</a>
+    <a href="#DESCRIPTION">DESCRIPTION</a>
+    <a href="#EVENTS">EVENTS</a>
+    <a href="#USAGE">USAGE</a>
+    <a href="#SEE-ALSO">SEE ALSO</a>
+  </div>
+
+  <ol class='man-decor man-head man head'>
+    <li class='tl'>jugglingdb-schema(3)</li>
+    <li class='tc'>JugglingDB</li>
+    <li class='tr'>jugglingdb-schema(3)</li>
+  </ol>
+
+  <h2 id="NAME">NAME</h2>
+<p class="man-name">
+  <code>jugglingdb-schema</code> - <span class="man-whatis">Everything about schema, data types and model definition.</span>
+</p>
+
+<h2 id="DESCRIPTION">DESCRIPTION</h2>
+
+<p>Schema is a factory for classes. Schema connected with specific database using
+adapter.</p>
+
+<p>All classes within single schema shares same adapter type and one database
+connection. But it's possible to use more than one schema to connect with
+different databases.</p>
+
+<h2 id="EVENTS">EVENTS</h2>
+
+<p>Instances of Schema are event emitters, events supported by default:</p>
+
+<dl>
+<dt><code>.on('connected', function() {})</code></dt><dd>Fired when db connection established. Params: none.</dd>
+<dt><code>.on('log', function(msg, duration) {})</code></dt><dd>Fired when adapter logged line. Params: String message, Number duration</dd>
+</dl>
+
+
+<h2 id="USAGE">USAGE</h2>
+
+<h3 id="Creating-schema">Creating schema</h3>
+
+<p><code>Schema</code> constructor available on <code>jugglingdb</code> module:</p>
+
+<pre><code>var Schema = require('jugglingdb').Schema;
+</code></pre>
+
+<p>Schema constructor accepts two arguments. First argument is adapter. It could be
+adapter name or adapter package:</p>
+
+<pre><code>var schemaByAdapterName = new Schema('memory');
+var schemaByAdapterPackage = new Schema(require('redis'));
+</code></pre>
+
+<h3 id="Settings">Settings</h3>
+
+<p>Second argument is optional settings. Settings object format and defaults
+depends on specific adapter, but common fields are:</p>
+
+<dl>
+<dt class="flush"><code>host</code></dt><dd>Database host</dd>
+<dt class="flush"><code>port</code></dt><dd>Database port</dd>
+<dt><code>username</code></dt><dd>Username to connect to database</dd>
+<dt><code>password</code></dt><dd>Password to connect to database</dd>
+<dt><code>database</code></dt><dd>Database name</dd>
+<dt class="flush"><code>debug</code></dt><dd>Turn on verbose mode to debug db queries and lifecycle</dd>
+</dl>
+
+
+<p>For adapter-specific settings refer to adapter's readme file.</p>
+
+<h3 id="Connecting-to-database">Connecting to database</h3>
+
+<p>Schema connecting to database automatically. Once connection established schema
+object emit 'connected' event, and set <code>connected</code> flag to true, but it is not
+necessary to wait for 'connected' event because all queries cached and executed
+when schema emit 'connected' event.</p>
+
+<p>To disconnect from database server call <code>schema.disconnect</code> method. This call
+forwarded to adapter if adapter have ability to connect/disconnect.</p>
+
+<h3 id="Model-definition">Model definition</h3>
+
+<p>To define model schema have single method <code>schema.define</code>. It accepts three
+arguments:</p>
+
+<dl>
+<dt><strong>model name</strong></dt><dd>String name in camel-case with first upper-case letter. This name will be used
+later to access model.</dd>
+<dt><strong>properties</strong></dt><dd>Object with property type definitions. Key is property name, value is type
+definition. Type definition can be function representing type of property
+(String, Number, Date, Boolean), or object with {type: String|Number|...,
+index: true|false} format.</dd>
+<dt><strong>settings</strong></dt><dd>Object with model-wide settings such as <code>table</code> or so.</dd>
+</dl>
+
+
+<p>Examples of model definition:</p>
+
+<pre><code>var User = schema.define('User', {
+    email: String,
+    password: String,
+    birthDate: Date,
+    activated: Boolean
+});
+
+var User = schema.define('User', {
+    email: { type: String, limit: 150, index: true },
+    password: { type: String, limit: 50 },
+    birthDate: Date,
+    registrationDate: {
+        type: Date,
+        default: function () { return new Date }
+    },
+    activated: { type: Boolean, default: false }
+}, {
+    table: 'users'
+});
+</code></pre>
+
+<h4 id="Custom-database-column-field-names">Custom database column/field names</h4>
+
+<p>You can store the data using a different field/column name by specifying the
+<code>name</code> property in the field definition.</p>
+
+<p>For example, to store <code>firstName</code> as <code>first_name</code>:</p>
+
+<pre><code>var User = schema.define('User', {
+  firstName: { type: String, name: 'first_name' },
+  lastName: { type: String, name: 'last_name' }
+});
+</code></pre>
+
+<h3 id="DB-structure-synchronization">DB structure synchronization</h3>
+
+<p>Schema instance have two methods for updating db structure: automigrate and
+autoupdate.</p>
+
+<p>The <code>automigrate</code> method drop table (if exists) and create it again,
+<code>autoupdate</code> method generates ALTER TABLE query. Both method accepts callback
+called when migration/update done.</p>
+
+<p>To check if any db changes required use <code>isActual</code> method. It accepts single
+<code>callback</code> argument, which receive boolean value depending on db state: false if
+db structure outdated, true when schema and db is in sync:</p>
+
+<pre><code>schema.isActual(function(err, actual) {
+    if (!actual) {
+        schema.autoupdate();
+    }
+});
+</code></pre>
+
+<h2 id="SEE-ALSO">SEE ALSO</h2>
+
+<p><a class="man-ref" href="model.3.html">jugglingdb-model<span class="s">(3)</span></a>
+<a class="man-ref" href="adapter.3.html">jugglingdb-adapter<span class="s">(3)</span></a></p>
+
+
+  <ol class='man-decor man-foot man foot'>
+    <li class='tl'>1602 Software</li>
+    <li class='tc'>March 2016</li>
+    <li class='tr'>jugglingdb-schema(3)</li>
+  </ol>
+
+  </div>
+</body>
+</html>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-39555551-1', 'jugglingdb.co');
+    ga('send', 'pageview');
+
+</script>
+<script>
+    var filename = location.href.match(/([^\/]+)?\.3.html(#.*?)?$/);
+    if (!filename) {
+        filename = [null, 'jugglingdb'];
+    }
+    var div = document.createElement('div');
+    div.innerHTML = 'Found a typo? ' +
+        linkTo('View', 'blob') +
+        ' and ' +
+        'edit' +
+        //linkTo('edit', 'edit') +
+        ' this file online at GitHub.';
+
+    document.getElementById('man').appendChild(div);
+
+    function linkTo(text, dir) {
+        return '<a href="https://github.com/1602/jugglingdb/' +
+            dir + '/master/docs/' + filename[1] + '.md">' + text + '</a>';
+    }
+
+    addLink('h3', '&para;');
+    addLink('h2', '&sect;');
+
+    function addLink(tag, sign) {
+        var els = document.getElementsByTagName(tag);
+        for (var i = 0; i < els.length; i += 1) {
+            var el = els[i];
+            el.innerHTML = '<a class="section-link" href="#' + el.id +
+                '">' + sign + '</a>' + el.innerHTML;
+            // el.style = 'margin-left: -1em';
+        }
+    }
+</script>
+<style>
+    .section-link {
+        visibility: hidden;
+    }
+
+    .mp h1, .mp h2, .mp h3 {
+        position: relative;
+        left: -1em;
+    }
+
+    a.section-link:hover,
+    a.section-link:link,
+    a.section-link {
+        color: #999;
+        text-decoration: none;
+    }
+
+    h1:hover .section-link,
+    h2:hover .section-link,
+    h3:hover .section-link {
+        visibility: visible;
+    }
+
+    .mp pre code {
+        color: #565758;
+    }
+
+    /*
+    pre {
+        background: #eee;
+    }
+    */
+</style>
