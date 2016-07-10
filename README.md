@@ -1,18 +1,18 @@
-<table><tr>
-
-<td>
-<a href="https://coveralls.io/github/1602/jugglingdb?branch=stable"><img alt="Coverage" src="https://coveralls.io/repos/github/1602/jugglingdb/badge.svg?branch=stable" /></a>
-</td>
-
-<td>
-<a href="https://waffle.io/1602/jugglingdb"><img alt="Stories in Ready" src="https://badge.waffle.io/1602/jugglingdb.png?label=ready"></a>
-</td>
-
-<td>
- <a href="http://travis-ci.org/#!/1602/jugglingdb"><img alt="Build status" src="https://api.travis-ci.org/1602/jugglingdb.svg" /></a>
-</td>
-
-</tr></table>
+<table>
+ <tbody>
+  <tr>
+   <td>
+    <a href="https://coveralls.io/github/1602/jugglingdb?branch=stable"><img alt="Coverage" src="https://coveralls.io/repos/github/1602/jugglingdb/badge.svg?branch=stable" /></a>
+   </td>
+   <td>
+    <a href="https://waffle.io/1602/jugglingdb"><img alt="Stories in Ready" src="https://badge.waffle.io/1602/jugglingdb.png?label=ready"></a>
+   </td>
+   <td>
+    <a href="http://travis-ci.org/#!/1602/jugglingdb"><img alt="Build status" src="https://api.travis-ci.org/1602/jugglingdb.svg" /></a>
+   </td>
+  </tr>
+ </tbody>
+</table>
 
 ## About
 
@@ -58,7 +58,7 @@ check following list of available adapters
 
     <!-- MongoDB -->
     <tr>
-      <td><a href="http://www.mongodb.org"><img src="https://www.mongodb.com/assets/images/global/favicon.ico" alt="MongoDB" /></a> MongoDB</td>
+      <td><a href="http://www.mongodb.org"><img width="16" height="16" src="https://www.mongodb.com/assets/images/global/favicon.ico" alt="MongoDB" /></a> MongoDB</td>
       <td><a href="https://github.com/jugglingdb/mongodb-adapter">jugglingdb/mongodb-adapter</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
       <td><a href="https://travis-ci.org/jugglingdb/mongodb-adapter"><img src="https://travis-ci.org/jugglingdb/mongodb-adapter.svg?branch=master" alt="Build Status" /></a></td>
