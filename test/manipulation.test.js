@@ -306,7 +306,7 @@ describe('manipulation', function() {
                 setTimeout(next, 20);
             }, function(err) {
                 num.should.equal(21);
-                should.ok(Date.now() - time < 100, 'should work in less than 100ms');
+                should.ok(Date.now() - time < 300, 'should work in less than 300ms');
                 done();
             });
         });
