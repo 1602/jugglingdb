@@ -1,8 +1,20 @@
-[![Coverage Status](https://coveralls.io/repos/github/1602/jugglingdb/badge.svg?branch=stable)](https://coveralls.io/github/1602/jugglingdb?branch=stable)
+<table>
+ <tbody>
+  <tr>
+   <td>
+    <a href="https://coveralls.io/github/1602/jugglingdb?branch=stable"><img alt="Coverage" src="https://coveralls.io/repos/github/1602/jugglingdb/badge.svg?branch=stable" /></a>
+   </td>
+   <td>
+    <a href="https://waffle.io/1602/jugglingdb"><img alt="Stories in Ready" src="https://badge.waffle.io/1602/jugglingdb.png?label=ready"></a>
+   </td>
+   <td>
+    <a href="http://travis-ci.org/#!/1602/jugglingdb"><img alt="Build status" src="https://api.travis-ci.org/1602/jugglingdb.svg" /></a>
+   </td>
+  </tr>
+ </tbody>
+</table>
 
-[![Stories in Ready](https://badge.waffle.io/1602/jugglingdb.png?label=ready)](https://waffle.io/1602/jugglingdb)
-
-## About [<img src="https://api.travis-ci.org/1602/jugglingdb.svg" />](http://travis-ci.org/#!/1602/jugglingdb)
+## About
 
 [JugglingDB(3)](http://1602.github.io/jugglingdb/) is cross-db ORM for nodejs, providing
 **common interface** to access most popular database formats.  Currently
@@ -36,6 +48,14 @@ check following list of available adapters
     </tr>
   </thead>
   <tbody>
+    <!-- ArangoDB -->
+    <tr>
+      <td><a href="http://www.arangodb.org/"><img width="16" height="16" src="https://www.arangodb.com/wp-content/uploads/2016/03/small-1.png" style="vertical-align:middle" alt="ArangoDB" /></a> ArangoDB</td>
+      <td><a href="https://github.com/m0ppers/jugglingdb-arango">jugglingdb-arango</a></td>
+      <td><a href="https://github.com/m0ppers">Andreas Streichardt</a></td>
+      <td><a href="https://travis-ci.org/m0ppers/jugglingdb-arango"><img src="https://travis-ci.org/m0ppers/jugglingdb-arango.svg?branch=master" alt="Build Status" /></a></td>
+    </tr>
+    
     <!-- Firebird -->
     <tr>
       <td><a href="http://firebirdsql.org"><img src="http://firebirdsql.org/favicon.ico" alt="Firebird"/></a> Firebird</td>
@@ -46,7 +66,7 @@ check following list of available adapters
 
     <!-- MongoDB -->
     <tr>
-      <td><a href="http://www.mongodb.org"><img src="http://mongodb.ru/favicon.ico" alt="MongoDB" /></a> MongoDB</td>
+      <td><a href="http://www.mongodb.org"><img width="16" height="16" src="https://www.mongodb.com/assets/images/global/favicon.ico" alt="MongoDB" /></a> MongoDB</td>
       <td><a href="https://github.com/jugglingdb/mongodb-adapter">jugglingdb/mongodb-adapter</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
       <td><a href="https://travis-ci.org/jugglingdb/mongodb-adapter"><img src="https://travis-ci.org/jugglingdb/mongodb-adapter.svg?branch=master" alt="Build Status" /></a></td>
@@ -79,9 +99,9 @@ check following list of available adapters
     <!-- Redis -->
     <tr>
       <td><a href="http://redis.io/"><img src="http://redis.io/images/favicon.png" alt="Redis" /></a> Redis</td>
-      <td><a href="https://github.com/jugglingdb/redis-adapter">jugglingdb-redis</a></td>
+      <td><a href="https://github.com/jugglingdb/redis-hq-adapter">jugglingdb-redis-hq</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://travis-ci.org/jugglingdb/redis-adapter"><img src="https://travis-ci.org/jugglingdb/redis-adapter.svg?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://travis-ci.org/jugglingdb/redis-hq-adapter"><img src="https://travis-ci.org/jugglingdb/redis-hq-adapter.svg?branch=master" alt="Build Status" /></a></td>
     </tr>
 
     <!-- RethinkDB -->
@@ -99,13 +119,6 @@ check following list of available adapters
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
       <td><a href="https://travis-ci.org/jugglingdb/sqlite3-adapter"><img src="https://travis-ci.org/jugglingdb/sqlite3-adapter.svg?branch=master" alt="Build Status" /></a></td>
     </tr>
-    <!-- ArangoDB -->
-    <tr>
-      <td><a href="http://www.arangodb.org/"><img src="http://www.arangodb.org/wp-content/themes/triagens/images/favicon.ico" style="vertical-align:middle" alt="ArangoDB" /></a> ArangoDB</td>
-      <td><a href="https://github.com/m0ppers/jugglingdb-arango">jugglingdb-arango</a></td>
-      <td><a href="https://github.com/m0ppers">Andreas Streichardt</a></td>
-      <td><a href="https://travis-ci.org/m0ppers/jugglingdb-arango"><img src="https://travis-ci.org/m0ppers/jugglingdb-arango.svg?branch=master" alt="Build Status" /></a></td>
-    </tr>
     <tr>
       <td>WebService</td>
       <td>built-in</td>
@@ -116,13 +129,6 @@ check following list of available adapters
       <td>Memory (bogus)</td>
       <td>built-in</td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td>n/a</td>
-    </tr>
-    <tr>
-      <td>Neo4j</td>
-      <td>built-in <i>TODO: move</i></td>
-      <td><a href="https://github.com/anatoliychakkaev"><strike>Anatoliy Chakkaev</strike></a> <u>/!\</u> Looking for
-      maintainer</td>
       <td>n/a</td>
     </tr>
     
