@@ -69,7 +69,6 @@
     "node >= 0.6"
   ],
   "devDependencies": {
-    "semicov": "0.2.0",
     "should": "9.0.2",
     "mocha": "2.5.3",
     "jshint": "2.9.2"
