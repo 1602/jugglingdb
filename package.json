@@ -79,6 +79,7 @@
     "should": "^9.0.2",
     "when": "3.7.3"
   },
+  "license": "MIT",
   "jshintConfig": {
     "proto": true
   }
