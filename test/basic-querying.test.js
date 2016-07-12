@@ -278,6 +278,38 @@ describe('basic-querying', function() {
 
     });
 
+    describe('updateOrCreate', function() {
+
+        it('should update existing record', function() {
+            var id;
+            return User.create({
+                name: 'anatoliy',
+                email: 'mail@example.co.uk',
+                order: 1602
+            })
+            .then(function(ud) {
+                id = ud.id;
+                return User.updateOrCreate({
+                    id: id,
+                    name: 'Anatoliy'
+                });
+            })
+            .then(function(ud) {
+                should.exist(ud);
+                ud.id.should.equal(id);
+                ud.name.should.equal('Anatoliy');
+                should.not.exist(ud.order);
+            });
+        });
+
+        it('should create when record does not exist', function() {
+            return User.updateOrCreate({
+                id: 100000,
+                name: 'Anatoliy'
+            });
+        });
+
+    });
 
 });
 

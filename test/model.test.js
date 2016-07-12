@@ -29,4 +29,26 @@ describe('Model', function() {
 
     });
 
+    describe('reload', function() {
+
+        it('should reload model from db', function() {
+            var cached;
+            return Model.create({field: 'hello'})
+                .then(function(inst) {
+                    cached = inst;
+                    return Model.update({
+                        where: {id: inst.id},
+                        update: {field: 'data'}
+                    });
+                })
+                .then(function() {
+                    return cached.reload();
+                })
+                .then(function(inst) {
+                    inst.field.should.equal('data');
+                });
+        });
+
+    });
+
 });
