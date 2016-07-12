@@ -75,7 +75,7 @@ check following list of available adapters
 
     <!-- MySQL -->
     <tr>
-      <td><a href="http://www.mysql.com/"><img src="https://github.com/1602/jugglingdb/raw/master/media/mysql.ico" style="vertical-align:middle"" alt="MySQL" /></a> MySQL</td>
+      <td><a href="http://www.mysql.com/"><img width="16" height="16" src="http://www.mysql.com/common/themes/sakila/favicon.ico" style="vertical-align:middle"" alt="MySQL" /></a> MySQL</td>
       <td><a href="https://github.com/jugglingdb/mysql-adapter">jugglingdb/mysql</a></td>
       <td><a href="https://github.com/dgsan">dgsan</a></td>
       <td><a href="https://travis-ci.org/jugglingdb/mysql-adapter"><img src="https://travis-ci.org/jugglingdb/mysql-adapter.svg?branch=master" alt="Build Status" /></a></td>
@@ -118,7 +118,7 @@ check following list of available adapters
 
     <!-- SQLite 3 -->
     <tr>
-      <td><a href="http://www.sqlite.org/"><img width="16" src="https://github.com/1602/jugglingdb/raw/master/media/sqlite.png" style="vertical-align:middle" alt="SQLite" /></a> SQLite 3</td>
+      <td><a href="http://www.sqlite.org/"><img width="16" src="https://www.sqlmaestro.com/data/181/1249905374-32x32.gif" style="vertical-align:middle" alt="SQLite" /></a> SQLite</td>
       <td><a href="https://github.com/jugglingdb/sqlite3-adapter">jugglingdb/sqlite3-adapter</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
       <td><a href="https://travis-ci.org/jugglingdb/sqlite3-adapter"><img src="https://travis-ci.org/jugglingdb/sqlite3-adapter.svg?branch=master" alt="Build Status" /></a></td>
