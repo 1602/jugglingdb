@@ -124,10 +124,11 @@ called when migration/update done.
 
 To check if any db changes required use `isActual` method. It accepts single
 `callback` argument, which receive boolean value depending on db state: false if
-db structure outdated, true when schema and db is in sync:
+db structure outdated, true when schema and db is in sync, if it returns undefined that means adapter doesn't implements schema checking (most likely schema-less db
+or just buggy adapter).
 
     schema.isActual(function(err, actual) {
-        if (!actual) {
+        if (actual === false) {
             schema.autoupdate();
         }
     });

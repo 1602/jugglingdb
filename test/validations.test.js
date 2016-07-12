@@ -1,5 +1,6 @@
 // This test written in mocha+should.js
 var should = require('./init.js');
+var Schema = require('../').Schema;
 
 var j = require('../'), db, User;
 var ValidationError = require('../lib/validations.js').ValidationError;
@@ -14,7 +15,9 @@ function getValidAttributes() {
         countryCode: 'RU',
         gender: 'female',
         createdByAdmin: false,
-        createdByScript: true
+        createdByScript: true,
+        misc: Schema.JSON,
+        bigText: Schema.Text
     };
 }
 
