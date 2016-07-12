@@ -52,3 +52,4 @@ describe('Model', function() {
     });
 
 });
+

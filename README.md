@@ -1,18 +1,7 @@
-<table>
- <tbody>
-  <tr>
-   <td>
-    <a href="https://coveralls.io/github/1602/jugglingdb"><img alt="Coverage" src="https://coveralls.io/repos/github/1602/jugglingdb/badge.svg" /></a>
-   </td>
-   <td>
-    <a href="https://waffle.io/1602/jugglingdb"><img alt="Stories in Ready" src="https://badge.waffle.io/1602/jugglingdb.png?label=ready"></a>
-   </td>
-   <td>
-    <a href="http://travis-ci.org/#!/1602/jugglingdb"><img alt="Build status" src="https://api.travis-ci.org/1602/jugglingdb.svg" /></a>
-   </td>
-  </tr>
- </tbody>
-</table>
+[![NPM Version][npm-image]][npm-url]
+[![NPM Downloads][downloads-image]][downloads-url]
+[![Build status][build-image]][build-url]
+[![Test Coverage][coveralls-image]][coveralls-url]
 
 ## About
 
@@ -439,3 +428,11 @@ http://1602.github.com/jugglingdb/ generated from md files stored in this repo a
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/1602/jugglingdb/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
+[coveralls-url]: https://coveralls.io/github/1602/jugglingdb
+[coveralls-image]: https://coveralls.io/repos/github/1602/jugglingdb/badge.svg
+[build-url]: https://circleci.com/gh/1602/jugglingdb
+[build-image]: https://circleci.com/gh/1602/jugglingdb.svg?style=shield
+[npm-image]: https://img.shields.io/npm/v/jugglingdb.svg
+[npm-url]: https://npmjs.org/package/jugglingdb
+[downloads-image]: https://img.shields.io/npm/dm/jugglingdb.svg
+[downloads-url]: https://npmjs.org/package/jugglingdb
