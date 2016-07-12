@@ -2,7 +2,7 @@
  <tbody>
   <tr>
    <td>
-    <a href="https://coveralls.io/github/1602/jugglingdb?branch=stable"><img alt="Coverage" src="https://coveralls.io/repos/github/1602/jugglingdb/badge.svg?branch=stable" /></a>
+    <a href="https://coveralls.io/github/1602/jugglingdb"><img alt="Coverage" src="https://coveralls.io/repos/github/1602/jugglingdb/badge.svg" /></a>
    </td>
    <td>
     <a href="https://waffle.io/1602/jugglingdb"><img alt="Stories in Ready" src="https://badge.waffle.io/1602/jugglingdb.png?label=ready"></a>
