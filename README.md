@@ -82,13 +82,13 @@ check following list of available adapters
       <td><a href='https://coveralls.io/github/jugglingdb/mysql-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/mysql-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
     </tr>
 
-    <!-- CouchDB / nano -->
+    <!-- CouchDB / nano
     <tr>
       <td><a href="http://couchdb.apache.org/"><img width="16" src="http://couchdb.apache.org/favicon.ico" style="vertical-align:middle"" alt="CouchDB" /></a> CouchDB / nano</td>
       <td><a href="https://github.com/jugglingdb/nano-adapter">jugglingdb/nano-adapter</a></td>
       <td><a href="https://github.com/nrw">Nicholas Westlake</a></td>
       <td><a href="https://travis-ci.org/jugglingdb/nano-adapter"><img src="https://travis-ci.org/jugglingdb/nano-adapter.svg?branch=master" alt="Build Status" /></a></td>
-    </tr>
+    </tr-->
 
     <!-- PostgreSQL -->
     <tr>
