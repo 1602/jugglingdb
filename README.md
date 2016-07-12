@@ -422,7 +422,7 @@ http://1602.github.com/jugglingdb/ generated from md files stored in this repo a
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/1602/jugglingdb/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 [coveralls-url]: https://coveralls.io/github/1602/jugglingdb
-[coveralls-image]: https://coveralls.io/repos/github/1602/jugglingdb/badge.svg
+[coveralls-image]: https://coveralls.io/repos/github/1602/jugglingdb/badge.svg?branch=master
 [build-url]: https://circleci.com/gh/1602/jugglingdb
 [build-image]: https://circleci.com/gh/1602/jugglingdb.svg?style=shield
 [npm-image]: https://img.shields.io/npm/v/jugglingdb.svg
