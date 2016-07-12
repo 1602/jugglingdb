@@ -108,13 +108,13 @@ check following list of available adapters
       <td><a href='https://coveralls.io/github/jugglingdb/redis-hq-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/redis-hq-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
     </tr>
 
-    <!-- RethinkDB -->
+    <!-- RethinkDB
     <tr>
       <td><a href="http://www.rethinkdb.com/"><img src="http://www.rethinkdb.com/favicon.ico" alt="RethinkDB" width="16" height="16" /></a> RethinkDB</td>
       <td><a href="https://github.com/fuwaneko/jugglingdb-rethink">jugglingdb-rethink</a></td>
       <td><a href="https://github.com/fuwaneko">Tewi Inaba</a></td>
       <td><a href="https://travis-ci.org/fuwaneko/jugglingdb-rethink"><img src="https://travis-ci.org/fuwaneko/jugglingdb-rethink.svg?branch=master" alt="Build Status" /></a></td>
-    </tr>
+    </tr -->
 
     <!-- SQLite 3 -->
     <tr>
