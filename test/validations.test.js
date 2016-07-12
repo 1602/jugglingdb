@@ -41,7 +41,7 @@ describe('validations', function() {
     });
 
     beforeEach(function(done) {
-        User.beforeValidate = null
+        User.beforeValidate = null;
         User.destroyAll(function() {
             delete User._validations;
             done();
@@ -240,23 +240,170 @@ describe('validations', function() {
     });
 
     describe('format', function() {
-        it('should validate format');
+
+        it('should allow null', function(done) {
+            User.validatesFormatOf('email', {allowNull: true});
+            var u = new User(getValidAttributes());
+            u.email = null;
+            u.isValid(function(valid) {
+                should.exist(valid);
+                valid.should.be.true();
+                done();
+            })
+        });
+
+        it('should validate format', function(done) {
+            User.validatesFormatOf('email', { with: /^.*?@.*$/ });
+            var u = new User(getValidAttributes());
+            u.email = 'haha';
+            u.isValid(function(valid) {
+                should.exist(valid);
+                valid.should.be.false();
+                u.errors.email[0].should.equal('is invalid');
+                u.email = 'haha@haha';
+                u.isValid(function(valid) {
+                    should.exist(valid);
+                    valid.should.be.true;
+                    should.not.exist(u.errors);
+                    done();
+                });
+            })
+        });
+
         it('should overwrite default blank message with custom format message');
     });
 
     describe('numericality', function() {
-        it('should validate numericality');
+
+        it('should allow null', function(done) {
+            User.validatesNumericalityOf('age', {allowNull: true});
+            var u = new User(getValidAttributes());
+            u.age = null;
+            u.isValid(function(valid) {
+                should.exist(valid);
+                valid.should.be.true();
+                done();
+            })
+        });
+
+        it('should validate numericality', function(done) {
+            User.validatesNumericalityOf('age');
+            var u = new User(getValidAttributes());
+            u.isValid(function(valid) {
+                should.exist(valid);
+                valid.should.be.true();
+                u.age = 'nineteen';
+                u.isValid(function(valid) {
+                    should.exist(valid);
+                    valid.should.be.false();
+                    u.errors.age[0].should.equal('is not a number');
+                    done();
+                });
+            });
+        });
+
+        it('should check whether number is integer', function(done) {
+            User.validatesNumericalityOf('age', {int: true});
+            var u = new User(getValidAttributes());
+            u.age = 1.1;
+            u.isValid(function(valid) {
+                should.exist(valid);
+                valid.should.be.false();
+                u.errors.age[0].should.equal('is not an integer');
+                done();
+            });
+        });
+
     });
 
     describe('inclusion', function() {
-        it('should validate inclusion');
+
+        it('should allow null', function(done) {
+            User.validatesInclusionOf('gender', {
+                in: ['male', 'female'],
+                allowNull: true
+            });
+            var u = new User(getValidAttributes());
+            u.gender = null;
+            u.isValid(function(valid) {
+                should.exist(valid);
+                valid.should.be.true();
+                done();
+            })
+        });
+
+        it('should validate inclusion', function(done) {
+            User.validatesInclusionOf('gender', {
+                in: ['male', 'female']
+            });
+            var u = new User(getValidAttributes());
+            u.gender = 'emale';
+            u.isValid(function(valid) {
+                should.exist(valid);
+                valid.should.be.false();
+                u.errors.gender[0].should.equal('is not included in the list');
+                u.gender = 'male';
+                u.isValid(function(valid) {
+                    should.exist(valid);
+                    valid.should.be.true();
+                    should.not.exist(u.errors);
+                    done();
+                });
+            })
+        });
+
     });
 
     describe('exclusion', function() {
-        it('should validate exclusion');
+
+        it('should allow null', function(done) {
+            User.validatesExclusionOf('gender', {
+                in: ['notmale'],
+                allowNull: true
+            });
+            var u = new User(getValidAttributes());
+            u.gender = null;
+            u.isValid(function(valid) {
+                should.exist(valid);
+                valid.should.be.true();
+                done();
+            })
+        });
+
+        it('should validate exclusion', function(done) {
+            User.validatesExclusionOf('name', {
+                in: ['admin']
+            });
+            var u = new User(getValidAttributes());
+            u.name = 'admin';
+            u.isValid(function(valid) {
+                should.exist(valid);
+                valid.should.be.false();
+                u.errors.name[0].should.equal('is reserved');
+                u.name = 'Anatoliy';
+                u.isValid(function(valid) {
+                    should.exist(valid);
+                    valid.should.be.true();
+                    should.not.exist(u.errors);
+                    done();
+                });
+            })
+        });
     });
 
     describe('length', function() {
+
+        it('should allow null', function(done) {
+            User.validatesLengthOf('gender', {max: 8, allowNull: true});
+            var u = new User(getValidAttributes());
+            u.gender = null;
+            u.isValid(function(valid) {
+                should.exist(valid);
+                valid.should.be.true();
+                done();
+            })
+        });
+
         it('should validate max length', function(done) {
             User.validatesLengthOf('gender', {max: 6});
             var u = new User(getValidAttributes());
