@@ -78,7 +78,7 @@ check following list of available adapters
       <td><a href="http://www.mysql.com/"><img width="16" height="16" src="http://www.mysql.com/common/themes/sakila/favicon.ico" style="vertical-align:middle"" alt="MySQL" /></a> MySQL</td>
       <td><a href="https://github.com/jugglingdb/mysql-adapter">jugglingdb/mysql</a></td>
       <td><a href="https://github.com/dgsan">dgsan</a></td>
-      <td><a href="https://travis-ci.org/jugglingdb/mysql-adapter"><img src="https://travis-ci.org/jugglingdb/mysql-adapter.svg?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://circleci.com/gh/jugglingdb/mysql-adapter"><img src="https://circleci.com/gh/jugglingdb/mysql-adapter.svg?style=shield" alt="Build Status" /></a></td>
       <td><a href='https://coveralls.io/github/jugglingdb/mysql-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/mysql-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
     </tr>
 
