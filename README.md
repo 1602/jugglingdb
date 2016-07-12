@@ -33,7 +33,7 @@ check following list of available adapters
       <th>Database type</th>
       <th>Package name</th>
       <th>Maintainer</th>
-      <th>Build status</th>
+      <th>Build status / coverage</th>
     </tr>
   </thead>
   <tbody>
@@ -43,7 +43,6 @@ check following list of available adapters
       <td><a href="https://github.com/m0ppers/jugglingdb-arango">jugglingdb-arango</a></td>
       <td><a href="https://github.com/m0ppers">Andreas Streichardt</a></td>
       <td><a href="https://travis-ci.org/m0ppers/jugglingdb-arango"><img src="https://travis-ci.org/m0ppers/jugglingdb-arango.svg?branch=master" alt="Build Status" /></a></td>
-      <td>?</td>
     </tr>
     
     <!-- Firebird
@@ -51,7 +50,6 @@ check following list of available adapters
       <td><a href="http://firebirdsql.org"><img src="http://firebirdsql.org/favicon.ico" alt="Firebird"/></a> Firebird</td>
       <td><a href="http://github.com/hgourvest/jugglingdb-firebird">jugglingdb-firebird</a></td>
       <td><a href="http://github.com/hgourvest">Henri Gourvest</a></td>
-      <td></td>
     </tr-->
 
     <!-- MongoDB -->
@@ -59,8 +57,7 @@ check following list of available adapters
       <td><a href="http://www.mongodb.org"><img width="16" height="16" src="https://www.mongodb.com/assets/images/global/favicon.ico" alt="MongoDB" /></a> MongoDB</td>
       <td><a href="https://github.com/jugglingdb/mongodb-adapter">jugglingdb/mongodb-adapter</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://circleci.com/gh/jugglingdb/mongodb-adapter"><img src="https://circleci.com/gh/jugglingdb/mongodb-adapter.svg?&style=shield" alt="Build Status" /></a></td>
-      <td><a href='https://coveralls.io/github/jugglingdb/mongodb-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/mongodb-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
+      <td><a href="https://circleci.com/gh/jugglingdb/mongodb-adapter"><img src="https://circleci.com/gh/jugglingdb/mongodb-adapter.svg?&style=shield" alt="Build Status" /></a> <a href='https://coveralls.io/github/jugglingdb/mongodb-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/mongodb-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
     </tr>
 
     <!-- MySQL -->
@@ -68,8 +65,7 @@ check following list of available adapters
       <td><a href="http://www.mysql.com/"><img width="16" height="16" src="http://www.mysql.com/common/themes/sakila/favicon.ico" style="vertical-align:middle"" alt="MySQL" /></a> MySQL</td>
       <td><a href="https://github.com/jugglingdb/mysql-adapter">jugglingdb/mysql</a></td>
       <td><a href="https://github.com/dgsan">dgsan</a></td>
-      <td><a href="https://circleci.com/gh/jugglingdb/mysql-adapter"><img src="https://circleci.com/gh/jugglingdb/mysql-adapter.svg?style=shield" alt="Build Status" /></a></td>
-      <td><a href='https://coveralls.io/github/jugglingdb/mysql-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/mysql-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
+      <td><a href="https://circleci.com/gh/jugglingdb/mysql-adapter"><img src="https://circleci.com/gh/jugglingdb/mysql-adapter.svg?style=shield" alt="Build Status" /></a> <a href='https://coveralls.io/github/jugglingdb/mysql-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/mysql-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
     </tr>
 
     <!-- CouchDB / nano
@@ -85,8 +81,7 @@ check following list of available adapters
       <td><a href="http://www.postgresql.org/"><img src="http://www.postgresql.org/favicon.ico" style="vertical-align:middle"" alt="PostgreSQL" /></a> PostgreSQL</td>
       <td><a href="https://github.com/jugglingdb/postgres-adapter">jugglingdb/postgres-adapter</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://circleci.com/gh/jugglingdb/postgres-adapter"><img src="https://circleci.com/gh/jugglingdb/postgres-adapter.svg?style=shield" alt="Build Status" /></a></td>
-      <td><a href='https://coveralls.io/github/jugglingdb/postgres-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/postgres-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
+      <td><a href="https://circleci.com/gh/jugglingdb/postgres-adapter"><img src="https://circleci.com/gh/jugglingdb/postgres-adapter.svg?style=shield" alt="Build Status" /></a> <a href='https://coveralls.io/github/jugglingdb/postgres-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/postgres-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
     </tr>
 
     <!-- Redis -->
@@ -94,8 +89,7 @@ check following list of available adapters
       <td><a href="http://redis.io/"><img src="http://redis.io/images/favicon.png" alt="Redis" /></a> Redis</td>
       <td><a href="https://github.com/jugglingdb/redis-hq-adapter">jugglingdb-redis-hq</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://circleci.com/gh/jugglingdb/redis-hq-adapter"><img src="https://circleci.com/gh/jugglingdb/redis-hq-adapter.svg?style=shield" alt="Build Status" /></a></td>
-      <td><a href='https://coveralls.io/github/jugglingdb/redis-hq-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/redis-hq-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
+      <td><a href="https://circleci.com/gh/jugglingdb/redis-hq-adapter"><img src="https://circleci.com/gh/jugglingdb/redis-hq-adapter.svg?style=shield" alt="Build Status" /></a> <a href='https://coveralls.io/github/jugglingdb/redis-hq-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/redis-hq-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
     </tr>
 
     <!-- RethinkDB
@@ -111,8 +105,7 @@ check following list of available adapters
       <td><a href="http://www.sqlite.org/"><img width="16" src="https://www.sqlmaestro.com/data/181/1249905374-32x32.gif" style="vertical-align:middle" alt="SQLite" /></a> SQLite</td>
       <td><a href="https://github.com/jugglingdb/sqlite3-adapter">jugglingdb/sqlite3-adapter</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://circleci.com/gh/jugglingdb/sqlite3-adapter"><img src="https://circleci.com/gh/jugglingdb/sqlite3-adapter.svg?style=shield" alt="Build Status" /></a></td>
-      <td><a href='https://coveralls.io/github/jugglingdb/sqlite3-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/sqlite3-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
+      <td><a href="https://circleci.com/gh/jugglingdb/sqlite3-adapter"><img src="https://circleci.com/gh/jugglingdb/sqlite3-adapter.svg?style=shield" alt="Build Status" /></a> <a href='https://coveralls.io/github/jugglingdb/sqlite3-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/sqlite3-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
     </tr>
     <tr>
       <td>WebService</td>
