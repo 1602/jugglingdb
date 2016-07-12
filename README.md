@@ -54,15 +54,16 @@ check following list of available adapters
       <td><a href="https://github.com/m0ppers/jugglingdb-arango">jugglingdb-arango</a></td>
       <td><a href="https://github.com/m0ppers">Andreas Streichardt</a></td>
       <td><a href="https://travis-ci.org/m0ppers/jugglingdb-arango"><img src="https://travis-ci.org/m0ppers/jugglingdb-arango.svg?branch=master" alt="Build Status" /></a></td>
+      <td>?</td>
     </tr>
     
-    <!-- Firebird -->
+    <!-- Firebird
     <tr>
       <td><a href="http://firebirdsql.org"><img src="http://firebirdsql.org/favicon.ico" alt="Firebird"/></a> Firebird</td>
       <td><a href="http://github.com/hgourvest/jugglingdb-firebird">jugglingdb-firebird</a></td>
       <td><a href="http://github.com/hgourvest">Henri Gourvest</a></td>
       <td></td>
-    </tr>
+    </tr-->
 
     <!-- MongoDB -->
     <tr>
@@ -104,7 +105,7 @@ check following list of available adapters
       <td><a href="http://redis.io/"><img src="http://redis.io/images/favicon.png" alt="Redis" /></a> Redis</td>
       <td><a href="https://github.com/jugglingdb/redis-hq-adapter">jugglingdb-redis-hq</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://travis-ci.org/jugglingdb/redis-hq-adapter"><img src="https://travis-ci.org/jugglingdb/redis-hq-adapter.svg?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://circleci.com/gh/jugglingdb/redis-hq-adapter"><img src="https://circleci.com/gh/jugglingdb/redis-hq-adapter.svg?style=shield" alt="Build Status" /></a></td>
       <td><a href='https://coveralls.io/github/jugglingdb/redis-hq-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/redis-hq-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
     </tr>
 
@@ -121,7 +122,7 @@ check following list of available adapters
       <td><a href="http://www.sqlite.org/"><img width="16" src="https://www.sqlmaestro.com/data/181/1249905374-32x32.gif" style="vertical-align:middle" alt="SQLite" /></a> SQLite</td>
       <td><a href="https://github.com/jugglingdb/sqlite3-adapter">jugglingdb/sqlite3-adapter</a></td>
       <td><a href="https://github.com/anatoliychakkaev">Anatoliy Chakkaev</a></td>
-      <td><a href="https://travis-ci.org/jugglingdb/sqlite3-adapter"><img src="https://travis-ci.org/jugglingdb/sqlite3-adapter.svg?branch=master" alt="Build Status" /></a></td>
+      <td><a href="https://circleci.com/gh/jugglingdb/sqlite3-adapter"><img src="https://circleci.com/gh/jugglingdb/sqlite3-adapter.svg?style=shield" alt="Build Status" /></a></td>
       <td><a href='https://coveralls.io/github/jugglingdb/sqlite3-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/sqlite3-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
     </tr>
     <tr>

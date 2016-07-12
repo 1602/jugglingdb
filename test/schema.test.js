@@ -107,7 +107,9 @@ describe('schema', function() {
             };
 
             return db.automigrate()
-                .then(() => called.should.be.true());
+                .then(function () {
+                    return called.should.be.true();
+                });
         });
 
         it('should reject in case of error', function() {
@@ -118,10 +120,12 @@ describe('schema', function() {
             };
 
             return db.automigrate()
-                .then(() => {
+                .then(function() {
                     throw new Error('Unexpected success');
                 })
-                .catch(err => err.message.should.equal('Oopsie'));
+                .catch(function(err) {
+                    err.message.should.equal('Oopsie');
+                });
         });
 
     });
@@ -165,7 +169,7 @@ describe('schema', function() {
                 }
             });
             return db.connect()
-                .then(schema => {
+                .then(function(schema) {
                     schema.connecting.should.be.false();
                 });
         });
