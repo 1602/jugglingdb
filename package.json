@@ -53,8 +53,8 @@
   "scripts": {
     "test": "make test",
     "prepublish": "make build",
-    "test-coverage": "istanbul cover node_modules/.bin/_mocha -- -R landing",
-    "coverage-report": "export COVERALLS_GIT_COMMIT=`git rev-parse HEAD` && cat ./coverage/lcov.info | coveralls"
+    "test-coverage": "istanbul cover node_modules/.bin/_mocha -- --reporter landing --no-exit --check-leaks test/",
+    "test-ci": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/"
   },
   "man": [
     "./docs/man/jugglingdb.3",
@@ -69,9 +69,10 @@
     "node >= 0.6"
   ],
   "devDependencies": {
-    "should": "9.0.2",
+    "istanbul": "^0.4.4",
+    "jshint": "2.9.2",
     "mocha": "2.5.3",
-    "jshint": "2.9.2"
+    "should": "9.0.2"
   },
   "dependencies": {
     "inflection": "=1.2.7",
