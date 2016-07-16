@@ -7,7 +7,7 @@
 
 [JugglingDB(3)](http://1602.github.io/jugglingdb/) is cross-db ORM for nodejs, providing
 **common interface** to access most popular database formats.  Currently
-supported are: mysql, sqlite3, postgres, couchdb, mongodb, redis, neo4j and
+supported are: mysql, sqlite3, postgres, mongodb, redis and
 js-memory-storage (yep, self-written engine for test-usage only). You can add
 your favorite database adapter, checkout one of the existing adapters to learn
 how.
@@ -21,7 +21,7 @@ which allows to write rich client-side apps talking to server using JSON API.
 
 and you should install appropriate adapter, for example for redis:
 
-    npm install jugglingdb-redis
+    npm install jugglingdb-redis-hq
 
 check following list of available adapters
 
