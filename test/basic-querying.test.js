@@ -298,7 +298,10 @@ describe('basic-querying', function() {
                 should.exist(ud);
                 ud.id.should.equal(id);
                 ud.name.should.equal('Anatoliy');
-                should.not.exist(ud.order);
+                should.exist(ud.email);
+                ud.email.should.equal('mail@example.co.uk');
+                should.exist(ud.order);
+                ud.order.should.equal(1602);
             });
         });
 
