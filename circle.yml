@@ -1,3 +1,7 @@
+machine:
+  node:
+    version: 6.3.0
+
 general:
   branches:
     ignore:
@@ -5,5 +9,5 @@ general:
 
 test:
   override:
-    - npm run test-ci
+    - nvm use 6.3.0 && npm run test-ci
     - npm i coveralls && export COVERALLS_GIT_COMMIT=`git rev-parse HEAD` && cat ./coverage/lcov.info | coveralls
