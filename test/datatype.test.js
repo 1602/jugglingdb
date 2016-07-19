@@ -29,7 +29,7 @@ describe('datatypes', function() {
             num: '3',
             bool: 1
         })
-            .then(m => {
+            .then(function(m) {
                 should.exist(m && m.id);
                 m.str.should.be.a.String;
                 m.num.should.be.a.Number;
@@ -37,7 +37,7 @@ describe('datatypes', function() {
                 id = m.id;
                 return Model.find(id);
             })
-            .then(m => {
+            .then(function(m) {
                 should.exist(m);
                 m.str.should.be.a.String;
                 m.num.should.be.a.Number;
@@ -46,7 +46,7 @@ describe('datatypes', function() {
                 m.date.toString().should.equal(d.toString(), 'Time must match');
                 return Model.findOne();
             })
-            .then(m => {
+            .then(function(m) {
                 should.exist(m);
                 m.str.should.be.a.String;
                 m.num.should.be.a.Number;
