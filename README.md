@@ -79,7 +79,7 @@ check following list of available adapters
     <!-- PostgreSQL -->
     <tr>
       <td><a href="http://www.postgresql.org/"><img src="http://www.postgresql.org/favicon.ico" style="vertical-align:middle"" alt="PostgreSQL" /></a> PostgreSQL</td>
-      <td><a href="https://github.com/jugglingdb-postgres">jugglingdb/postgres-adapter</a></td>
+      <td><a href="https://github.com/jugglingdb/postgres-adapter">jugglingdb-postgres</a></td>
       <td><a href="https://github.com/1602">Anatoliy Chakkaev</a></td>
       <td><a href="https://circleci.com/gh/jugglingdb/postgres-adapter"><img src="https://circleci.com/gh/jugglingdb/postgres-adapter.svg?style=shield" alt="Build Status" /></a> <a href='https://coveralls.io/github/jugglingdb/postgres-adapter?branch=master'><img src='https://coveralls.io/repos/github/jugglingdb/postgres-adapter/badge.svg?branch=master' alt='Coverage Status' /></a></td>
     </tr>
