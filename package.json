@@ -54,7 +54,7 @@
     "test": "make test",
     "prepublish": "make build",
     "test-coverage": "istanbul cover node_modules/.bin/_mocha -- --reporter landing --no-exit --check-leaks test/",
-    "test-ci": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/"
+    "test-ci": "eslint lib/ && istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/"
   },
   "man": [
     "./docs/man/jugglingdb.3",
