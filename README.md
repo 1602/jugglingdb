@@ -230,35 +230,50 @@ var user = User();
 user.save(...);
 
 // Common API methods
+// each method returns promise, or may accept callback as last param
 
 // just instantiate model
-new Post
+new Post({ published: 0, userId: 1 });
+
 // save model (of course async)
-Post.create(cb);
+Post.create();
+
 // all posts
-Post.all(cb)
+Post.all();
+
 // all posts by user
-Post.all({where: {userId: user.id}, order: 'id', limit: 10, skip: 20}, cb);
+Post.all({ where: { userId: user.id }, order: 'id', limit: 10, skip: 20 });
+
 // the same as prev
 user.posts(cb)
+
 // get one latest post
-Post.findOne({where: {published: true}, order: 'date DESC'}, cb);
+Post.findOne({ where: { published: true }, order: 'date DESC' });
+
 // same as new Post({userId: user.id});
-user.posts.build
-// save as Post.create({userId: user.id}, cb);
-user.posts.create(cb)
+user.posts.build({ published: 1 });
+
+// save as Post.create({userId: user.id});
+user.posts.create();
+
 // find instance by id
-User.find(1, cb)
+User.find(1);
+
 // count instances
-User.count([conditions, ]cb)
+User.count([conditions])
+
 // destroy instance
-user.destroy(cb);
+user.destroy();
+
 // destroy all instances
-User.destroyAll(cb);
-// update a post (currently only on the mysql adapter)
-Post.update({ where:{id:'1'}, update:{ published:false }}, cb);
-// update bulk posts (currently only on the mysql adapter)
-Post.update([{ where:{id:'1'}, update:{ published:false }},{ where:{id:'2'}, update:{ published:true }}], cb);
+User.destroyAll();
+
+// update single instance
+Post.update(1, { published: 1 });
+
+// update multiple instances (currently only on the sql adapters)
+Post.bulkUpdate({ update: { published: 0 }, where: { id: [1, 2, 3] }});
+
 ```
 
 SEE [model(3)](http://1602.github.com/jugglingdb/model.3.html) for more information about
