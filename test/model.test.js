@@ -123,11 +123,11 @@ describe('Model', function() {
                 };
 
                 return Model.upsert({id: 1602, field: 'value'}, function(err, inst) {
-                        should.not.exist(err);
-                        should.exist(inst);
-                        inst.id.should.equal(1602);
-                        inst.field.should.equal('value');
-                    });
+                    should.not.exist(err);
+                    should.exist(inst);
+                    inst.id.should.equal(1602);
+                    inst.field.should.equal('value');
+                });
 
             });
 
