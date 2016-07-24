@@ -69,6 +69,7 @@
     "node >= 0.6"
   ],
   "devDependencies": {
+    "eslint": "^3.1.1",
     "istanbul": "^0.4.4",
     "jshint": "2.9.2",
     "mocha": "2.5.3",
