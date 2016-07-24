@@ -318,7 +318,7 @@ describe('basic-querying', function() {
 
     });
 
-    describe('bulk', function() {
+    describe('bulkUpdate', function() {
 
         var Model;
 
@@ -412,7 +412,58 @@ describe('basic-querying', function() {
                     .catch(function(err) { expect(err.message).toBe('Required where'); });
             });
 
+            it('should return array of results', function() {
+                return Model.create([
+                    { foo: 'bar', bar: 1 },
+                    { foo: 'bar', bar: 2 }
+                ])
+                    .then(function() {
+                        return Model.bulkUpdate([
+                            { update: { foo: 1 }, where: { bar: 1 }},
+                            { update: { foo: 2 }, where: { bar: 2 }}
+                        ]);
+                    })
+                    .then(function(res) {
+                        expect(res instanceof Array).toBeTruthy();
+                    });
+            });
+
         });
+    });
+
+    describe('update', function() {
+
+        var Model;
+
+        before(function() {
+            Model = db.define('Model', {
+                foo: String,
+                bar: Number
+            });
+
+            return db.automigrate();
+        });
+
+        afterEach(function() { return Model.destroyAll(); });
+
+        it('should update record by id', function() {
+            var id;
+            return Model.create({
+                foo: 'bar',
+                bar: 1
+            })
+                .then(function(inst) {
+                    id = inst.id;
+                    return Model.update(inst.id, { foo: 'baz' });
+                })
+                .then(function() {
+                    return Model.find(id);
+                })
+                .then(function(inst) {
+                    expect(inst.foo).toBe('baz');
+                });
+        });
+
     });
 
 });
