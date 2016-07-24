@@ -318,7 +318,7 @@ describe('basic-querying', function() {
 
     });
 
-    describe('update', function() {
+    describe('bulk', function() {
 
         var Model;
 
@@ -336,13 +336,13 @@ describe('basic-querying', function() {
         context('single update', function() {
 
             it('should throw when no sufficient params provided', function() {
-                return Model.update({ where: { foo: 1 }})
+                return Model.bulkUpdate({ where: { foo: 1 }})
                     .then(function() { throw new Error('Unexpected success'); })
                     .catch(function(err) { expect(err.message).toBe('Required update'); });
             });
 
             it('should throw when no sufficient params provided', function() {
-                return Model.update({ update: { foo: 1 }})
+                return Model.bulkUpdate({ update: { foo: 1 }})
                     .then(function() { throw new Error('Unexpected success'); })
                     .catch(function(err) { expect(err.message).toBe('Required where'); });
             });
@@ -353,7 +353,7 @@ describe('basic-querying', function() {
                     { foo: 'fuu', bar: 1 }
                 ])
                     .then(function() {
-                        return Model.update({
+                        return Model.bulkUpdate({
                             update: { bar: 2 },
                             where: { foo: 'fuu' }
                         });
@@ -380,7 +380,7 @@ describe('basic-querying', function() {
                     { foo: 'bar', bar: 1 }
                 ])
                     .then(function() {
-                        return Model.update({
+                        return Model.bulkUpdate({
                             update: { bar: 2 },
                             where: { foo: 'bar' },
                             limit: 1
@@ -401,13 +401,13 @@ describe('basic-querying', function() {
         context('multiple records', function() {
 
             it('should throw when no sufficient params provided', function() {
-                return Model.update([{ where: { foo: 1 }}])
+                return Model.bulkUpdate([{ where: { foo: 1 }}])
                     .then(function() { throw new Error('Unexpected success'); })
                     .catch(function(err) { expect(err.message).toBe('Required update'); });
             });
 
             it('should throw when no sufficient params provided', function() {
-                return Model.update([{ update: { foo: 1 }}])
+                return Model.bulkUpdate([{ update: { foo: 1 }}])
                     .then(function() { throw new Error('Unexpected success'); })
                     .catch(function(err) { expect(err.message).toBe('Required where'); });
             });

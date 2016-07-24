@@ -273,11 +273,9 @@ user.destroy();
 // destroy all instances
 User.destroyAll();
 
-// TODO: rename to bulkUpdate and deprecate
 // update multiple instances (currently only on the sql adapters)
-Post.update({ update: { published: 0 }, where: { id: [1, 2, 3] }});
+Post.bulkUpdate({ update: { published: 0 }, where: { id: [1, 2, 3] }});
 
-// TODO: implement me
 // update single instance
 Post.update(1, { published: 1 });
 ```

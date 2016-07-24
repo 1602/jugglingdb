@@ -68,7 +68,7 @@ describe('Model', function() {
             return Model.create({field: 'hello'})
                 .then(function(inst) {
                     cached = inst;
-                    return Model.update({
+                    return Model.bulkUpdate({
                         where: {id: inst.id},
                         update: {field: 'data'}
                     });
