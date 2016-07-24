@@ -1,14 +1,16 @@
 var should = require('./init.js');
-var when = require('when');
+var expect = require('expect');
 
 var db, Model;
+
+/* global getSchema */
 
 describe('Model', function() {
 
     before(function() {
         db = getSchema();
         Model = db.define('Model', function(m) {
-            m.property('field', String);
+            m.property('field', String, {index: true});
         });
     });
 
@@ -28,6 +30,35 @@ describe('Model', function() {
             Model.toString().should.equal('[Model Model]');
         });
 
+    });
+
+    describe('fetch', function() {
+
+        it('should find record by id', function() {
+            var randomNumber = Math.random();
+            return Model.create({ field: 'test' + randomNumber })
+                .then(function(inst) {
+                    return Model.fetch(inst.id);
+                })
+                .then(function(inst) {
+                    expect(inst).toExist();
+                    expect(inst.field).toBe('test' + randomNumber);
+                });
+        });
+
+        it('should result in error when not found', function() {
+            return Model.destroyAll()
+                .then(function() { return Model.fetch(1); })
+                .then(function() {
+                    throw new Error('Unexpected success');
+                })
+                .catch(function(err) {
+                    expect(err).toExist();
+                    expect(err.code).toBe('not_found');
+                    expect(err.details).toExist();
+                    expect(err.details.id).toBe(1);
+                });
+        });
     });
 
     describe('reload', function() {

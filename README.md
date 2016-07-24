@@ -259,6 +259,11 @@ user.posts.create();
 // find instance by id
 User.find(1);
 
+// find instance by id and reject promise when not found
+User.fetch(1)
+    .then(user => console.log('found user', user))
+    .catch(err => console.error('can not fetch user with id 1:', err));
+
 // count instances
 User.count([conditions])
 
