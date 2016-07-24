@@ -1,6 +1,10 @@
 // This test written in mocha+should.js
 var should = require('./init.js');
+var expect = require('expect');
 var db, User;
+
+/* global getSchema */
+/* eslint max-nested-callbacks: [2, 6] */
 
 describe('basic-querying', function() {
 
@@ -133,7 +137,7 @@ describe('basic-querying', function() {
         });
     });
 
-    describe('#all.attributes', function () {
+    describe('#all.attributes', function() {
         
         it('should query collection and return given attribute as  an array of Objects', function(done) {
             User.all({attributes: ['id']}, function(err, users) {
@@ -312,6 +316,103 @@ describe('basic-querying', function() {
             });
         });
 
+    });
+
+    describe('update', function() {
+
+        var Model;
+
+        before(function() {
+            Model = db.define('Model', {
+                foo: String,
+                bar: Number
+            });
+
+            return db.automigrate();
+        });
+
+        afterEach(function() { return Model.destroyAll(); });
+
+        context('single update', function() {
+
+            it('should throw when no sufficient params provided', function() {
+                return Model.update({ where: { foo: 1 }})
+                    .then(function() { throw new Error('Unexpected success'); })
+                    .catch(function(err) { expect(err.message).toBe('Required update'); });
+            });
+
+            it('should throw when no sufficient params provided', function() {
+                return Model.update({ update: { foo: 1 }})
+                    .then(function() { throw new Error('Unexpected success'); })
+                    .catch(function(err) { expect(err.message).toBe('Required where'); });
+            });
+
+            it('should update record in database', function() {
+                return Model.create([
+                    { foo: 'baz', bar: 1 },
+                    { foo: 'fuu', bar: 1 }
+                ])
+                    .then(function() {
+                        return Model.update({
+                            update: { bar: 2 },
+                            where: { foo: 'fuu' }
+                        });
+                    })
+                    .then(function() {
+                        return Model.all({ where: { foo: 'fuu' }});
+                    })
+                    .then(function(records) {
+                        expect(records.length).toBe(1);
+                        expect(records[0].bar).toBe(2);
+                    })
+                    .then(function() {
+                        return Model.all({ where: { foo: 'baz' }});
+                    })
+                    .then(function(records) {
+                        expect(records.length).toBe(1);
+                        expect(records[0].bar).toBe(1);
+                    });
+            });
+
+            it('should allow to limit update', function() {
+                return Model.create([
+                    { foo: 'bar', bar: 1 },
+                    { foo: 'bar', bar: 1 }
+                ])
+                    .then(function() {
+                        return Model.update({
+                            update: { bar: 2 },
+                            where: { foo: 'bar' },
+                            limit: 1
+                        });
+                    })
+                    .then(function() { return Model.count({ bar: 2 }); })
+                    .then(function(count) {
+                        expect(count).toBe(1);
+                    })
+                    .then(function() { return Model.count({ bar: 1 }); })
+                    .then(function(count) {
+                        expect(count).toBe(1);
+                    });
+            });
+
+        });
+
+        context('multiple records', function() {
+
+            it('should throw when no sufficient params provided', function() {
+                return Model.update([{ where: { foo: 1 }}])
+                    .then(function() { throw new Error('Unexpected success'); })
+                    .catch(function(err) { expect(err.message).toBe('Required update'); });
+            });
+
+            it('should throw when no sufficient params provided', function() {
+                return Model.update([{ update: { foo: 1 }}])
+                    .then(function() { throw new Error('Unexpected success'); })
+                    .catch(function(err) { expect(err.message).toBe('Required where'); });
+            });
+
+        });
     });
 
 });
