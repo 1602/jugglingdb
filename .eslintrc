@@ -61,6 +61,7 @@
     "space-infix-ops": "error",
     "no-plusplus": "error",
     "operator-linebreak": ["error", "after", { "overrides": { "?": "before" } }],
+    "prefer-arrow-callback": ["error", { "allowNamedFunctions": true } ]
   },
   "globals": {
     "it": true,
