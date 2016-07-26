@@ -8,11 +8,14 @@ general:
       - gh-pages
 
 test:
+  pre:
+    - make build
   override:
-    - make check
+    - eslint lib/
     - nvm use 0.12.9 && npm run test-ci-babel
     - nvm use 4.3.0 && npm run test-ci-babel
     - nvm use 5.7.0 && npm run test-ci-babel
     - nvm use 6.1.0 && npm run test-ci-native
     - nvm use 6.3.0 && npm run test-ci-native
+  post:
     - npm i coveralls && export COVERALLS_GIT_COMMIT=`git rev-parse HEAD` && cat ./coverage/lcov.info | coveralls
