@@ -15,6 +15,7 @@
     "destructuring": true,
     "templateStrings": true
   },
+  "extends": "eslint:recommended",
   "rules": {
     "no-var": 2,
     "prefer-const": 2,
