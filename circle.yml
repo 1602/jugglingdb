@@ -9,6 +9,10 @@ general:
 
 test:
   pre:
+    - nvm install 0.12.9
+    - nvm install 4.3.0
+    - nvm install 5.7.0
+    - nvm install 6.1.0
     - make build
   override:
     - eslint lib/
