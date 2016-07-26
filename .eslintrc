@@ -1,7 +1,11 @@
 {
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
   "env": {
     "node": true,
-    "browser": false
+    "browser": false,
+    "es6": true
   },
   "ecmaFeatures": {
     "arrowFunctions": true,

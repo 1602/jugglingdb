@@ -1,16 +1,19 @@
 'use strict';
 
-module.exports = function(compound) {
+var loadSchema = require('./legacy-compound-schema-loader');
+
+module.exports = function init(compound, Schema, AbstractClass) {
 
     if (global.railway) {
         global.railway.orm = exports;
     } else {
         compound.orm = {
-            Schema: exports.Schema,
-            AbstractClass: exports.AbstractClass
+            Schema,
+            AbstractClass
         };
         if (compound.app.enabled('noeval schema')) {
-            compound.orm.schema = exports.loadSchema(
+            compound.orm.schema = loadSchema(
+                Schema,
                 compound.root + '/db/schema',
                 compound.app.get('database'),
                 compound

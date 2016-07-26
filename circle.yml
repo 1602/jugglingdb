@@ -9,5 +9,7 @@ general:
 
 test:
   override:
+    - nvm use 0.10.26 && npm run test-ci-babel
+    - nvm use 4.4.7 && npm run test-ci-babel
     - nvm use 6.3.0 && npm run test-ci
     - npm i coveralls && export COVERALLS_GIT_COMMIT=`git rev-parse HEAD` && cat ./coverage/lcov.info | coveralls

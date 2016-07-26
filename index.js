@@ -1,28 +1,38 @@
-var fs = require('fs');
-var path = require('path');
+'use strict';
 
-var Schema = exports.Schema = require('./lib/schema').Schema;
-exports.AbstractClass = require('./lib/model.js');
+const { Schema } = require('./lib/schema');
+const AbstractClass = require('./lib/model.js');
 
-var baseSQL = './lib/sql';
+module.exports = {
 
-exports.__defineGetter__('BaseSQL', function () {
-    return require(baseSQL);
-});
+    Schema,
 
-exports.loadSchema = function(filename, settings, compound) {
-    return require('./legacy-compound-schema-loader')(filename, settings, compound);
+    AbstractClass,
+
+    // deprecated api
+    loadSchema: function(filename, settings, compound) {
+        return require('./legacy-compound-schema-loader')(Schema, filename, settings, compound);
+    },
+
+    init: function init(compound) {
+        return require('./legacy-compound-init')(compound, Schema, AbstractClass);
+    },
+
+    get BaseSQL() {
+        return require('./lib/sql');
+    },
+
+    get version() {
+        return require(
+            process.versions.node >= '6'
+            ? './package.json'
+            : '../package.json'
+        ).version;
+    },
+
+    get test() {
+        return require('./test/common_test');
+    }
+
 };
 
-exports.init = function (compound) {
-    return require('./legacy-compound-init')(compound);
-};
-
-exports.__defineGetter__('version', function () {
-    return JSON.parse(fs.readFileSync(__dirname + '/package.json')).version;
-});
-
-var commonTest = './test/common_test';
-exports.__defineGetter__('test', function () {
-    return require(commonTest);
-});

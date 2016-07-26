@@ -14,7 +14,7 @@ JS_FILES = $(shell find . -type f -name "*.js" \
 
 check:
 	@$(JSHINT) $(JS_FILES)
-test: check
+test:
 	$(TESTER) $(OPTS) $(TESTS)
 test-verbose:
 	$(TESTER) $(OPTS) --reporter spec $(TESTS)
@@ -51,6 +51,7 @@ man: $(MAN_DOCS)
 html: $(HTML_DOCS)
 
 build: man
+	babel -d build/ $(shell find ./lib/ -type f -name "*.js") *.js
 
 web: html
 	cp ./docs/html/* ../docs
