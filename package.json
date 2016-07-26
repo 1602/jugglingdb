@@ -55,7 +55,7 @@
     "test-babel": "mocha --compilers js:babel-register --bail --reporter spec --check-leaks test/",
     "prepublish": "make build",
     "test-coverage": "istanbul cover node_modules/.bin/_mocha -- --reporter landing --no-exit --check-leaks test/",
-    "test-ci-babel": "node_modules/mocha/bin/_mocha --compilers js:babel-register --reporter spec --check-leaks test/"
+    "test-ci-babel": "node_modules/mocha/bin/_mocha --compilers js:babel-register --reporter spec --check-leaks test/",
     "test-ci-native": "eslint lib/ && istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --compilers js:babel-register --check-leaks test/"
   },
   "man": [
