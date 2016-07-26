@@ -61,7 +61,12 @@
     "space-infix-ops": "error",
     "no-plusplus": "error",
     "operator-linebreak": ["error", "after", { "overrides": { "?": "before" } }],
-    "prefer-arrow-callback": ["error", { "allowNamedFunctions": true } ]
+    "prefer-arrow-callback": ["error", { "allowNamedFunctions": true } ],
+    "object-shorthand": "error",
+    "arrow-parens": ["error", "as-needed"],
+    "arrow-spacing": "error",
+    "space-before-blocks": "error",
+    "keyword-spacing": "error"
   },
   "globals": {
     "it": true,
