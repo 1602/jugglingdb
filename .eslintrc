@@ -16,11 +16,11 @@
     "templateStrings": true
   },
   "rules": {
-    "no-var": 0,
-    "prefer-const": 0,
-    "no-const-assign": 0,
-    "no-mixed-requires": 0,
-    "curly": 0,
+    "no-var": 2,
+    "prefer-const": 2,
+    "no-const-assign": 2,
+    "no-mixed-requires": 2,
+    "curly": 2,
     "camelcase": 2,
     "no-process-exit": 0,
     "eqeqeq": [2, "smart"],

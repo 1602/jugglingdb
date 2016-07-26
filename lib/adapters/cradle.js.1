@@ -1,9 +1,9 @@
-var safeRequire = require('../utils').safeRequire;
+const safeRequire = require('../utils').safeRequire;
 
 /**
  * Module dependencies
  */
-var cradle = safeRequire('cradle');
+const cradle = safeRequire('cradle');
 
 /**
  * Private functions for internal use
@@ -15,7 +15,9 @@ function CradleAdapter(client) {
 
 function createdbif(client, callback) {
     client.exists(function(err, exists) {
-        if(err) callback(err);
+        if (err) {
+            return callback(err);
+        }
         if (!exists) {
             client.create(function() { callback(); });
         } else {
@@ -27,7 +29,9 @@ function createdbif(client, callback) {
 function naturalize(data, table) {
     data.nature = table;
     //TODO: maybe this is not a really good idea
-    if(data.date) data.date = data.date.toString();
+    if (data.date) {
+        data.date = data.date.toString();
+    }
     return data;
 }
 function idealize(data) {
@@ -54,10 +58,14 @@ function errorHandler(callback, func) {
 }
 
 function synchronize(functions, args, callback) {
-    if(functions.length === 0) callback();
-    if(functions.length > 0 && args.length === functions.length) {
+    if (functions.length === 0) {
+        callback();
+    }
+    if (functions.length > 0 && args.length === functions.length) {
         functions[0](args[0][0], args[0][1], function(err) {
-            if(err) callback(err);
+            if (err) {
+                callback(err);
+            }
             functions.splice(0, 1);
             args.splice(0, 1);
             synchronize(functions, args, callback);
@@ -69,9 +77,9 @@ function applyFilter(filter) {
     if (typeof filter.where === 'function') {
         return filter.where;
     }
-    var keys = Object.keys(filter.where);
+    const keys = Object.keys(filter.where);
     return function(obj) {
-        var pass = true;
+        let pass = true;
         keys.forEach(function(key) {
             if (!test(filter.where[key], obj[key])) {
                 pass = false;
