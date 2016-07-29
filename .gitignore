@@ -13,3 +13,4 @@ npm-debug.log
 .idea
 .coveralls.yml
 build
+.eslintcache
