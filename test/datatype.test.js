@@ -1,11 +1,11 @@
 // This test written in mocha+should.js
-var should = require('./init.js');
+const should = require('./init.js');
 
-var db, Model;
+let db, Model;
 
 describe('datatypes', function() {
 
-    before(function(done){
+    before(function(done) {
         db = getSchema();
         Model = db.define('Model', {
             str: String,
@@ -19,7 +19,7 @@ describe('datatypes', function() {
     });
 
     it('should keep types when get read data from db', function() {
-        var d = new Date, id;
+        let d = new Date, id;
 
         d.setMilliseconds(0);
 
@@ -57,7 +57,7 @@ describe('datatypes', function() {
     });
 
     it('should convert "false" to false for boolean', function() {
-        var m = new Model({bool: 'false'});
+        const m = new Model({ bool: 'false' });
         m.bool.should.equal(false);
     });
 

@@ -1,7 +1,7 @@
 // This test written in mocha+should.js
-var should = require('./init.js');
+const should = require('./init.js');
 
-var db, Person;
+let db, Person;
 
 describe('manipulation', function() {
 
@@ -9,12 +9,12 @@ describe('manipulation', function() {
         db = getSchema();
 
         Person = db.define('Person', {
-            name: {type: String, name: 'full_name'},
+            name: { type: String, name: 'full_name' },
             gender: String,
             married: Boolean,
-            age: {type: Number, index: true},
+            age: { type: Number, index: true },
             dob: Date,
-            createdAt: {type: Number, default: Date.now, name: 'created_at'}
+            createdAt: { type: Number, default: Date.now, name: 'created_at' }
         });
 
         db.automigrate(done);
@@ -28,7 +28,7 @@ describe('manipulation', function() {
         });
 
         it('should create instance', function(done) {
-            Person.create({name: 'Anatoliy'}).then(function(p) {
+            Person.create({ name: 'Anatoliy' }).then(function(p) {
                 p.name.should.equal('Anatoliy');
                 should.exist(p);
                 Person.find(p.id, function(err, person) {
@@ -56,7 +56,7 @@ describe('manipulation', function() {
                 next();
                 setTimeout(done, 10);
             };
-            Person.create({name: 'Nickolay'});
+            Person.create({ name: 'Nickolay' });
         });
 
         it('should create instance with blank data', function(done) {
@@ -85,7 +85,7 @@ describe('manipulation', function() {
         });
 
         it('should create batch of objects', function(done) {
-            var batch = [{name: 'Shaltay'}, {name: 'Boltay'}, {}];
+            const batch = [{ name: 'Shaltay' }, { name: 'Boltay' }, {}];
             Person.create(batch, function(e, ps) {
                 should.not.exist(e);
                 should.exist(ps);
@@ -114,7 +114,7 @@ describe('manipulation', function() {
     describe('save', function() {
 
         it('should save new object', function(done) {
-            var p = new Person;
+            const p = new Person;
             p.save(function(err) {
                 should.not.exist(err);
                 should.exist(p.id);
@@ -151,7 +151,7 @@ describe('manipulation', function() {
                 p.save(function(err) {
                     should.exist(err);
                     p.propertyChanged('name').should.be.true;
-                    p.save({validate: false}, function(err) {
+                    p.save({ validate: false }, function(err) {
                         should.not.exist(err);
                         p.propertyChanged('name').should.be.false;
                         done();
@@ -160,8 +160,8 @@ describe('manipulation', function() {
             });
         });
 
-        it('should save invalid new object (skipping validation)', function (done) {
-            var p = new Person();
+        it('should save invalid new object (skipping validation)', function(done) {
+            const p = new Person();
             p.isNewRecord().should.be.true;
 
             p.isValid = function(done) {
@@ -172,7 +172,7 @@ describe('manipulation', function() {
             };
             p.isValid().should.be.false;
 
-            p.save({ validate: false }, function (err) {
+            p.save({ validate: false }, function(err) {
                 should.not.exist(err);
                 p.isNewRecord().should.be.false;
                 p.isValid().should.be.false;
@@ -196,11 +196,11 @@ describe('manipulation', function() {
         });
 
         it.skip('should save with custom fields', function() {
-            return Person.create({name: 'Anatoliy'}, function(err, p) {
+            return Person.create({ name: 'Anatoliy' }, function(err, p) {
                 should.exist(p.id);
                 should.exist(p.name);
                 should.not.exist(p['full_name']);
-                var storedObj = JSON.parse(db.adapter.cache.Person[p.id]);
+                const storedObj = JSON.parse(db.adapter.cache.Person[p.id]);
                 should.exist(storedObj['full_name']);
             });
         });
@@ -208,7 +208,7 @@ describe('manipulation', function() {
     });
 
     describe('updateAttributes', function() {
-        var person;
+        let person;
 
         before(function(done) {
             Person.destroyAll(function() {
@@ -235,7 +235,7 @@ describe('manipulation', function() {
     describe('destroy', function() {
 
         it('should destroy record', function(done) {
-            Person.create(function(err, p){
+            Person.create(function(err, p) {
                 p.destroy(function(err) {
                     should.not.exist(err);
                     Person.exists(p.id, function(err, ex) {
@@ -246,12 +246,12 @@ describe('manipulation', function() {
             });
         });
 
-        it('should destroy all records', function (done) {
-            Person.destroyAll(function (err) {
+        it('should destroy all records', function(done) {
+            Person.destroyAll(function(err) {
                 should.not.exist(err);
-                Person.all(function (err, posts) {
+                Person.all(function(err, posts) {
                     posts.should.have.lengthOf(0);
-                    Person.count(function (err, count) {
+                    Person.count(function(err, count) {
                         count.should.eql(0);
                         done();
                     });
@@ -267,9 +267,9 @@ describe('manipulation', function() {
 
         before(function(next) {
             Person.destroyAll().then(function() {
-                var ps = [];
-                for (var i = 0; i < 507; i += 1) {
-                    ps.push({name: 'Person ' + i});
+                const ps = [];
+                for (let i = 0; i < 507; i += 1) {
+                    ps.push({ name: 'Person ' + i });
                 }
                 Person.create(ps).then(function(x) {
                     next();
@@ -278,8 +278,8 @@ describe('manipulation', function() {
         });
 
         it('should iterate through the batch of objects', function(done) {
-            var num = 0;
-            Person.iterate({batchSize: 100, limit: 507}, function(person, next, i) {
+            let num = 0;
+            Person.iterate({ batchSize: 100, limit: 507 }, function(person, next, i) {
                 num += 1;
                 next();
             }, function(err) {
@@ -289,8 +289,8 @@ describe('manipulation', function() {
         });
 
         it('should take limit into account', function(done) {
-            var num = 0;
-            Person.iterate({batchSize: 20, limit: 21}, function(person, next, i) {
+            let num = 0;
+            Person.iterate({ batchSize: 20, limit: 21 }, function(person, next, i) {
                 num += 1;
                 next();
             }, function(err) {
@@ -300,8 +300,8 @@ describe('manipulation', function() {
         });
 
         it('should process in concurrent mode', function(done) {
-            var num = 0, time = Date.now();
-            Person.iterate({batchSize: 10, limit: 21, concurrent: true}, function(person, next, i) {
+            let num = 0, time = Date.now();
+            Person.iterate({ batchSize: 10, limit: 21, concurrent: true }, function(person, next, i) {
                 num += 1;
                 setTimeout(next, 20);
             }, function(err) {
@@ -314,9 +314,9 @@ describe('manipulation', function() {
 
     describe('initialize', function() {
         it('should initialize object properly', function() {
-            var hw = 'Hello word',
+            let hw = 'Hello word',
                 now = Date.now(),
-                person = new Person({name: hw});
+                person = new Person({ name: hw });
 
             person.name.should.equal(hw);
             person.propertyChanged('name').should.be.false;
@@ -328,7 +328,7 @@ describe('manipulation', function() {
         });
 
         it('should work when constructor called as function', function() {
-            var p = Person({name: 'John Resig'});
+            const p = Person({ name: 'John Resig' });
             p.should.be.an.instanceOf(Person);
             p.name.should.equal('John Resig');
         });

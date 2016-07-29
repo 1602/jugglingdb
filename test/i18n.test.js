@@ -1,4 +1,4 @@
-var should = require('./init.js'), db, User;
+let should = require('./init.js'), db, User;
 
 describe('i18n', function() {
     db = getSchema();
@@ -6,7 +6,7 @@ describe('i18n', function() {
     before(function() {
 
         User = db.define('User', {
-            email: {type: String, index: true, limit: 100},
+            email: { type: String, index: true, limit: 100 },
             name: String
         });
 
@@ -39,9 +39,9 @@ describe('i18n', function() {
     });
 
     it('should hook up localized string', function(done) {
-        User.create({email: 'John.Doe@example.com', name: 'John Doe'}, function(err, user) {
-            User.create({email: 'John.Doe@example.com'}, function(err, user) {
-                var errors = user.errors.__localize('ru');
+        User.create({ email: 'John.Doe@example.com', name: 'John Doe' }, function(err, user) {
+            User.create({ email: 'John.Doe@example.com' }, function(err, user) {
+                const errors = user.errors.__localize('ru');
                 errors.name[0].should.equal('can\'t be blank');
                 errors.email[0].should.equal('Электропочта уже взят');
                 done();

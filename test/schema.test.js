@@ -1,15 +1,15 @@
 // This test written in mocha+should.js
-var should = require('./init.js');
-var Schema = require ('../').Schema;
+const should = require('./init.js');
+const Schema = require ('../').Schema;
 
-var db = getSchema(), slave = getSchema(), Model, SlaveModel;
+let db = getSchema(), slave = getSchema(), Model, SlaveModel;
 
 describe('schema', function() {
 
     it('should define Model', function() {
         Model = db.define('Model');
         Model.schema.should.eql(db);
-        var m = new Model;
+        const m = new Model;
         m.schema.should.eql(db);
     });
 
@@ -17,7 +17,7 @@ describe('schema', function() {
         SlaveModel = slave.copyModel(Model);
         SlaveModel.schema.should.eql(slave);
         slave.should.not.eql(db);
-        var sm = new SlaveModel;
+        const sm = new SlaveModel;
         sm.should.be.instanceOf(Model);
         sm.schema.should.not.eql(db);
         sm.schema.should.eql(slave);
@@ -28,12 +28,12 @@ describe('schema', function() {
     });
 
     it('should create transaction', function(done) {
-        var tr = db.transaction();
+        const tr = db.transaction();
         tr.connected.should.be.false;
         tr.connecting.should.be.false;
-        var called = false;
+        let called = false;
         tr.models.Model.should.not.equal(db.models.Model);
-        tr.models.Model.create([{},{}, {}], function () {
+        tr.models.Model.create([{},{}, {}], function() {
             called = true;
         });
         tr.connected.should.be.false;
@@ -44,7 +44,7 @@ describe('schema', function() {
             should.exist(c);
             c.should.equal(0);
             called.should.be.false;
-            tr.exec(function () {
+            tr.exec(function() {
                 setTimeout(function() {
                     called.should.be.true;
                     db.models.Model.count(function(err, c) {
@@ -59,7 +59,7 @@ describe('schema', function() {
     describe('isActual', function() {
 
         it('should delegate schema check to adapter', function(done) {
-            var db = new Schema('memory');
+            const db = new Schema('memory');
             db.adapter.isActual = function(cb) {
                 return cb(null, true);
             };
@@ -71,7 +71,7 @@ describe('schema', function() {
         });
 
         it('should return undefined when adapter is schema-less', function(done) {
-            var db = new Schema('memory');
+            const db = new Schema('memory');
             delete db.adapter.isActual;
 
             db.isActual(function(err, result) {
@@ -85,7 +85,7 @@ describe('schema', function() {
     describe('autoupdate', function() {
 
         it('should delegate autoupdate to adapter', function(done) {
-            var db = new Schema('memory');
+            const db = new Schema('memory');
             db.adapter = {
                 autoupdate: done
             };
@@ -97,8 +97,8 @@ describe('schema', function() {
     describe('automigrate', function() {
 
         it('should delegate automigrate to adapter', function() {
-            var db = new Schema('memory');
-            var called = false;
+            const db = new Schema('memory');
+            let called = false;
             db.adapter.automigrate = function(cb) {
                 process.nextTick(function() {
                     called = true;
@@ -107,14 +107,14 @@ describe('schema', function() {
             };
 
             return db.automigrate()
-                .then(function () {
+                .then(function() {
                     return called.should.be.true();
                 });
         });
 
         it('should reject in case of error', function() {
-            var db = new Schema('memory');
-            var called = false;
+            const db = new Schema('memory');
+            const called = false;
             db.adapter.automigrate = function(cb) {
                 throw new Error('Oopsie');
             };
@@ -133,10 +133,10 @@ describe('schema', function() {
     describe('defineForeignKey', function() {
 
         it('should allow adapter to define foreign key', function(done) {
-            var db = new Schema('memory');
+            const db = new Schema('memory');
             db.define('User', { something: Number });
             db.adapter = {
-                defineForeignKey: function(model, prop, cb) {
+                defineForeignKey(model, prop, cb) {
                     cb(null, Number);
                     done();
                 }
@@ -149,10 +149,10 @@ describe('schema', function() {
     describe('connect', function() {
 
         it('should delegate connect to adapter', function(done) {
-            var db = new Schema({
-                initialize: function(schema, cb) {
+            const db = new Schema({
+                initialize(schema, cb) {
                     schema.adapter = {
-                        connect: function(cb) {
+                        connect(cb) {
                             cb();
                         }
                     };
@@ -163,8 +163,8 @@ describe('schema', function() {
         });
 
         it('should support adapters without connections', function() {
-            var db = new Schema({
-                initialize: function(schema, cb) {
+            const db = new Schema({
+                initialize(schema, cb) {
                     schema.adapter = {};
                 }
             });
@@ -175,10 +175,10 @@ describe('schema', function() {
         });
 
         it('should catch connection errors', function() {
-            var db = new Schema({
-                initialize: function(schema, cb) {
+            const db = new Schema({
+                initialize(schema, cb) {
                     schema.adapter = {
-                        connect: function(cb) {
+                        connect(cb) {
                             cb(new Error('Connection error'));
                         }
                     };
@@ -199,7 +199,7 @@ describe('schema', function() {
     describe('disconnect', function() {
 
         it('should delegate disconnection to adapter', function(done) {
-            var db = new Schema('memory');
+            const db = new Schema('memory');
             db.adapter = {
                 disconnect: done
             };
@@ -207,7 +207,7 @@ describe('schema', function() {
         });
 
         it('should call callback with "disconnect" is not handled by adapter', function(done) {
-            var db = new Schema('memory');
+            const db = new Schema('memory');
             delete db.adapter.disconnect;
             db.disconnect(done);
         });

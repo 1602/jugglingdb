@@ -1,7 +1,7 @@
 // This test written in mocha+should.js
-var should = require('./init.js');
-var expect = require('expect');
-var db, User;
+const should = require('./init.js');
+const expect = require('expect');
+let db, User;
 
 /* global getSchema */
 /* eslint max-nested-callbacks: [2, 6] */
@@ -12,12 +12,12 @@ describe('basic-querying', function() {
         db = getSchema();
 
         User = db.define('User', {
-            name: {type: String, sort: true, limit: 100},
-            email: {type: String, index: true, limit: 100},
-            role: {type: String, index: true, limit: 100},
-            order: {type: Number, index: true, sort: true, limit: 100}
+            name: { type: String, sort: true, limit: 100 },
+            email: { type: String, index: true, limit: 100 },
+            role: { type: String, index: true, limit: 100 },
+            order: { type: Number, index: true, sort: true, limit: 100 }
         });
-    
+
         db.automigrate(done);
 
     });
@@ -64,18 +64,18 @@ describe('basic-querying', function() {
                 done();
             });
         });
-        
+
         it('should query limited collection', function(done) {
-            User.all({limit: 3}, function(err, users) {
+            User.all({ limit: 3 }, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 users.should.have.lengthOf(3);
                 done();
             });
         });
-        
+
         it('should query offset collection with limit', function(done) {
-            User.all({skip: 1, limit: 4}, function(err, users) {
+            User.all({ skip: 1, limit: 4 }, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 users.should.have.lengthOf(4);
@@ -84,7 +84,7 @@ describe('basic-querying', function() {
         });
 
         it('should query filtered collection', function(done) {
-            User.all({where: {role: 'lead'}}, function(err, users) {
+            User.all({ where: { role: 'lead' } }, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 users.should.have.lengthOf(2);
@@ -93,7 +93,7 @@ describe('basic-querying', function() {
         });
 
         it('should query collection sorted by numeric field', function(done) {
-            User.all({order: 'order'}, function(err, users) {
+            User.all({ order: 'order' }, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 users.forEach(function(u, i) {
@@ -104,7 +104,7 @@ describe('basic-querying', function() {
         });
 
         it('should query collection desc sorted by numeric field', function(done) {
-            User.all({order: 'order DESC'}, function(err, users) {
+            User.all({ order: 'order DESC' }, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 users.forEach(function(u, i) {
@@ -115,7 +115,7 @@ describe('basic-querying', function() {
         });
 
         it('should query collection sorted by string field', function(done) {
-            User.all({order: 'name'}, function(err, users) {
+            User.all({ order: 'name' }, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 users.shift().name.should.equal('George Harrison');
@@ -126,7 +126,7 @@ describe('basic-querying', function() {
         });
 
         it('should query collection desc sorted by string field', function(done) {
-            User.all({order: 'name DESC'}, function(err, users) {
+            User.all({ order: 'name DESC' }, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 users.pop().name.should.equal('George Harrison');
@@ -138,9 +138,9 @@ describe('basic-querying', function() {
     });
 
     describe('#all.attributes', function() {
-        
+
         it('should query collection and return given attribute as  an array of Objects', function(done) {
-            User.all({attributes: ['id']}, function(err, users) {
+            User.all({ attributes: ['id'] }, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 users.should.be.instanceOf(Array);
@@ -148,9 +148,9 @@ describe('basic-querying', function() {
                 done();
             });
         });
-        
+
         it('should query collection and return given attribute as an array of Numbers', function(done) {
-            User.all({attributes: 'id'}, function(err, users) {
+            User.all({ attributes: 'id' }, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 users.should.be.instanceOf(Array);
@@ -160,7 +160,7 @@ describe('basic-querying', function() {
         });
 
         it('should query collection and return given attributes as an array of objects', function(done) {
-            User.all({attributes: ['id', 'name']}, function(err, users) {
+            User.all({ attributes: ['id', 'name'] }, function(err, users) {
                 should.exists(users);
                 should.not.exists(err);
                 should.not.exists(users.pop().mail);
@@ -186,7 +186,7 @@ describe('basic-querying', function() {
         });
 
         it('should query filtered count', function(done) {
-            User.count({role: 'lead'}, function(err, n) {
+            User.count({ role: 'lead' }, function(err, n) {
                 should.not.exist(err);
                 should.exist(n);
                 n.should.equal(2);
@@ -200,7 +200,7 @@ describe('basic-querying', function() {
         before(seed);
 
         it('should find first record (default sort by id)', function(done) {
-            User.all({order: 'id'}, function(err, users) {
+            User.all({ order: 'id' }, function(err, users) {
                 User.findOne(function(e, u) {
                     should.not.exist(e);
                     should.exist(u);
@@ -211,7 +211,7 @@ describe('basic-querying', function() {
         });
 
         it('should find first record', function(done) {
-            User.findOne({order: 'order'}, function(e, u) {
+            User.findOne({ order: 'order' }, function(e, u) {
                 should.not.exist(e);
                 should.exist(u);
                 u.order.should.equal(1);
@@ -221,7 +221,7 @@ describe('basic-querying', function() {
         });
 
         it('should find last record', function(done) {
-            User.findOne({order: 'order DESC'}, function(e, u) {
+            User.findOne({ order: 'order DESC' }, function(e, u) {
                 should.not.exist(e);
                 should.exist(u);
                 u.order.should.equal(6);
@@ -232,7 +232,7 @@ describe('basic-querying', function() {
 
         it('should find last record in filtered set', function(done) {
             User.findOne({
-                where: {role: 'lead'},
+                where: { role: 'lead' },
                 order: 'order DESC'
             }, function(e, u) {
                 should.not.exist(e);
@@ -245,7 +245,7 @@ describe('basic-querying', function() {
 
         it('should work even when find by id', function(done) {
             User.findOne(function(e, u) {
-                User.findOne({where: {id: u.id}}, function(err, user) {
+                User.findOne({ where: { id: u.id } }, function(err, user) {
                     should.not.exist(err);
                     should.exist(user);
                     done();
@@ -285,28 +285,28 @@ describe('basic-querying', function() {
     describe('updateOrCreate', function() {
 
         it('should update existing record', function() {
-            var id;
+            let id;
             return User.create({
                 name: 'anatoliy',
                 email: 'mail@example.co.uk',
                 order: 1602
             })
-            .then(function(ud) {
-                id = ud.id;
-                return User.updateOrCreate({
-                    id: id,
-                    name: 'Anatoliy'
+                .then(function(ud) {
+                    id = ud.id;
+                    return User.updateOrCreate({
+                        id,
+                        name: 'Anatoliy'
+                    });
+                })
+                .then(function(ud) {
+                    should.exist(ud);
+                    ud.id.should.equal(id);
+                    ud.name.should.equal('Anatoliy');
+                    should.exist(ud.email);
+                    ud.email.should.equal('mail@example.co.uk');
+                    should.exist(ud.order);
+                    ud.order.should.equal(1602);
                 });
-            })
-            .then(function(ud) {
-                should.exist(ud);
-                ud.id.should.equal(id);
-                ud.name.should.equal('Anatoliy');
-                should.exist(ud.email);
-                ud.email.should.equal('mail@example.co.uk');
-                should.exist(ud.order);
-                ud.order.should.equal(1602);
-            });
         });
 
         it('should create when record does not exist', function() {
@@ -320,7 +320,7 @@ describe('basic-querying', function() {
 
     describe('bulkUpdate', function() {
 
-        var Model;
+        let Model;
 
         before(function() {
             Model = db.define('Model', {
@@ -336,13 +336,13 @@ describe('basic-querying', function() {
         context('single update', function() {
 
             it('should throw when no sufficient params provided', function() {
-                return Model.bulkUpdate({ where: { foo: 1 }})
+                return Model.bulkUpdate({ where: { foo: 1 } })
                     .then(function() { throw new Error('Unexpected success'); })
                     .catch(function(err) { expect(err.message).toBe('Required update'); });
             });
 
             it('should throw when no sufficient params provided', function() {
-                return Model.bulkUpdate({ update: { foo: 1 }})
+                return Model.bulkUpdate({ update: { foo: 1 } })
                     .then(function() { throw new Error('Unexpected success'); })
                     .catch(function(err) { expect(err.message).toBe('Required where'); });
             });
@@ -359,14 +359,14 @@ describe('basic-querying', function() {
                         });
                     })
                     .then(function() {
-                        return Model.all({ where: { foo: 'fuu' }});
+                        return Model.all({ where: { foo: 'fuu' } });
                     })
                     .then(function(records) {
                         expect(records.length).toBe(1);
                         expect(records[0].bar).toBe(2);
                     })
                     .then(function() {
-                        return Model.all({ where: { foo: 'baz' }});
+                        return Model.all({ where: { foo: 'baz' } });
                     })
                     .then(function(records) {
                         expect(records.length).toBe(1);
@@ -401,13 +401,13 @@ describe('basic-querying', function() {
         context('multiple records', function() {
 
             it('should throw when no sufficient params provided', function() {
-                return Model.bulkUpdate([{ where: { foo: 1 }}])
+                return Model.bulkUpdate([{ where: { foo: 1 } }])
                     .then(function() { throw new Error('Unexpected success'); })
                     .catch(function(err) { expect(err.message).toBe('Required update'); });
             });
 
             it('should throw when no sufficient params provided', function() {
-                return Model.bulkUpdate([{ update: { foo: 1 }}])
+                return Model.bulkUpdate([{ update: { foo: 1 } }])
                     .then(function() { throw new Error('Unexpected success'); })
                     .catch(function(err) { expect(err.message).toBe('Required where'); });
             });
@@ -419,8 +419,8 @@ describe('basic-querying', function() {
                 ])
                     .then(function() {
                         return Model.bulkUpdate([
-                            { update: { foo: 1 }, where: { bar: 1 }},
-                            { update: { foo: 2 }, where: { bar: 2 }}
+                            { update: { foo: 1 }, where: { bar: 1 } },
+                            { update: { foo: 2 }, where: { bar: 2 } }
                         ]);
                     })
                     .then(function(res) {
@@ -433,7 +433,7 @@ describe('basic-querying', function() {
 
     describe('update', function() {
 
-        var Model;
+        let Model;
 
         before(function() {
             Model = db.define('Model', {
@@ -447,7 +447,7 @@ describe('basic-querying', function() {
         afterEach(function() { return Model.destroyAll(); });
 
         it('should update record by id', function() {
-            var id;
+            let id;
             return Model.create({
                 foo: 'bar',
                 bar: 1
@@ -469,8 +469,8 @@ describe('basic-querying', function() {
 });
 
 function seed(done) {
-    var count = 0;
-    var beatles = [
+    let count = 0;
+    const beatles = [
         {
             name: 'John Lennon',
             mail: 'john@b3atl3s.co.uk',
@@ -482,10 +482,10 @@ function seed(done) {
             role: 'lead',
             order: 1
         },
-        {name: 'George Harrison', order: 5},
-        {name: 'Ringo Starr', order: 6},
-        {name: 'Pete Best', order: 4},
-        {name: 'Stuart Sutcliffe', order: 3}
+        { name: 'George Harrison', order: 5 },
+        { name: 'Ringo Starr', order: 6 },
+        { name: 'Pete Best', order: 4 },
+        { name: 'Stuart Sutcliffe', order: 3 }
     ];
     User.destroyAll(function() {
         beatles.forEach(function(beatle) {

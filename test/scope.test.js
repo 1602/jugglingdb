@@ -1,21 +1,21 @@
 // This test written in mocha+should.js
-var should = require('./init.js');
+const should = require('./init.js');
 
-var db, Railway, Station;
+let db, Railway, Station;
 
 describe('sc0pe', function() {
 
     before(function() {
         db = getSchema();
         Railway = db.define('Railway', {
-            URID: {type: String, index: true}
+            URID: { type: String, index: true }
         });
         Station = db.define('Station', {
-            USID: {type: String, index: true},
-            capacity: {type: Number, index: true},
-            thoughput: {type: Number, index: true},
-            isActive: {type: Boolean, index: true},
-            isUndeground: {type: Boolean, index: true}
+            USID: { type: String, index: true },
+            capacity: { type: Number, index: true },
+            thoughput: { type: Number, index: true },
+            isActive: { type: Boolean, index: true },
+            isUndeground: { type: Boolean, index: true }
         });
     });
 
@@ -26,7 +26,7 @@ describe('sc0pe', function() {
     });
 
     it('should define scope with query', function(done) {
-        Station.scope('active', {where: {isActive: true}});
+        Station.scope('active', { where: { isActive: true } });
         Station.active.create(function(err, station) {
             should.not.exist(err);
             should.exist(station);
@@ -37,21 +37,21 @@ describe('sc0pe', function() {
     });
 
     it('should allow scope chaining', function(done) {
-        Station.scope('active', {where: {isActive: true}});
-        Station.scope('subway', {where: {isUndeground: true}});
+        Station.scope('active', { where: { isActive: true } });
+        Station.scope('subway', { where: { isUndeground: true } });
         Station.active.subway.create(function(err, station) {
             should.not.exist(err);
             should.exist(station);
             station.isActive.should.be.true;
             station.isUndeground.should.be.true;
             done();
-        })
+        });
     });
 
     it('should query all', function(done) {
-        Station.scope('active', {where: {isActive: true}});
-        Station.scope('inactive', {where: {isActive: false}});
-        Station.scope('ground', {where: {isUndeground: true}});
+        Station.scope('active', { where: { isActive: true } });
+        Station.scope('inactive', { where: { isActive: false } });
+        Station.scope('ground', { where: { isUndeground: true } });
         Station.active.ground.create(function() {
             Station.inactive.ground.create(function() {
                 Station.ground.inactive(function(err, ss) {

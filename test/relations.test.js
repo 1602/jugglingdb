@@ -1,15 +1,15 @@
 // This test written in mocha+should.js
-var should = require('./init.js');
+const should = require('./init.js');
 
-var db, Book, Chapter, Author, Reader;
+let db, Book, Chapter, Author, Reader;
 
 describe('relations', function() {
     before(function(done) {
         db = getSchema();
-        Book = db.define('Book', {name: String});
-        Chapter = db.define('Chapter', {name: {type: String, index: true, limit: 20}});
-        Author = db.define('Author', {name: String});
-        Reader = db.define('Reader', {name: String});
+        Book = db.define('Book', { name: String });
+        Chapter = db.define('Chapter', { name: { type: String, index: true, limit: 20 } });
+        Author = db.define('Author', { name: String });
+        Reader = db.define('Reader', { name: String });
 
         db.automigrate(function() {
             Book.destroyAll().then(function() {
@@ -29,9 +29,9 @@ describe('relations', function() {
     describe('hasMany', function() {
         it('can be declared in different ways', function(done) {
             Book.hasMany(Chapter);
-            Book.hasMany(Reader, {as: 'users'});
-            Book.hasMany(Author, {foreignKey: 'projectId'});
-            var b = new Book();
+            Book.hasMany(Reader, { as: 'users' });
+            Book.hasMany(Author, { foreignKey: 'projectId' });
+            const b = new Book();
             b.chapters.should.be.an.instanceOf(Function);
             b.users.should.be.an.instanceOf(Function);
             b.authors.should.be.an.instanceOf(Function);
@@ -51,14 +51,14 @@ describe('relations', function() {
 
         it('should build record on scope', function(done) {
             Book.create(function(err, book) {
-                var c = book.chapters.build();
+                const c = book.chapters.build();
                 c.bookId.should.equal(book.id);
                 c.save(done);
             });
         });
 
         it('should create record on scope', function() {
-            var book;
+            let book;
             return Book.create()
                 .then(function(book_) {
                     book = book_;
@@ -71,9 +71,9 @@ describe('relations', function() {
 
         it.skip('should fetch all scoped instances', function(done) {
             Book.create(function(err, book) {
-                book.chapters.create({name: 'a'}, function() {
-                    book.chapters.create({name: 'z'}, function() {
-                        book.chapters.create({name: 'c'}, function() {
+                book.chapters.create({ name: 'a' }, function() {
+                    book.chapters.create({ name: 'z' }, function() {
+                        book.chapters.create({ name: 'c' }, function() {
                             fetch(book);
                         });
                     });
@@ -85,7 +85,7 @@ describe('relations', function() {
                     should.exist(ch);
                     ch.should.have.lengthOf(3);
 
-                    book.chapters({order: 'name DESC'}, function(e, c) {
+                    book.chapters({ order: 'name DESC' }, function(e, c) {
                         should.not.exist(e);
                         should.exist(c);
                         c.shift().name.should.equal('z');
@@ -97,12 +97,12 @@ describe('relations', function() {
         });
 
         it('should find scoped record', function(done) {
-            var id;
+            let id;
             Book.create(function(err, book) {
-                book.chapters.create({name: 'a'}, function(err, ch) {
+                book.chapters.create({ name: 'a' }, function(err, ch) {
                     id = ch.id;
-                    book.chapters.create({name: 'z'}, function() {
-                        book.chapters.create({name: 'c'}, function() {
+                    book.chapters.create({ name: 'z' }, function() {
+                        book.chapters.create({ name: 'c' }, function() {
                             fetch(book);
                         });
                     });
@@ -121,7 +121,7 @@ describe('relations', function() {
 
         it('should destroy scoped record', function(done) {
             Book.create(function(err, book) {
-                book.chapters.create({name: 'a'}, function(err, ch) {
+                book.chapters.create({ name: 'a' }, function(err, ch) {
                     book.chapters.destroy(ch.id, function(err) {
                         should.not.exist(err);
                         book.chapters.find(ch.id, function(err, ch) {
@@ -137,8 +137,8 @@ describe('relations', function() {
 
         it('should not allow destroy not scoped records', function(done) {
             Book.create(function(err, book1) {
-                book1.chapters.create({name: 'a'}, function(err, ch) {
-                    var id = ch.id;
+                book1.chapters.create({ name: 'a' }, function(err, ch) {
+                    const id = ch.id;
                     Book.create(function(err, book2) {
                         book2.chapters.destroy(ch.id, function(err) {
                             should.exist(err);
@@ -157,11 +157,11 @@ describe('relations', function() {
     });
 
     describe('belongsTo', function() {
-        var List, Item, Fear, Mind;
+        let List, Item, Fear, Mind;
 
         it('can be declared in different ways', function() {
-            List = db.define('List', {name: String});
-            Item = db.define('Item', {name: String});
+            List = db.define('List', { name: String });
+            Item = db.define('Item', { name: String });
             Fear = db.define('Fear');
             Mind = db.define('Mind');
 
@@ -178,7 +178,7 @@ describe('relations', function() {
         });
 
         it('can be used to query data', function(done) {
-            List.hasMany('todos', {model: Item});
+            List.hasMany('todos', { model: Item });
             db.automigrate(function() {
                 List.create(function(e, list) {
                     should.not.exist(e);
@@ -196,7 +196,7 @@ describe('relations', function() {
         });
 
         it('can be used to query data as promise', function() {
-            List.hasMany('todos', {model: Item});
+            List.hasMany('todos', { model: Item });
             return db.automigrate()
                 .then(function() {
                     return List.create();
@@ -218,7 +218,7 @@ describe('relations', function() {
             List.create(function(e, list) {
                 should.not.exist(e);
                 should.exist(list);
-                Item.create({list: list}, function(err, item) {
+                Item.create({ list }, function(err, item) {
                     should.not.exist(err);
                     should.exist(item);
                     should.exist(item.listId);
@@ -232,11 +232,11 @@ describe('relations', function() {
     });
 
     describe('hasAndBelongsToMany', function() {
-        var Article, Tag, ArticleTag;
+        let Article, Tag, ArticleTag;
 
         before(function(done) {
-            Article = db.define('Article', {title: String});
-            Tag = db.define('Tag', {name: String});
+            Article = db.define('Article', { title: String });
+            Tag = db.define('Tag', { name: String });
             Article.hasAndBelongsToMany('tags');
             ArticleTag = db.models.ArticleTag;
             db.automigrate(function() {
@@ -250,7 +250,7 @@ describe('relations', function() {
 
         it('should allow to create instances on scope', function(done) {
             Article.create(function(e, article) {
-                article.tags.create({name: 'popular'}, function(e, t) {
+                article.tags.create({ name: 'popular' }, function(e, t) {
                     t.should.be.an.instanceOf(Tag);
                     ArticleTag.findOne(function(e, at) {
                         should.exist(at);
@@ -274,7 +274,7 @@ describe('relations', function() {
 
         it('should allow to add connection with instance', function(done) {
             Article.findOne(function(e, article) {
-                Tag.create({name: 'awesome'}, function(e, tag) {
+                Tag.create({ name: 'awesome' }, function(e, tag) {
                     article.tags.add(tag, function(e, at) {
                         should.not.exist(e);
                         should.exist(at);
@@ -290,7 +290,7 @@ describe('relations', function() {
         it('should allow to remove connection with instance', function(done) {
             Article.findOne(function(e, article) {
                 article.tags(function(e, tags) {
-                    var len = tags.length;
+                    const len = tags.length;
                     tags.should.not.be.empty;
                     should.exist(tags[0]);
                     article.tags.remove(tags[0], function(e) {
@@ -308,15 +308,15 @@ describe('relations', function() {
         });
 
         it('should remove the correct connection', function() {
-            var article1, article2, tag;
-            return Article.create({title: 'Article 1'})
+            let article1, article2, tag;
+            return Article.create({ title: 'Article 1' })
                 .then(function(article1_) {
                     article1 = article1_;
-                    return Article.create({title: 'Article 2'});
+                    return Article.create({ title: 'Article 2' });
                 })
                 .then(function(article2_) {
                     article2 = article2_;
-                    return Tag.create({name: 'correct'});
+                    return Tag.create({ name: 'correct' });
                 })
                 .then(function(tag_) {
                     tag = tag_;

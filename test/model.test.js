@@ -1,7 +1,7 @@
-var should = require('./init.js');
-var expect = require('expect');
+const should = require('./init.js');
+const expect = require('expect');
 
-var db, Model;
+let db, Model;
 
 /* global getSchema */
 
@@ -10,12 +10,12 @@ describe('Model', function() {
     before(function() {
         db = getSchema();
         Model = db.define('Model', function(m) {
-            m.property('field', String, {index: true});
+            m.property('field', String, { index: true });
         });
     });
 
     it('should reset prev data on save', function(done) {
-        var inst = new Model({field: 'hello'});
+        const inst = new Model({ field: 'hello' });
         inst.field = 'world';
         inst.save().then(function(s) {
             s.field.should.equal('world');
@@ -35,7 +35,7 @@ describe('Model', function() {
     describe('fetch', function() {
 
         it('should find record by id', function() {
-            var randomNumber = Math.random();
+            const randomNumber = Math.random();
             return Model.create({ field: 'test' + randomNumber })
                 .then(function(inst) {
                     return Model.fetch(inst.id);
@@ -64,13 +64,13 @@ describe('Model', function() {
     describe('reload', function() {
 
         it('should reload model from db', function() {
-            var cached;
-            return Model.create({field: 'hello'})
+            let cached;
+            return Model.create({ field: 'hello' })
                 .then(function(inst) {
                     cached = inst;
                     return Model.bulkUpdate({
-                        where: {id: inst.id},
-                        update: {field: 'data'}
+                        where: { id: inst.id },
+                        update: { field: 'data' }
                     });
                 })
                 .then(function() {
@@ -86,7 +86,7 @@ describe('Model', function() {
     describe('upsert', function() {
 
         it('should create record when no id provided', function() {
-            return Model.upsert({field: 'value'})
+            return Model.upsert({ field: 'value' })
                 .then(function(inst) {
                     should.exist(inst);
                     should.exist(inst.id);
@@ -94,7 +94,7 @@ describe('Model', function() {
         });
 
         context('adapter does not support upsert', function() {
-            var updateOrCreate, find, save, updateAttributes;
+            let updateOrCreate, find, save, updateAttributes;
 
             beforeEach(function() {
                 updateOrCreate = Model.schema.adapter.updateOrCreate;
@@ -114,7 +114,7 @@ describe('Model', function() {
             it('should find and update when found', function() {
 
                 Model.schema.adapter.find = function(modelName, id, cb) {
-                    cb(null, {id: 1602, field: 'hello there'});
+                    cb(null, { id: 1602, field: 'hello there' });
                 };
 
                 Model.prototype.updateAttributes = function(data, cb) {
@@ -122,7 +122,7 @@ describe('Model', function() {
                     cb(null, this);
                 };
 
-                return Model.upsert({id: 1602, field: 'value'}, function(err, inst) {
+                return Model.upsert({ id: 1602, field: 'value' }, function(err, inst) {
                     should.not.exist(err);
                     should.exist(inst);
                     inst.id.should.equal(1602);
@@ -146,11 +146,11 @@ describe('Model', function() {
                     id: 1602,
                     field: 'value'
                 }, function(err, inst) {
-                        should.not.exist(err);
-                        should.exist(inst);
-                        inst.id.should.equal(1602);
-                        inst.field.should.equal('value');
-                    });
+                    should.not.exist(err);
+                    should.exist(inst);
+                    inst.id.should.equal(1602);
+                    inst.field.should.equal('value');
+                });
 
             });
 
@@ -160,10 +160,10 @@ describe('Model', function() {
                     cb(new Error('Uh-oh'));
                 };
 
-                return Model.upsert({id: 1602, field: 'value'}, function(err, inst) {
-                        should.exist(err);
-                        err.message.should.equal('Uh-oh');
-                    });
+                return Model.upsert({ id: 1602, field: 'value' }, function(err, inst) {
+                    should.exist(err);
+                    err.message.should.equal('Uh-oh');
+                });
 
             });
 
@@ -196,8 +196,8 @@ describe('Model', function() {
     describe('fromObject', function() {
 
         it('should mutate existing object', function() {
-            var inst = new Model();
-            inst.fromObject({field: 'haha'});
+            const inst = new Model();
+            inst.fromObject({ field: 'haha' });
             inst.field.should.equal('haha');
         });
 

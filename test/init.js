@@ -1,6 +1,6 @@
 module.exports = require('should');
 
-var Schema = require('../').Schema;
+const Schema = require('../').Schema;
 
 if (!('getSchema' in global)) {
     global.getSchema = function() {

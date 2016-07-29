@@ -4,7 +4,7 @@ try {
     // ignore
 }
 
-var group_name = false, EXT_EXP;
+let group_name = false, EXT_EXP;
 function it(should, test_case) {
     check_external_exports();
     if (group_name) {
@@ -21,10 +21,10 @@ function context(name, tests) {
     EXT_EXP[name] = {};
     group_name = name;
     tests({
-        before: function (f) {
+        before(f) {
             it('setUp', f);
         },
-        after: function (f) {
+        after(f) {
             it('tearDown', f);
         }
     });

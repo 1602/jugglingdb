@@ -1,11 +1,11 @@
 
-var Schema = require('../index').Schema;
-var Text = Schema.Text;
+const Schema = require('../index').Schema;
+const Text = Schema.Text;
 
-var nbSchemaRequests = 0;
+let nbSchemaRequests = 0;
 
-var batch;
-var schemaName;
+let batch;
+let schemaName;
 
 function it(name, cases) {
     batch[schemaName][name] = cases;
@@ -22,15 +22,15 @@ module.exports = function testSchema(exportCasesHere, schema) {
     if (schema.name.match(/^\/.*\/test\/\.\.$/)) {
         schemaName = schemaName.split('/').slice(-3).shift();
     }
-    var start;
+    let start;
 
-    batch['should connect to database'] = function (test) {
+    batch['should connect to database'] = function(test) {
         start = Date.now();
         if (schema.connected) return test.done();
         schema.on('connected', test.done);
     };
 
-    schema.log = function (a) {
+    schema.log = function(a) {
         console.log(a);
         nbSchemaRequests++;
     };
@@ -39,7 +39,7 @@ module.exports = function testSchema(exportCasesHere, schema) {
 
     testOrm(schema);
 
-    batch['all tests done'] = function (test) {
+    batch['all tests done'] = function(test) {
         test.done();
         process.nextTick(allTestsDone);
     };
@@ -66,12 +66,12 @@ Object.defineProperty(module.exports, 'skip', {
 });
 
 function clearAndCreate(model, data, callback) {
-    var createdItems = [];
-    model.destroyAll(function () {
+    const createdItems = [];
+    model.destroyAll(function() {
         nextItem(null, null);
     });
 
-    var itemIndex = 0;
+    let itemIndex = 0;
     function nextItem(err, lastItem) {
         if (lastItem !== null) {
             createdItems.push(lastItem);
@@ -86,11 +86,11 @@ function clearAndCreate(model, data, callback) {
 }
 
 function testOrm(schema) {
-    var requestsAreCounted = schema.name !== 'mongodb';
+    const requestsAreCounted = schema.name !== 'mongodb';
 
-    var Post, User, Passport, Log, Dog;
+    let Post, User, Passport, Log, Dog;
 
-    it('should define class', function (test) {
+    it('should define class', function(test) {
 
         User = schema.define('User', {
             name:      { type: String, index: true },
@@ -111,36 +111,36 @@ function testOrm(schema) {
             name         : { type: String, limit: 64, allowNull: false }
         });
 
-        Log.belongsTo(Dog,  {as: 'owner',  foreignKey: 'ownerId'});
+        Log.belongsTo(Dog,  { as: 'owner',  foreignKey: 'ownerId' });
 
         schema.extendModel('User', {
             settings:  { type: Schema.JSON },
             extra:      Object
         });
 
-        var newuser = new User({settings: {hey: 'you'}});
+        const newuser = new User({ settings: { hey: 'you' } });
         test.ok(newuser.settings);
 
         Post = schema.define('Post', {
             title:     { type: String, length: 255, index: true },
             subject:   { type: String },
             content:   { type: Text },
-            date:      { type: Date,    default: function () { return new Date }, index: true },
+            date:      { type: Date,    default() { return new Date; }, index: true },
             published: { type: Boolean, default: false, index: true },
             likes:     [],
             related:   [RelatedPost]
-        }, {table: 'posts'});
+        }, { table: 'posts' });
 
         function RelatedPost() { }
-        RelatedPost.prototype.someMethod = function () {
+        RelatedPost.prototype.someMethod = function() {
             return this.parent;
         };
 
-        Post.validateAsync('title', function (err, done) {
+        Post.validateAsync('title', function(err, done) {
             process.nextTick(done);
         });
 
-        User.hasMany(Post,   {as: 'posts',  foreignKey: 'userId'});
+        User.hasMany(Post,   { as: 'posts',  foreignKey: 'userId' });
         // creates instance methods:
         // user.posts(conds)
         // user.posts.build(data) // like new Post({userId: user.id});
@@ -155,7 +155,7 @@ function testOrm(schema) {
         // user.latestPost.build(data)
         // user.latestPost.create(data)
 
-        Post.belongsTo(User, {as: 'author', foreignKey: 'userId'});
+        Post.belongsTo(User, { as: 'author', foreignKey: 'userId' });
         // creates instance methods:
         // post.author(callback) -- getter when called with function
         // post.author() -- sync getter when called without params
@@ -165,10 +165,10 @@ function testOrm(schema) {
             number: String
         });
 
-        Passport.belongsTo(User, {as: 'owner', foreignKey: 'ownerId'});
-        User.hasMany(Passport,   {as: 'passports', foreignKey: 'ownerId'});
+        Passport.belongsTo(User, { as: 'owner', foreignKey: 'ownerId' });
+        User.hasMany(Passport,   { as: 'passports', foreignKey: 'ownerId' });
 
-        var user = new User;
+        const user = new User;
 
         test.ok(User instanceof Function);
 
@@ -179,7 +179,7 @@ function testOrm(schema) {
         // instance methods
         test.ok(user.save instanceof Function);
 
-        schema.automigrate(function (err) {
+        schema.automigrate(function(err) {
             if (err) {
                 console.log('Error while migrating');
                 console.log(err);
@@ -190,11 +190,11 @@ function testOrm(schema) {
 
     });
 
-    it('should initialize object properly', function (test) {
-        var hw = 'Hello word',
+    it('should initialize object properly', function(test) {
+        let hw = 'Hello word',
             now = Date.now(),
-            post = new Post({title: hw}),
-            anotherPost = Post({title: 'Resig style constructor'});
+            post = new Post({ title: hw }),
+            anotherPost = Post({ title: 'Resig style constructor' });
 
         test.equal(post.title, hw);
         test.ok(!post.propertyChanged('title'), 'property changed: title');
@@ -209,31 +209,31 @@ function testOrm(schema) {
         test.done();
     });
 
-    it('should save object', function (test) {
-        var title = 'Initial title', title2 = 'Hello world',
+    it('should save object', function(test) {
+        let title = 'Initial title', title2 = 'Hello world',
             date = new Date;
 
         Post.create({
-            title: title,
-            date: date
-        }, function (err, obj) {
+            title,
+            date
+        }, function(err, obj) {
             test.ok(obj.id, 'Object id should present');
             test.equals(obj.title, title);
             // test.equals(obj.date, date);
             obj.title = title2;
             test.ok(obj.propertyChanged('title'), 'Title changed');
-            obj.save(function (err, obj) {
+            obj.save(function(err, obj) {
                 test.equal(obj.title, title2);
                 test.ok(!obj.propertyChanged('title'));
 
-                var p = new Post({title: 1});
+                const p = new Post({ title: 1 });
                 p.title = 2;
-                p.save(function (err, obj) {
+                p.save(function(err, obj) {
                     test.ok(!p.propertyChanged('title'));
                     p.title = 3;
                     test.ok(p.propertyChanged('title'));
                     test.equal(p.title_was, 2);
-                    p.save(function () {
+                    p.save(function() {
                         test.equal(p.title_was, 3);
                         test.ok(!p.propertyChanged('title'));
                         test.done();
@@ -243,18 +243,18 @@ function testOrm(schema) {
         });
     });
 
-    it('should create object with initial data', function (test) {
-        var title = 'Initial title',
+    it('should create object with initial data', function(test) {
+        let title = 'Initial title',
             date = new Date;
 
         Post.create({
-            title: title,
-            date: date
-        }, function (err, obj) {
+            title,
+            date
+        }, function(err, obj) {
             test.ok(obj.id);
             test.equals(obj.title, title);
             test.equals(obj.date, date);
-            Post.find(obj.id, function () {
+            Post.find(obj.id, function() {
                 test.equal(obj.title, title);
                 test.equal(obj.date.toString(), date.toString());
                 test.done();
@@ -262,13 +262,13 @@ function testOrm(schema) {
         });
     });
 
-    it('should save only schema-defined field in database', function (test) {
-        Post.create({title: '1602', nonSchemaField: 'some value'}, function (err, post) {
+    it('should save only schema-defined field in database', function(test) {
+        Post.create({ title: '1602', nonSchemaField: 'some value' }, function(err, post) {
             test.ok(!post.nonSchemaField);
             post.a = 1;
-            post.save(function () {
+            post.save(function() {
                 test.ok(post.a);
-                post.reload(function (err, psto) {
+                post.reload(function(err, psto) {
                     test.ok(!psto.a);
                     test.done();
                 });
@@ -292,24 +292,24 @@ function testOrm(schema) {
     });
     */
 
-    it('should not re-instantiate object on saving', function (test) {
-        var title = 'Initial title';
-        var post = new Post({title: title});
-        post.save(function (err, savedPost) {
+    it('should not re-instantiate object on saving', function(test) {
+        const title = 'Initial title';
+        const post = new Post({ title });
+        post.save(function(err, savedPost) {
             test.strictEqual(post, savedPost);
             test.done();
         });
     });
 
-    it('should destroy object', function (test) {
-        Post.create(function (err, post) {
-            Post.exists(post.id, function (err, exists) {
+    it('should destroy object', function(test) {
+        Post.create(function(err, post) {
+            Post.exists(post.id, function(err, exists) {
                 test.ok(exists, 'Object exists');
-                post.destroy(function () {
-                    Post.exists(post.id, function (err, exists) {
+                post.destroy(function() {
+                    Post.exists(post.id, function(err, exists) {
                         if (err) console.log(err);
                         test.ok(!exists, 'Hey! ORM told me that object exists, but it looks like it doesn\'t. Something went wrong...');
-                        Post.find(post.id, function (err, obj) {
+                        Post.find(post.id, function(err, obj) {
                             test.equal(obj, null, 'Param obj should be null');
                             test.done();
                         });
@@ -319,22 +319,22 @@ function testOrm(schema) {
         });
     });
 
-    it('should handle virtual attributes', function (test) {
-        var salt = 's0m3s3cr3t5a1t';
+    it('should handle virtual attributes', function(test) {
+        const salt = 's0m3s3cr3t5a1t';
 
-        User.setter.passwd = function (password) {
+        User.setter.passwd = function(password) {
             this._passwd = calcHash(password, salt);
         };
 
         function calcHash(pass, salt) {
-            var crypto = require('crypto');
-            var hash = crypto.createHash('sha256');
+            const crypto = require('crypto');
+            const hash = crypto.createHash('sha256');
             hash.update(pass);
             hash.update(salt);
             return hash.digest('base64');
         }
 
-        var u = new User;
+        const u = new User;
         u.passwd = 's3cr3t';
         test.equal(u.passwd, calcHash('s3cr3t', salt));
         test.done();
@@ -352,15 +352,15 @@ function testOrm(schema) {
     //     });
     // });
 
-    it('should update single attribute', function (test) {
-        Post.create({title: 'title', content: 'content', published: true}, function (err, post) {
+    it('should update single attribute', function(test) {
+        Post.create({ title: 'title', content: 'content', published: true }, function(err, post) {
             post.content = 'New content';
-            post.updateAttribute('title', 'New title', function () {
+            post.updateAttribute('title', 'New title', function() {
                 test.equal(post.title, 'New title');
                 test.ok(!post.propertyChanged('title'));
                 test.equal(post.content, 'New content', 'dirty state saved');
                 test.ok(post.propertyChanged('content'));
-                post.reload(function (err, post) {
+                post.reload(function(err, post) {
                     test.equal(post.title, 'New title');
                     test.ok(!post.propertyChanged('title'), 'title not changed');
                     test.equal(post.content, 'content', 'real value turned back');
@@ -371,23 +371,23 @@ function testOrm(schema) {
         });
     });
 
-    var countOfposts, countOfpostsFiltered;
-    it('should fetch collection', function (test) {
-        Post.all(function (err, posts) {
+    let countOfposts, countOfpostsFiltered;
+    it('should fetch collection', function(test) {
+        Post.all(function(err, posts) {
             countOfposts = posts.length;
             test.ok(countOfposts > 0);
             test.ok(posts[0] instanceof Post);
-            countOfpostsFiltered = posts.filter(function (p) {
+            countOfpostsFiltered = posts.filter(function(p) {
                 return p.title === 'title';
             }).length;
             test.done();
         });
     });
 
-    it('should find records filtered with multiple attributes', function (test) {
-        var d = new Date;
-        Post.create({title: 'title', content: 'content', published: true, date: d}, function (err, post) {
-            Post.all({where: {title: 'title', date: d, published: true}}, function (err, res) {
+    it('should find records filtered with multiple attributes', function(test) {
+        const d = new Date;
+        Post.create({ title: 'title', content: 'content', published: true, date: d }, function(err, post) {
+            Post.all({ where: { title: 'title', date: d, published: true } }, function(err, res) {
                 test.equals(res.length, 1, 'Filtering Posts returns one post');
                 test.done();
             });
@@ -400,33 +400,33 @@ function testOrm(schema) {
             schema.name !== 'neo4j' &&
             schema.name !== 'cradle'
         )
-    it('relations key is working', function (test) {
-        test.ok(User.relations, 'Relations key should be defined');
-        test.ok(User.relations.posts, 'posts relation should exist on User');
-        test.equal(User.relations.posts.type, 'hasMany', 'Type of hasMany relation is hasMany');
-        test.equal(User.relations.posts.multiple, true, 'hasMany relations are multiple');
-        test.equal(User.relations.posts.keyFrom, 'id', 'keyFrom is primary key of model table');
-        test.equal(User.relations.posts.keyTo, 'userId', 'keyTo is foreign key of related model table');
+        it('relations key is working', function(test) {
+            test.ok(User.relations, 'Relations key should be defined');
+            test.ok(User.relations.posts, 'posts relation should exist on User');
+            test.equal(User.relations.posts.type, 'hasMany', 'Type of hasMany relation is hasMany');
+            test.equal(User.relations.posts.multiple, true, 'hasMany relations are multiple');
+            test.equal(User.relations.posts.keyFrom, 'id', 'keyFrom is primary key of model table');
+            test.equal(User.relations.posts.keyTo, 'userId', 'keyTo is foreign key of related model table');
 
-        test.ok(Post.relations, 'Relations key should be defined');
-        test.ok(Post.relations.author, 'author relation should exist on Post');
-        test.equal(Post.relations.author.type, 'belongsTo', 'Type of belongsTo relation is belongsTo');
-        test.equal(Post.relations.author.multiple, false, 'belongsTo relations are not multiple');
-        test.equal(Post.relations.author.keyFrom, 'userId', 'keyFrom is foreign key of model table');
-        test.equal(Post.relations.author.keyTo, 'id', 'keyTo is primary key of related model table');
-        test.done();
-    });
+            test.ok(Post.relations, 'Relations key should be defined');
+            test.ok(Post.relations.author, 'author relation should exist on Post');
+            test.equal(Post.relations.author.type, 'belongsTo', 'Type of belongsTo relation is belongsTo');
+            test.equal(Post.relations.author.multiple, false, 'belongsTo relations are not multiple');
+            test.equal(Post.relations.author.keyFrom, 'userId', 'keyFrom is foreign key of model table');
+            test.equal(Post.relations.author.keyTo, 'id', 'keyTo is primary key of related model table');
+            test.done();
+        });
 
 
-    it('should handle hasMany relationship', function (test) {
-        User.create(function (err, u) {
+    it('should handle hasMany relationship', function(test) {
+        User.create(function(err, u) {
             if (err) return console.log(err);
             test.ok(u.posts, 'Method defined: posts');
             test.ok(u.posts.build, 'Method defined: posts.build');
             test.ok(u.posts.create, 'Method defined: posts.create');
-            u.posts.create(function (err, post) {
+            u.posts.create(function(err, post) {
                 if (err) return console.log(err);
-                u.posts(function (err, posts) {
+                u.posts(function(err, posts) {
                     test.equal(posts.pop().id.toString(), post.id.toString());
                     test.done();
                 });
@@ -434,23 +434,23 @@ function testOrm(schema) {
         });
     });
 
-    it('should navigate variations of belongsTo regardless of column name', function(test){
+    it('should navigate variations of belongsTo regardless of column name', function(test) {
 
-        Dog.create({name: 'theDog'}, function(err, obj){
+        Dog.create({ name: 'theDog' }, function(err, obj) {
             test.ok(obj instanceof Dog);
-            Log.create({name: 'theLog', ownerId: obj.id}, function(err, obj){
+            Log.create({ name: 'theLog', ownerId: obj.id }, function(err, obj) {
                 test.ok(obj instanceof Log);
-                obj.owner(function(err, obj){
+                obj.owner(function(err, obj) {
                     test.ok(!err, 'Should not have an error.'); // Before cba174b this would be 'Error: Permission denied'
-                    if(err){
+                    if (err) {
                         console.log('Found: ' + err);
                     }
                     test.ok(obj, 'Should not find null or undefined.'); // Before cba174b this could be null or undefined.
                     test.ok(obj instanceof Dog, 'Should find a Dog.');
-                    if(obj){ // Since test won't stop on fail, have to check before accessing obj.name.
+                    if (obj) { // Since test won't stop on fail, have to check before accessing obj.name.
                         test.ok(obj.name, 'Should have a name.');
                     }
-                    if(obj && obj.name){
+                    if (obj && obj.name) {
                         test.equal(obj.name, 'theDog', 'The owner of theLog is theDog.');
                     }
                     test.done();
@@ -459,11 +459,11 @@ function testOrm(schema) {
         });
     });
 
-    it('hasMany should support additional conditions', function (test) {
+    it('hasMany should support additional conditions', function(test) {
 
-        User.create(function (e, u) {
-            u.posts.create({}, function (e, p) {
-                u.posts({where: {id: p.id}}, function (e, posts) {
+        User.create(function(e, u) {
+            u.posts.create({}, function(e, p) {
+                u.posts({ where: { id: p.id } }, function(e, posts) {
                     test.equal(posts.length, 1, 'There should be only 1 post.');
                     test.done();
                 });
@@ -472,25 +472,25 @@ function testOrm(schema) {
 
     });
 
-    it('hasMany should be cached', function (test) {
+    it('hasMany should be cached', function(test) {
         //User.create(function (e, u) {
         //    u.posts.create({}, function (e, p) {
         // find all posts for a user.
         // Finding one post with an existing author associated
-        Post.all(function (err, posts) {
+        Post.all(function(err, posts) {
             // We try to get the first post with a userId != NULL
-            for (var i = 0; i < posts.length; i++) {
-                var post = posts[i];
+            for (let i = 0; i < posts.length; i++) {
+                const post = posts[i];
                 if (post.userId) {
                     // We could get the user with belongs to relationship but it is better if there is no interactions.
                     User.find(post.userId, function(err, user) {
                         User.create(function(err, voidUser) {
-                            Post.create({userId: user.id}, function() {
+                            Post.create({ userId: user.id }, function() {
 
                                 // There can't be any concurrency because we are counting requests
                                 // We are first testing cases when user has posts
                                 user.posts(function(err, data) {
-                                    var nbInitialRequests = nbSchemaRequests;
+                                    const nbInitialRequests = nbSchemaRequests;
                                     user.posts(function(err, data2) {
                                         test.equal(data.length, 2, 'There should be 2 posts.');
                                         test.equal(data.length, data2.length, 'Posts should be the same, since we are loading on the same object.');
@@ -499,7 +499,7 @@ function testOrm(schema) {
                                         if (schema.name === 'mongodb') { // for the moment mongodb doesn\'t support additional conditions on hasMany relations (see above)
                                             test.done();
                                         } else {
-                                            user.posts({where: {id: data[0].id}}, function(err, data) {
+                                            user.posts({ where: { id: data[0].id } }, function(err, data) {
                                                 test.equal(data.length, 1, 'There should be only one post.');
                                                 requestsAreCounted && test.equal(nbInitialRequests + 1, nbSchemaRequests, 'There should be one additional request since we added conditions.');
 
@@ -509,7 +509,7 @@ function testOrm(schema) {
 
                                                     // We are now testing cases when user doesn't have any post
                                                     voidUser.posts(function(err, data) {
-                                                        var nbInitialRequests = nbSchemaRequests;
+                                                        const nbInitialRequests = nbSchemaRequests;
                                                         voidUser.posts(function(err, data2) {
                                                             test.equal(data.length, 0, 'There shouldn\'t be any posts (1/2).');
                                                             test.equal(data2.length, 0, 'There shouldn\'t be any posts (2/2).');
@@ -547,24 +547,24 @@ function testOrm(schema) {
     //     });
     // });
 
-    it('should support scopes', function (test) {
-        var wait = 2;
+    it('should support scopes', function(test) {
+        let wait = 2;
 
         test.ok(Post.scope, 'Scope supported');
-        Post.scope('published', {where: {published: true}});
+        Post.scope('published', { where: { published: true } });
         test.ok(typeof Post.published === 'function');
         test.ok(Post.published._scope.where.published === true);
-        var post = Post.published.build();
+        const post = Post.published.build();
         test.ok(post.published, 'Can build');
         test.ok(post.isNewRecord());
-        Post.published.create(function (err, psto) {
+        Post.published.create(function(err, psto) {
             if (err) return console.log(err);
             test.ok(psto.published);
             test.ok(!psto.isNewRecord());
             done();
         });
 
-        User.create(function (err, u) {
+        User.create(function(err, u) {
             if (err) return console.log(err);
             test.ok(typeof u.posts.published == 'function');
             test.ok(u.posts.published._scope.where.published);
@@ -575,39 +575,39 @@ function testOrm(schema) {
 
         function done() {
             if (--wait === 0) test.done();
-        };
+        }
     });
 
-    it('should return type of property', function (test) {
+    it('should return type of property', function(test) {
         test.equal(Post.whatTypeName('title'), 'String');
         test.equal(Post.whatTypeName('content'), 'Text');
-        var p = new Post;
+        const p = new Post;
         test.equal(p.whatTypeName('title'), 'String');
         test.equal(p.whatTypeName('content'), 'Text');
         test.done();
     });
 
-    it('should handle ORDER clause', function (test) {
-        var titles = [ { title: 'Title A', subject: "B" },
-                       { title: 'Title Z', subject: "A" },
-                       { title: 'Title M', subject: "C" },
-                       { title: 'Title A', subject: "A" },
-                       { title: 'Title B', subject: "A" },
-                       { title: 'Title C', subject: "D" }];
-        var isRedis = Post.schema.name === 'redis';
-        var dates = isRedis ? [ 5, 9, 0, 17, 10, 9 ] : [
-            new Date(1000 * 5 ),
+    it('should handle ORDER clause', function(test) {
+        const titles = [{ title: 'Title A', subject: 'B' },
+                       { title: 'Title Z', subject: 'A' },
+                       { title: 'Title M', subject: 'C' },
+                       { title: 'Title A', subject: 'A' },
+                       { title: 'Title B', subject: 'A' },
+                       { title: 'Title C', subject: 'D' }];
+        const isRedis = Post.schema.name === 'redis';
+        const dates = isRedis ? [5, 9, 0, 17, 10, 9] : [
+            new Date(1000 * 5),
             new Date(1000 * 9),
             new Date(1000 * 0),
             new Date(1000 * 17),
             new Date(1000 * 10),
             new Date(1000 * 9)
         ];
-        titles.forEach(function (t, i) {
-            Post.create({title: t.title, subject: t.subject, date: dates[i]}, done);
+        titles.forEach(function(t, i) {
+            Post.create({ title: t.title, subject: t.subject, date: dates[i] }, done);
         });
 
-        var i = 0, tests = 0;
+        let i = 0, tests = 0;
         function done(err, obj) {
             if (++i === titles.length) {
                 doFilterAndSortTest();
@@ -632,10 +632,10 @@ function testOrm(schema) {
 
         function doStringTest() {
             tests += 1;
-            Post.all({order: 'title'}, function (err, posts) {
+            Post.all({ order: 'title' }, function(err, posts) {
                 if (err) console.log(err);
                 test.equal(posts.length, 6);
-                titles.sort(compare).forEach(function (t, i) {
+                titles.sort(compare).forEach(function(t, i) {
                     if (posts[i]) test.equal(posts[i].title, t.title);
                 });
                 finished();
@@ -644,12 +644,12 @@ function testOrm(schema) {
 
         function doNumberTest() {
             tests += 1;
-            Post.all({order: 'date'}, function (err, posts) {
+            Post.all({ order: 'date' }, function(err, posts) {
                 if (err) console.log(err);
                 test.equal(posts.length, 6);
-                dates.sort(numerically).forEach(function (d, i) {
+                dates.sort(numerically).forEach(function(d, i) {
                     if (posts[i])
-                    test.equal(posts[i].date.toString(), d.toString(), 'doNumberTest');
+                        test.equal(posts[i].date.toString(), d.toString(), 'doNumberTest');
                 });
                 finished();
             });
@@ -657,11 +657,11 @@ function testOrm(schema) {
 
         function doFilterAndSortTest() {
             tests += 1;
-            Post.all({where: {date: new Date(1000 * 9)}, order: 'title', limit: 3}, function (err, posts) {
+            Post.all({ where: { date: new Date(1000 * 9) }, order: 'title', limit: 3 }, function(err, posts) {
                 if (err) console.log(err);
                 console.log(posts.length);
                 test.equal(posts.length, 2, 'Exactly 2 posts returned by query');
-                [ 'Title C', 'Title Z' ].forEach(function (t, i) {
+                ['Title C', 'Title Z'].forEach(function(t, i) {
                     if (posts[i]) {
                         test.equal(posts[i].title, t, 'doFilterAndSortTest');
                     }
@@ -672,10 +672,10 @@ function testOrm(schema) {
 
         function doFilterAndSortReverseTest() {
             tests += 1;
-            Post.all({where: {date: new Date(1000 * 9)}, order: 'title DESC', limit: 3}, function (err, posts) {
+            Post.all({ where: { date: new Date(1000 * 9) }, order: 'title DESC', limit: 3 }, function(err, posts) {
                 if (err) console.log(err);
                 test.equal(posts.length, 2, 'Exactly 2 posts returned by query');
-                [ 'Title Z', 'Title C' ].forEach(function (t, i) {
+                ['Title Z', 'Title C'].forEach(function(t, i) {
                     if (posts[i]) {
                         test.equal(posts[i].title, t, 'doFilterAndSortReverseTest');
                     }
@@ -686,33 +686,33 @@ function testOrm(schema) {
 
         function doMultipleSortTest() {
             tests += 1;
-            Post.all({order: "title ASC, subject ASC"}, function(err, posts) {
+            Post.all({ order: 'title ASC, subject ASC' }, function(err, posts) {
                 if (err) console.log(err);
                 test.equal(posts.length, 6);
-                test.equal(posts[0].title, "Title A");
-                test.equal(posts[0].subject, "A");
-                test.equal(posts[1].title, "Title A");
-                test.equal(posts[1].subject, "B");
-                test.equal(posts[5].title, "Title Z");
+                test.equal(posts[0].title, 'Title A');
+                test.equal(posts[0].subject, 'A');
+                test.equal(posts[1].title, 'Title A');
+                test.equal(posts[1].subject, 'B');
+                test.equal(posts[5].title, 'Title Z');
                 finished();
             });
         }
 
         function doMultipleReverseSortTest() {
             tests += 1;
-            Post.all({order: "title ASC, subject DESC"}, function(err, posts) {
+            Post.all({ order: 'title ASC, subject DESC' }, function(err, posts) {
                 if (err) console.log(err);
                 test.equal(posts.length, 6);
-                test.equal(posts[0].title, "Title A");
-                test.equal(posts[0].subject, "B");
-                test.equal(posts[1].title,"Title A");
-                test.equal(posts[1].subject, "A");
-                test.equal(posts[5].title, "Title Z");
+                test.equal(posts[0].title, 'Title A');
+                test.equal(posts[0].subject, 'B');
+                test.equal(posts[1].title,'Title A');
+                test.equal(posts[1].subject, 'A');
+                test.equal(posts[5].title, 'Title Z');
                 finished();
             });
         }
 
-        var fin = 0;
+        let fin = 0;
         function finished() {
             if (++fin === tests) {
                 test.done();
@@ -866,9 +866,9 @@ function testOrm(schema) {
     //     }
     // });
 
-    it('should handle order clause with direction', function (test) {
-        var wait = 0;
-        var emails = [
+    it('should handle order clause with direction', function(test) {
+        let wait = 0;
+        const emails = [
             'john@hcompany.com',
             'tom@hcompany.com',
             'admin@hcompany.com',
@@ -877,15 +877,15 @@ function testOrm(schema) {
             'susan@hcompany.com',
             'test@hcompany.com'
         ];
-        User.destroyAll(function () {
-            emails.forEach(function (email) {
+        User.destroyAll(function() {
+            emails.forEach(function(email) {
                 wait += 1;
-                User.create({email: email, name: 'Nick'}, done);
+                User.create({ email, name: 'Nick' }, done);
             });
         });
-        var tests = 2;
+        let tests = 2;
         function done() {
-            process.nextTick(function () {
+            process.nextTick(function() {
                 if (--wait === 0) {
                     doSortTest();
                     doReverseSortTest();
@@ -894,9 +894,9 @@ function testOrm(schema) {
         }
 
         function doSortTest() {
-            User.all({order: 'email ASC', where: {name: 'Nick'}}, function (err, users) {
-                var _emails = emails.sort();
-                users.forEach(function (user, i) {
+            User.all({ order: 'email ASC', where: { name: 'Nick' } }, function(err, users) {
+                const _emails = emails.sort();
+                users.forEach(function(user, i) {
                     test.equal(_emails[i], user.email, 'ASC sorting');
                 });
                 testDone();
@@ -904,9 +904,9 @@ function testOrm(schema) {
         }
 
         function doReverseSortTest() {
-            User.all({order: 'email DESC', where: {name: 'Nick'}}, function (err, users) {
-                var _emails = emails.sort().reverse();
-                users.forEach(function (user, i) {
+            User.all({ order: 'email DESC', where: { name: 'Nick' } }, function(err, users) {
+                const _emails = emails.sort().reverse();
+                users.forEach(function(user, i) {
                     test.equal(_emails[i], user.email, 'DESC sorting');
                 });
                 testDone();
@@ -918,12 +918,12 @@ function testOrm(schema) {
         }
     });
 
-    it('should return id in find result even after updateAttributes', function (test) {
-        Post.create(function (err, post) {
-            var id = post.id;
+    it('should return id in find result even after updateAttributes', function(test) {
+        Post.create(function(err, post) {
+            const id = post.id;
             test.ok(post.published === false);
-            post.updateAttributes({title: 'hey', published: true}, function () {
-                Post.find(id, function (err, post) {
+            post.updateAttributes({ title: 'hey', published: true }, function() {
+                Post.find(id, function(err, post) {
                     test.ok(!!post.published, 'Update boolean field');
                     test.ok(post.id);
                     test.done();
@@ -932,8 +932,8 @@ function testOrm(schema) {
         });
     });
 
-    it('should handle belongsTo correctly', function (test) {
-        var passport = new Passport({ownerId: 16});
+    it('should handle belongsTo correctly', function(test) {
+        const passport = new Passport({ ownerId: 16 });
         // sync getter
         test.equal(passport.owner(), 16);
         // sync setter
@@ -942,18 +942,18 @@ function testOrm(schema) {
         test.done();
     });
 
-    it('should query one record', function (test) {
+    it('should query one record', function(test) {
         test.expect(4);
-        Post.findOne(function (err, post) {
+        Post.findOne(function(err, post) {
             test.ok(post && post.id);
-            Post.findOne({ where: { title: 'hey' } }, function (err, post) {
+            Post.findOne({ where: { title: 'hey' } }, function(err, post) {
                 if (err) {
                     console.log(err);
                     return test.done();
                 }
                 test.equal(post && post.constructor.modelName, 'Post');
                 test.equal(post && post.title, 'hey');
-                Post.findOne({ where: { title: 'not exists' } }, function (err, post) {
+                Post.findOne({ where: { title: 'not exists' } }, function(err, post) {
                     test.ok(post === null);
                     test.done();
                 });
@@ -1011,62 +1011,62 @@ function testOrm(schema) {
     // });
 
     if (schema.name !== 'mongoose' && schema.name !== 'neo4j')
-    it('should update or create record', function (test) {
-        var newData = {
-            id: 1,
-            title: 'New title (really new)',
-            content: 'Some example content (updated)'
-        };
-        Post.updateOrCreate(newData, function (err, updatedPost) {
-            if (err) throw err;
-            test.ok(updatedPost);
-            if (!updatedPost) throw Error('No post!');
-
-            if (schema.name !== 'mongodb') {
-                test.equal(newData.id, updatedPost.toObject().id);
-            }
-            test.equal(newData.title, updatedPost.toObject().title);
-            test.equal(newData.content, updatedPost.toObject().content);
-
-            Post.find(updatedPost.id, function (err, post) {
+        it('should update or create record', function(test) {
+            const newData = {
+                id: 1,
+                title: 'New title (really new)',
+                content: 'Some example content (updated)'
+            };
+            Post.updateOrCreate(newData, function(err, updatedPost) {
                 if (err) throw err;
-                if (!post) throw Error('No post!');
+                test.ok(updatedPost);
+                if (!updatedPost) throw Error('No post!');
+
                 if (schema.name !== 'mongodb') {
-                    test.equal(newData.id, post.toObject().id);
+                    test.equal(newData.id, updatedPost.toObject().id);
                 }
-                test.equal(newData.title, post.toObject().title);
-                test.equal(newData.content, post.toObject().content);
-                Post.updateOrCreate({id: 100001, title: 'hey'}, function (err, post) {
-                    if (schema.name !== 'mongodb') test.equal(post.id, 100001);
-                    test.equal(post.title, 'hey');
-                    Post.find(post.id, function (err, post) {
-                        if (!post) throw Error('No post!');
-                        test.done();
+                test.equal(newData.title, updatedPost.toObject().title);
+                test.equal(newData.content, updatedPost.toObject().content);
+
+                Post.find(updatedPost.id, function(err, post) {
+                    if (err) throw err;
+                    if (!post) throw Error('No post!');
+                    if (schema.name !== 'mongodb') {
+                        test.equal(newData.id, post.toObject().id);
+                    }
+                    test.equal(newData.title, post.toObject().title);
+                    test.equal(newData.content, post.toObject().content);
+                    Post.updateOrCreate({ id: 100001, title: 'hey' }, function(err, post) {
+                        if (schema.name !== 'mongodb') test.equal(post.id, 100001);
+                        test.equal(post.title, 'hey');
+                        Post.find(post.id, function(err, post) {
+                            if (!post) throw Error('No post!');
+                            test.done();
+                        });
                     });
                 });
             });
         });
-    });
 
-    it('should work with custom setters and getters', function (test) {
+    it('should work with custom setters and getters', function(test) {
         User.schema.defineForeignKey('User', 'passwd');
-        User.setter.passwd = function (pass) {
+        User.setter.passwd = function(pass) {
             this._passwd = pass + 'salt';
         };
-        var u = new User({passwd: 'qwerty'});
+        const u = new User({ passwd: 'qwerty' });
         test.equal(u.passwd, 'qwertysalt');
-        u.save(function (err, user) {
-            User.find(user.id, function (err, user) {
+        u.save(function(err, user) {
+            User.find(user.id, function(err, user) {
                 test.ok(user !== u);
                 test.equal(user.passwd, 'qwertysalt');
-                User.all({where: {passwd: 'qwertysalt'}}, function (err, users) {
+                User.all({ where: { passwd: 'qwertysalt' } }, function(err, users) {
                     test.ok(users[0] !== user);
                     test.equal(users[0].passwd, 'qwertysalt');
-                    User.create({passwd: 'asalat'}, function (err, usr) {
+                    User.create({ passwd: 'asalat' }, function(err, usr) {
                         test.equal(usr.passwd, 'asalatsalt');
-                        User.upsert({passwd: 'heyman'}, function (err, us) {
+                        User.upsert({ passwd: 'heyman' }, function(err, us) {
                             test.equal(us.passwd, 'heymansalt');
-                            User.find(us.id, function (err, user) {
+                            User.find(us.id, function(err, user) {
                                 test.equal(user.passwd, 'heymansalt');
                                 test.done();
                             });
@@ -1077,18 +1077,18 @@ function testOrm(schema) {
         });
     });
 
-    it('should work with typed and untyped nested collections', function (test) {
-        var post = new Post;
-        var like = post.likes.push({foo: 'bar'});
+    it('should work with typed and untyped nested collections', function(test) {
+        const post = new Post;
+        const like = post.likes.push({ foo: 'bar' });
         test.equal(like.constructor.name, 'ListItem');
-        var related = post.related.push({hello: 'world'});
+        const related = post.related.push({ hello: 'world' });
         test.ok(related.someMethod);
-        post.save(function (err, p) {
+        post.save(function(err, p) {
             test.equal(p.likes.nextid, 2);
-            p.likes.push({second: 2});
-            p.likes.push({third: 3});
-            p.save(function (err) {
-                Post.find(p.id, function (err, pp) {
+            p.likes.push({ second: 2 });
+            p.likes.push({ third: 3 });
+            p.save(function(err) {
+                Post.find(p.id, function(err, pp) {
                     test.equal(pp.likes.length, 3);
                     test.ok(pp.likes[3].third);
                     test.ok(pp.likes[2].second);
@@ -1100,8 +1100,8 @@ function testOrm(schema) {
                     test.equal(pp.likes.length, 1);
                     test.ok(!pp.likes[1]);
                     test.ok(pp.likes[3]);
-                    pp.save(function () {
-                        Post.find(p.id, function (err, pp) {
+                    pp.save(function() {
+                        Post.find(p.id, function(err, pp) {
                             test.equal(pp.likes.length, 1);
                             test.ok(!pp.likes[1]);
                             test.ok(pp.likes[3]);
@@ -1113,12 +1113,12 @@ function testOrm(schema) {
         });
     });
 
-    it('should find or create', function (test) {
-        var email = 'some email ' + Math.random();
-        User.findOrCreate({where: {email: email}}, function (err, u) {
+    it('should find or create', function(test) {
+        const email = 'some email ' + Math.random();
+        User.findOrCreate({ where: { email } }, function(err, u) {
             test.ok(u);
             test.ok(!u.age);
-            User.findOrCreate({where: {email: email}}, {age: 21}, function (err, u2) {
+            User.findOrCreate({ where: { email } }, { age: 21 }, function(err, u2) {
                 test.equals(u.id.toString(), u2.id.toString(), 'Same user ids');
                 test.ok(!u2.age);
                 test.done();

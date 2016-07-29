@@ -1,9 +1,9 @@
 // This test written in mocha+should.js
-var should = require('./init.js');
-var Schema = require('../').Schema;
+const should = require('./init.js');
+const Schema = require('../').Schema;
 
-var j = require('../'), db, User;
-var ValidationError = require('../lib/validations.js').ValidationError;
+let j = require('../'), db, User;
+const ValidationError = require('../lib/validations.js').ValidationError;
 
 function getValidAttributes() {
     return {
@@ -61,29 +61,29 @@ describe('validations', function() {
 
             User.validatesPresenceOf('name');
             User.beforeValidate = function(next, data) {
-                should.exist(data)
+                should.exist(data);
                 next(new Error('Fail'));
             };
 
-            var user = new User;
+            const user = new User;
             user.isValid(function(valid) {
                 // when validate hook fails, valid should be false
-                valid.should.equal(false)
-                done()
-            }, { name: 'test' })
+                valid.should.equal(false);
+                done();
+            }, { name: 'test' });
         });
 
         it('should trigger beforeValidate with data (no validations set)', function(done) {
             User.beforeValidate = function(next, data) {
-                should.exist(data)
-                data.name.should.equal('test')
+                should.exist(data);
+                data.name.should.equal('test');
                 next();
             };
-            var user = new User;
+            const user = new User;
             user.isValid(function(valid) {
-                valid.should.equal(true)
-                done()
-            }, { name: 'test' })
+                valid.should.equal(true);
+                done();
+            }, { name: 'test' });
         });
 
         it('should allow flow break by pass error to callback', function(done) {
@@ -94,23 +94,23 @@ describe('validations', function() {
             User.create(function(err, model) {
                 should.exist(err);
                 should.exist(model);
-                done()
-            })
-        })
+                done();
+            });
+        });
 
-    })
+    });
 
     describe('commons', function() {
 
         describe('skipping', function() {
 
             it('should allow to skip using if: attribute', function() {
-                User.validatesPresenceOf('pendingPeriod', {if: 'createdByAdmin'});
-                var user = new User;
+                User.validatesPresenceOf('pendingPeriod', { if: 'createdByAdmin' });
+                const user = new User;
                 user.createdByAdmin = true;
                 user.isValid().should.be.false;
                 user.errors.pendingPeriod.should.eql(['can\'t be blank']);
-                user.pendingPeriod = 1
+                user.pendingPeriod = 1;
                 user.isValid().should.be.true;
             });
 
@@ -123,7 +123,7 @@ describe('validations', function() {
                 User.validatesPresenceOf('name');
                 User.create(function(e, u) {
                     should.exist(e);
-                    User.create({name: 'Valid'}, function(e, d) {
+                    User.create({ name: 'Valid' }, function(e, d) {
                         should.not.exist(e);
                         done();
                     });
@@ -133,7 +133,7 @@ describe('validations', function() {
             it('should work on update', function(done) {
                 delete User._validations;
                 User.validatesPresenceOf('name');
-                User.create({name: 'Valid'}, function(e, d) {
+                User.create({ name: 'Valid' }, function(e, d) {
                     d.updateAttribute('name', null, function(e) {
                         should.exist(e);
                         e.should.be.instanceOf(Error);
@@ -142,7 +142,7 @@ describe('validations', function() {
                             should.not.exist(e);
                             done();
                         });
-                    })
+                    });
                 });
             });
 
@@ -170,7 +170,7 @@ describe('validations', function() {
 
         it('should validate presence', function() {
             User.validatesPresenceOf('name', 'email');
-            var u = new User;
+            const u = new User;
             u.isValid().should.not.be.true;
             u.name = 1;
             u.email = 2;
@@ -178,9 +178,9 @@ describe('validations', function() {
         });
 
         it('should skip validation by property (if/unless)', function() {
-            User.validatesPresenceOf('domain', {unless: 'createdByScript'});
+            User.validatesPresenceOf('domain', { unless: 'createdByScript' });
 
-            var user = new User(getValidAttributes())
+            const user = new User(getValidAttributes());
             user.isValid().should.be.true;
 
             user.createdByScript = false;
@@ -196,11 +196,11 @@ describe('validations', function() {
     describe('uniqueness', function() {
         it('should validate uniqueness', function(done) {
             User.validatesUniquenessOf('email');
-            var u = new User({email: 'hey'});
+            const u = new User({ email: 'hey' });
             Boolean(u.isValid(function(valid) {
                 valid.should.be.true;
                 u.save(function() {
-                    var u2 = new User({email: 'hey'});
+                    const u2 = new User({ email: 'hey' });
                     u2.isValid(function(valid) {
                         valid.should.be.false;
                         done();
@@ -210,12 +210,12 @@ describe('validations', function() {
         });
 
         it('should correctly handle null values', function(done) {
-            User.validatesUniquenessOf('email', {allowNull: true});
-            var u = new User({email: null});
+            User.validatesUniquenessOf('email', { allowNull: true });
+            const u = new User({ email: null });
             Boolean(u.isValid(function(valid) {
                 valid.should.be.true;
                 u.save(function() {
-                    var u2 = new User({email: null});
+                    const u2 = new User({ email: null });
                     u2.isValid(function(valid) {
                         valid.should.be.true;
                         done();
@@ -226,7 +226,7 @@ describe('validations', function() {
 
         it('should handle same object modification', function(done) {
             User.validatesUniquenessOf('email');
-            var u = new User({email: 'hey'});
+            const u = new User({ email: 'hey' });
             Boolean(u.isValid(function(valid) {
                 valid.should.be.true;
                 u.save(function() {
@@ -245,19 +245,19 @@ describe('validations', function() {
     describe('format', function() {
 
         it('should allow null', function(done) {
-            User.validatesFormatOf('email', {allowNull: true});
-            var u = new User(getValidAttributes());
+            User.validatesFormatOf('email', { allowNull: true });
+            const u = new User(getValidAttributes());
             u.email = null;
             u.isValid(function(valid) {
                 should.exist(valid);
                 valid.should.be.true();
                 done();
-            })
+            });
         });
 
         it('should validate format', function(done) {
             User.validatesFormatOf('email', { with: /^.*?@.*$/ });
-            var u = new User(getValidAttributes());
+            const u = new User(getValidAttributes());
             u.email = 'haha';
             u.isValid(function(valid) {
                 should.exist(valid);
@@ -270,7 +270,7 @@ describe('validations', function() {
                     should.not.exist(u.errors);
                     done();
                 });
-            })
+            });
         });
 
         it('should overwrite default blank message with custom format message');
@@ -279,19 +279,19 @@ describe('validations', function() {
     describe('numericality', function() {
 
         it('should allow null', function(done) {
-            User.validatesNumericalityOf('age', {allowNull: true});
-            var u = new User(getValidAttributes());
+            User.validatesNumericalityOf('age', { allowNull: true });
+            const u = new User(getValidAttributes());
             u.age = null;
             u.isValid(function(valid) {
                 should.exist(valid);
                 valid.should.be.true();
                 done();
-            })
+            });
         });
 
         it('should validate numericality', function(done) {
             User.validatesNumericalityOf('age');
-            var u = new User(getValidAttributes());
+            const u = new User(getValidAttributes());
             u.isValid(function(valid) {
                 should.exist(valid);
                 valid.should.be.true();
@@ -306,8 +306,8 @@ describe('validations', function() {
         });
 
         it('should check whether number is integer', function(done) {
-            User.validatesNumericalityOf('age', {int: true});
-            var u = new User(getValidAttributes());
+            User.validatesNumericalityOf('age', { int: true });
+            const u = new User(getValidAttributes());
             u.age = 1.1;
             u.isValid(function(valid) {
                 should.exist(valid);
@@ -326,20 +326,20 @@ describe('validations', function() {
                 in: ['male', 'female'],
                 allowNull: true
             });
-            var u = new User(getValidAttributes());
+            const u = new User(getValidAttributes());
             u.gender = null;
             u.isValid(function(valid) {
                 should.exist(valid);
                 valid.should.be.true();
                 done();
-            })
+            });
         });
 
         it('should validate inclusion', function(done) {
             User.validatesInclusionOf('gender', {
                 in: ['male', 'female']
             });
-            var u = new User(getValidAttributes());
+            const u = new User(getValidAttributes());
             u.gender = 'emale';
             u.isValid(function(valid) {
                 should.exist(valid);
@@ -352,7 +352,7 @@ describe('validations', function() {
                     should.not.exist(u.errors);
                     done();
                 });
-            })
+            });
         });
 
     });
@@ -364,20 +364,20 @@ describe('validations', function() {
                 in: ['notmale'],
                 allowNull: true
             });
-            var u = new User(getValidAttributes());
+            const u = new User(getValidAttributes());
             u.gender = null;
             u.isValid(function(valid) {
                 should.exist(valid);
                 valid.should.be.true();
                 done();
-            })
+            });
         });
 
         it('should validate exclusion', function(done) {
             User.validatesExclusionOf('name', {
                 in: ['admin']
             });
-            var u = new User(getValidAttributes());
+            const u = new User(getValidAttributes());
             u.name = 'admin';
             u.isValid(function(valid) {
                 should.exist(valid);
@@ -390,26 +390,26 @@ describe('validations', function() {
                     should.not.exist(u.errors);
                     done();
                 });
-            })
+            });
         });
     });
 
     describe('length', function() {
 
         it('should allow null', function(done) {
-            User.validatesLengthOf('gender', {max: 8, allowNull: true});
-            var u = new User(getValidAttributes());
+            User.validatesLengthOf('gender', { max: 8, allowNull: true });
+            const u = new User(getValidAttributes());
             u.gender = null;
             u.isValid(function(valid) {
                 should.exist(valid);
                 valid.should.be.true();
                 done();
-            })
+            });
         });
 
         it('should validate max length', function(done) {
-            User.validatesLengthOf('gender', {max: 6});
-            var u = new User(getValidAttributes());
+            User.validatesLengthOf('gender', { max: 6 });
+            const u = new User(getValidAttributes());
             u.isValid(function(valid) {
                 should.not.exist(u.errors);
                 valid.should.be.true;
@@ -423,8 +423,8 @@ describe('validations', function() {
         });
 
         it('should validate min length', function(done) {
-            User.validatesLengthOf('bio', {min: 3});
-            var u = new User({bio: 'ha'});
+            User.validatesLengthOf('bio', { min: 3 });
+            const u = new User({ bio: 'ha' });
             u.isValid(function(valid) {
                 u.errors.should.be.ok;
                 valid.should.be.false;
@@ -438,8 +438,8 @@ describe('validations', function() {
         });
 
         it('should validate exact length', function(done) {
-            User.validatesLengthOf('countryCode', {is: 2});
-            var u = new User(getValidAttributes());
+            User.validatesLengthOf('countryCode', { is: 2 });
+            const u = new User(getValidAttributes());
             u.isValid(function(valid) {
                 should.not.exist(u.errors);
                 valid.should.be.true;
