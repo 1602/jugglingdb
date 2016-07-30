@@ -5,7 +5,7 @@
 
 ## About
 
-[JugglingDB(3)](http://1602.github.io/jugglingdb/) is cross-db ORM for nodejs, providing
+[JugglingDB](http://1602.github.io/jugglingdb/) is cross-db ORM for nodejs, providing
 **common interface** to access most popular database formats.  Currently
 supported are: mysql, sqlite3, postgres, mongodb, redis and
 js-memory-storage (yep, self-written engine for test-usage only). You can add

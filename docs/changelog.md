@@ -3,10 +3,19 @@ jugglingdb-changelog(3) - The History of JugglingDB
 
 ## HISTORY
 
-### upcoming release 0.3.0
+### 2.1.0
+
+* ES6
+* Promises
+* Support promises in adapters
+* Deprecated List type (a.k.a. `type: []`)
+* Bugfixes in validations
+* Deprecated Model.update({update, where}) (use Model.bulkUpdate({update, where}))
+
+### 0.3.0
 
 * Documentation:
-  Available in [web](http://jugglingdb.co) and man [jugglingdb(3)]
+  Available in [web](http://1602.github.io/jugglingdb/) and man [jugglingdb(3)]
 
 * **Hooks**:
   Changed format of update and save hooks. Hook accept data as second argument.
