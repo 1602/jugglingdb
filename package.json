@@ -1,5 +1,5 @@
 {
-  "name": "jugglingdb",
+  "name": "@pulse/jugglingdb",
   "description": "Node.js ORM for every database: redis, mysql, mongodb, postgres, sqlite, ...",
   "version": "2.0.0-rc8",
   "author": "Anatoliy Chakkaev <rpm1602@gmail.com>",
@@ -78,13 +78,11 @@
     "eslint-config-1602": "^1.2.0",
     "expect": "^1.20.2",
     "istanbul": "^0.4.4",
-    "jshint": "2.9.2",
-    "mocha": "2.5.3",
-    "should": "9.0.2"
+    "jshint": "^2.9.5"
   },
   "dependencies": {
     "inflection": "=1.2.7",
-    "mocha": "^2.5.3",
+    "mocha": "4.0.0",
     "should": "^9.0.2",
     "when": "3.7.3"
   },
