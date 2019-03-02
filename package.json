@@ -84,8 +84,6 @@
   },
   "dependencies": {
     "inflection": "=1.2.7",
-    "mocha": "^2.5.3",
-    "should": "^9.0.2",
     "when": "3.7.3"
   },
   "license": "MIT",
