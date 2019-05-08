@@ -91,6 +91,11 @@ describe('hooks', function() {
             (new User).save();
         });
 
+        it('should be triggered on upsert', function(done) {
+            addHooks('Create', done);
+            User.upsert({ name: 'Anatoliy' });
+        });
+
         it('afterCreate should not be triggered on failed create', function(done) {
             const old = User.schema.adapter.create;
             User.schema.adapter.create = function(modelName, id, cb) {
@@ -125,6 +130,11 @@ describe('hooks', function() {
                 addHooks('Save', done);
                 user.updateAttributes({ name: 'Anatoliy' });
             });
+        });
+
+        it('should be triggered on upsert', function(done) {
+            addHooks('Save', done);
+            User.upsert();
         });
 
         it('should be triggered on save', function(done) {
@@ -216,6 +226,11 @@ describe('hooks', function() {
                 addHooks('Update', done);
                 user.updateAttributes({ name: 'Anatoliy' });
             });
+        });
+
+        it('should be triggered on upsert', function(done) {
+            addHooks('Update', done);
+            User.upsert({ id: 1 });
         });
 
         it('should be triggered on save', function(done) {
