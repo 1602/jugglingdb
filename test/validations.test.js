@@ -455,6 +455,20 @@ describe('validations', function() {
 
     describe('custom', function() {
         it('should validate using custom sync validation');
-        it('should validate using custom async validation');
+
+        describe('async', function() {
+            it('should validate using custom async', function(done) {
+                User.validateAsync('countryCode', function(errCb, cb) {
+                    setImmediate(function() {
+                        errCb();
+                    });
+                });
+                var u = new User(getValidAttributes());
+                u.isValid(function(valid) {
+                    valid.should.be.false;
+                    done();
+                });
+            });
+        });
     });
 });
